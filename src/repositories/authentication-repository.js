@@ -1,4 +1,4 @@
-import { Op, where } from "sequelize";
+import { Op } from "sequelize";
 import sequlizeInstance from "../configurations/sequelize-configuration.js";
 import UserModel from "../models/user-model.js";
 
@@ -18,7 +18,7 @@ export default class AuthenticationRepository {
       },
       attributes: ["uuid", "username", "name", "email", "phone", ["role_uuid", "roleUuid"], "password"]
     });
-    return user.get();
+    return user;
   }
 
   static async updateToken(uuid, token){

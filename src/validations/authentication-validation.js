@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { passwordRequired } from "./message-validation-error.js";
+import { passwordRequired, usernameRequired } from "./message-validation-error.js";
 
 export default class AuthenticationValidation {
   static LOGIN = z.object({
-    username: z.string(),
+    username: z.string().min(1, usernameRequired),
     password: z.string().min(1, passwordRequired),
   });
 

@@ -1,4 +1,5 @@
 import { DataTypes } from "sequelize";
+import { toEpochDate } from "../helpers/date-helper.js";
 
 const fieldTime = {
   status: {
@@ -9,6 +10,7 @@ const fieldTime = {
     type: DataTypes.BIGINT,
     allowNull: false,
     unique: false,
+    defaultValue: toEpochDate(new Date())
   },
   updatedAt: {
     type: DataTypes.BIGINT,

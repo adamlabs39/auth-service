@@ -4,6 +4,7 @@ import UserController from "../controllers/user-controller.js";
 import authorizationMiddleware from "../middlewares/authorization-middleware.js";
 import AuthenticationController from "../controllers/authentication-controller.js";
 import PermisionController from "../controllers/permisison-controller.js";
+import DokterController from "../controllers/dokter-controller.js";
 
 const privateRoute = express.Router();
 privateRoute.use(authorizationMiddleware);
@@ -33,6 +34,11 @@ privateRoute.delete(`${URL_VERISON}/permision/:uuid`, PermisionController.delete
 privateRoute.get(`${URL_VERISON}/permision/:uuid`, PermisionController.findByUuid)
 privateRoute.get(`${URL_VERISON}/permision/role/:uuid`, PermisionController.findAllByRole);
 
+// dokter
+privateRoute.post(`${URL_VERISON}/dokter`, DokterController.create);
+privateRoute.put(`${URL_VERISON}/dokter/:uuid`, DokterController.update);
+privateRoute.delete(`${URL_VERISON}/dokter/:uuid`, DokterController.delete);
+privateRoute.get(`${URL_VERISON}/dokter/:uuid`, DokterController.findByUuid);
 
 
 export default privateRoute;
