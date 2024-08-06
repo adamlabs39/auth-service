@@ -8,7 +8,6 @@ export default class RoleRepository {
     const result = await sequlizeInstance.transaction(async (tr) => {
       try {
         const role = await RoleModel.create(roleReq, {
-          returning: [ "id", "faskes_uuid", "code", "uuid", "name", "status", "created_at"],
           transaction: tr,
         });
         return role;
@@ -24,12 +23,18 @@ export default class RoleRepository {
       const result = await sequlizeInstance.transaction(async (tr) => {
         const role = await RoleModel.update(updateReq, {
           where: {
-            uuid: updateReq.uuid,
+            [Op.and]: [
+              {uuid: updateReq.uuid},
+              {
+                deletedAt: {
+                  [Op.is]: null
+                }
+              }
+            ],
           },
           transaction: tr,
-          returning: ["uuid", "faskes_uuid", "code", "uuid", "name", "status", "created_at", "updated_at"],
         });
-        return role[1];
+        return role[0];
       });
       return result;
     } catch (error) {
@@ -92,9 +97,8 @@ export default class RoleRepository {
           ]
         },
         transaction: tr,
-        returning: ["uuid", "code", "name", "created_at", "deleted_at"],
       });
-      return role[1][0];
+      return role[0];
     });
     return result;
   }

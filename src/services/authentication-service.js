@@ -13,7 +13,7 @@ export default class AuthenticationService {
     if(!user) throw new UsernameException(`username ${validReq.username} belum terdaftar!`, 400);
     const isPasswordValid = await bcrypt.compare(validReq.password, user.password);
     if(!isPasswordValid) throw new UsernameException(`username atau password anda salah!`, 400);
-    const token = await JwtHelper.sign({roleUuid: user.roleUuid, username: user.username});
+    const token = await JwtHelper.sign({roleUuid: user.get().roleUuid, username: user.get().username});
     await AuthenticationRepository.updateToken(user.uuid, token);
     return { token }
   }
@@ -21,8 +21,8 @@ export default class AuthenticationService {
   static async logout(author){
     const userValid = ZodValidator.validate(AuthenticationValidation.LOGOUT, author.username);
     const afecttedRow = await AuthenticationRepository.deleteToken(userValid);
-    if(afecttedRow == 1) throw new Error(`${userValid} berhasil logout`)
-    return { message: `${userValid} gagal logout` }
+    if(afecttedRow ==! 1) throw new Error(`${userValid} gagal logout`)
+    return { message: `${userValid} berhasil logout` }
   }
 
   static async isTokenExist(username) {

@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import fieldTime from "./base-model.js";
 import sequlizeInstance from "../configurations/sequelize-configuration.js";
+import { uuidv7 } from "uuidv7";
 
 export default class DokterModel extends Model {}
 DokterModel.init(
@@ -15,6 +16,7 @@ DokterModel.init(
       type: DataTypes.STRING(255),
       primaryKey: true,
       allowNull: false,
+      defaultValue: uuidv7(),
       unique: true,
     },
     faskesUuid: {
@@ -22,12 +24,17 @@ DokterModel.init(
       allowNull: false,
       unique: false,
     },
+    roleUuid: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: uuidv7()
+    },
     bpjsCode: {
       type: DataTypes.STRING(255),
       allowNull: true,
       unique: true,
     },
-    antrianCode: {
+    queueCode: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
@@ -51,15 +58,15 @@ DokterModel.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    time_pelayanan: {
+    serviceTime: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    durasiPelayanan: {
+    serviceDuration: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    lokasiUuid: {
+    locationUuid: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },

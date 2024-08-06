@@ -7,12 +7,11 @@ export default class UserRepository {
   static async create(userReq) {
     const result = await sequlizeInstance.transaction(async tr => {
         const user = await UserModel.create(userReq, {
-          returning: ["uuid", "role_uuid", "name", "username", "email", "phone", "created_at"],
           transaction: tr,
         });
         return user;
     });
-    return result.get();
+    return result;
   }
 
   static async update(userUpdate){
@@ -21,9 +20,8 @@ export default class UserRepository {
         const user = await UserModel.update(userUpdate, {
           where: { uuid: userUpdate.uuid },
           transaction: tr,
-          returning: ["uuid", "role_uuid", "name", "username", "email", "phone", "created_at", "updated_at"]
         });
-        return user[1];
+        return user[0];
       }catch(error){
         throw error;
       }
