@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import fieldTime from "./base-model.js";
 import { sequlizeInstance } from "./model-synchronize.js";
+import { uuidv7 } from "uuidv7";
 
 export default class PermisionModel extends Model {}
 PermisionModel.init(
@@ -16,6 +17,7 @@ PermisionModel.init(
       allowNull: false,
       unique: true,
       primaryKey: true,
+      defaultValue: uuidv7()
     },
     faskesUuid: {
       type: DataTypes.STRING(255),
