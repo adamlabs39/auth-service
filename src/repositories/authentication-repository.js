@@ -16,7 +16,7 @@ export default class AuthenticationRepository {
           }
         ]
       },
-      attributes: ["uuid", "username", "name", "email", "phone", ["role_uuid", "roleUuid"], "password"]
+      attributes: ["uuid", "username", "name", "email", "phone", ["role_uuid", "roleUuid"], "password", ["faskes_uuid", "faskesUuid"]]
     });
     return user;
   }

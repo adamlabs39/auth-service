@@ -13,7 +13,7 @@ export default class AuthenticationService {
     if(!user) throw new UsernameException(`username ${validReq.username} belum terdaftar!`, 400);
     const isPasswordValid = await bcrypt.compare(validReq.password, user.password);
     if(!isPasswordValid) throw new UsernameException(`username atau password anda salah!`, 400);
-    const token = await JwtHelper.sign({roleUuid: user.get().roleUuid, username: user.get().username});
+    const token = await JwtHelper.sign({roleUuid: user.get().roleUuid, username: user.get().username, faskesUuid: user.get().faskesUuid});
     await AuthenticationRepository.updateToken(user.uuid, token);
     return { token }
   }
