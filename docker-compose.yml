@@ -1,38 +1,22 @@
 version: "3.3"
 services:
-  postgres:
-    container_name: postgresql
-    image: postgres:latest
+  app:
+    build: .
+    container_name: adameds-auth
     ports:
-      - 5432:5432
-    restart: no
+      - ${APPLICATION_PORT}:${APPLICATION_PORT}
+    restart: always
     networks:
-      - adameds
-    volumes:
-      - pg-data-volume:/var/lib/postgresql/data
+        - adameds-network
     environment:
-      - POSTGRES_PASSWORD=resman56adam
-      - POSTGRES_DB=auth
-      - POSTGRES_USER=wmi_user_db
-  redis:
-    container_name: redis
-    image: redis:latest
-    command:
-      - bash
-      - -c
-      - redis-server /usr/local/etc/redis/redis.conf
-    ports:
-      - 6379:6379
-    volumes:
-      - redis-volume:/data
-      - type: bind
-        source: ./redis.conf
-        target: /usr/local/etc/redis/redis.conf
-    networks:
-      - adameds
-volumes:
-  redis-volume: {}
-  pg-data-volume: {}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_DIALECT=${DB_DIALECT}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - APPLICATION_PORT=${APPLICATION_PORT}
+      - APPLICATION_HOST=${APPLICATION_HOST}
 networks:
-  adameds:
-    driver: bridge
+    adameds-network:
+        driver: bridge
