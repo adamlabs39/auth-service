@@ -11,8 +11,8 @@ export default class UserValidation {
     email: z.string().email().min(1, emailRequired),
     username: z.string().min(1, usernameRequired),
     password: z.string().min(1, passwordRequired),
-    iventoryMedis: z.boolean(),
-    iventoryNonMedis: z.boolean(),
+    inventoryMedis: z.boolean(),
+    inventoryNonMedis: z.boolean(),
     status: z.boolean(),
   });
   
@@ -25,8 +25,8 @@ export default class UserValidation {
     phone: z.string().min(1, phoneRequired),
     email: z.string().email().min(1, emailRequired),
     username: z.string().min(1, usernameRequired),
-    iventoryMedis: z.boolean(),
-    iventoryNonMedis: z.boolean(),
+    inventoryMedis: z.boolean(),
+    inventoryNonMedis: z.boolean(),
     status: z.boolean(),
   });
 

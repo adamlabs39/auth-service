@@ -76,8 +76,8 @@ app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
           email: "alliano@gmail.com",
           username: "alliano-dev",
           password: await bcrypt.hash("secreet_pass", 10),
-          iventoryMedis: true,
-          iventoryNonMedis: true,
+          inventoryMedis: true,
+          inventoryNonMedis: true,
           status: true,
         }
       }
