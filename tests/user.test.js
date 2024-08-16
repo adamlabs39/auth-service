@@ -15,8 +15,8 @@ describe("API /v1/user", () => {
       email: "jong@gmail.com",
       username: "jongs",
       password: "embung gtw",
-      iventoryMedis: true,
-      iventoryNonMedis: true,
+      inventoryMedis: true,
+      inventoryNonMedis: true,
       status: true,
     }).set("Authorization", `Bearer ${TOKEN}`)
   });
