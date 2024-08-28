@@ -1,10 +1,11 @@
 import { DataTypes } from "sequelize";
-import { toEpochDate } from "../helpers/date-helper.js";
+import { toEpochDate } from "../../helpers/date-helper.js";
 
-const fieldTime = {
+const defaultTimesatamp = {
   status: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: true
   },
   createdAt: {
     type: DataTypes.BIGINT,
@@ -24,4 +25,4 @@ const fieldTime = {
   },
 };
 
-export default fieldTime;
+export default defaultTimesatamp;

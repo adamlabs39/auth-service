@@ -1,24 +1,72 @@
 import { Op } from "sequelize";
 import sequlizeInstance from "../configurations/sequelize-configuration.js";
 import UserModel from "../models/user-model.js";
+import { RoleModel, UserActionModel } from "../models/model-synchronize.js";
 
 export default class AuthenticationRepository {
   
   static async findUser(username) {
-    const user = await UserModel.findOne({
-      where: {
-        [Op.and]: [
-          { username },
-          {
-            deletedAt: {
-              [Op.is]: null
+    UserModel.hasOne(UserActionModel, {
+      foreignKey: "userUuid",
+      sourceKey: "uuid",
+      constraints: false
+    });
+    UserActionModel.belongsTo(UserModel, {
+      foreignKey: "uuid",
+      targetKey: "roleUuid",
+      constraints: false
+    });
+    UserModel.hasOne(RoleModel, {
+      foreignKey: "uuid",
+      sourceKey: "roleUuid",
+      constraints: false
+    });
+    RoleModel.belongsTo(UserModel, {
+      foreignKey: "uuid",
+      targetKey: "roleUuid",
+      constraints: false
+    });
+    return await sequlizeInstance.transaction(async tr => {
+      let userXUserAction = await UserModel.findOne({
+        where: {
+          [Op.and]: [
+            {
+              [Op.or]: [
+                { username },
+                {
+                  email: username
+                }
+              ]
+            },
+            {
+              deletedAt: {
+                [Op.is]: null
+              }
             }
+          ]
+        },
+        attributes: ["uuid", ["faskes_uuid", "faskesUuid"], "username", "name", "email", "phone", ["role_uuid", "roleUuid"], "password"],
+        transaction: tr,
+        include: [
+          {
+            model: UserActionModel,
+            required: true,
+            attributes: ["actionCode"],
+          },
+          {
+            model: RoleModel,
+            required: true,
+            attributes: ["name"]
           }
         ]
-      },
-      attributes: ["uuid", "username", "name", "email", "phone", ["role_uuid", "roleUuid"], "password", ["faskes_uuid", "faskesUuid"]]
+      });
+      if(userXUserAction) {
+        userXUserAction = {...userXUserAction.toJSON(), actionCode: userXUserAction.UserActionModel.actionCode, role: userXUserAction.RoleModel.name };
+        delete userXUserAction.RoleModel;
+        delete userXUserAction.UserActionModel;
+        return userXUserAction;
+      }
     });
-    return user;
   }
 
   static async updateToken(uuid, token){

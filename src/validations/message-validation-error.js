@@ -16,9 +16,9 @@ const nameRequired = `name ${REQUIRED}`;
 const emailRequired = `email ${REQUIRED}`;
 const dokterUuidRequired = `dokter ${REQUIRED}`;
 const phoneRequired = `phone ${REQUIRED}`;
-const inventoryMedisRequired = `inventoryMedis ${REQUIRED}`;
-const inventoryNonMedisRequired = `inventoryNonMedis ${REQUIRED}`;
-const roleUuidRequired = `roleUuid ${REQUIRED}`
+const iventoryMedisRequired = `iventoryMedis ${REQUIRED}`;
+const iventoryNonMedisRequired = `iventoryNonMedis ${REQUIRED}`;
+const roleRequired = `role ${REQUIRED}`
 
 export {
   passwordRequired,
@@ -40,5 +40,5 @@ export {
   uuidRequired,
   subMenuNameRequired,
   usernameRequired,
-  roleUuidRequired
+  roleRequired
 };
