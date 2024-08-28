@@ -1,32 +1,27 @@
 import { DataTypes, Model } from "sequelize";
 import sequlizeInstance from "../configurations/sequelize-configuration.js";
-import fieldTime from "./base-model.js";
-import { uuidv7 } from "uuidv7";
+import defaultTimesatamp from "./common/default-timestamp.js";
+import { defaultHook } from "./common/default-hook.js";
+import defaultIdentifier from "./common/default-identifier.js";
 
 export default class UserModel extends Model {}
 UserModel.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: true,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    uuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: true,
-      defaultValue: uuidv7()
-    },
-    faskesUuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
+    ...defaultIdentifier,
     roleUuid: {
       type: DataTypes.STRING(255),
       allowNull: false,
       unique: false,
+    },
+    doctor_uuid: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true
+    },
+    nakesUuid: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true
     },
     name: {
       type: DataTypes.STRING(255),
@@ -35,7 +30,7 @@ UserModel.init(
     },
     phone: {
       type: DataTypes.STRING(15),
-      allowNull: false,
+      allowNull: true,
       unique: false,
     },
     email: {
@@ -45,34 +40,33 @@ UserModel.init(
     },
     username: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: false,
+      allowNull: true,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: false,
-    },
-    token: {
-      type: DataTypes.STRING(1000),
       allowNull: true,
+      unique: false,
     },
-    iventoryMedis: {
+    inventoryMedis: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       unique: false,
     },
-    iventoryNonMedis: {
+    inventoryNonMedis: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       unique: false,
     },
-    ...fieldTime
+    ...defaultTimesatamp,
   },
   {
     sequelize: sequlizeInstance,
     tableName: "users",
     underscored: true,
-    timestamps: false
+    timestamps: false,
+    hooks: {...defaultHook }
   }
 );
+
+

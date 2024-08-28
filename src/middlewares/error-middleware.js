@@ -5,27 +5,20 @@ import DuplicateException from "../errors/duplicate-exception.js";
 import { UniqueConstraintError } from "sequelize";
 import { ZodError } from "zod";
 import zodErrorParser from "../helpers/zod-error-parser.js";
+import UnauthorizeException from "../errors/unauthorize-exception.js";
+import NotFoundException from "../errors/not-found-exception.js";
 
 const errorMiddleware = (error, request, response, nextFunction) => {
-  if (error instanceof UsernameException) {
-    response.status(error.status).json({messages: error.message});
-  }
-  else if(error instanceof jwt.TokenExpiredError){
-    response.status(400).json({message: error.message})
-  }
-  else if(error instanceof BadRequestException){
-    response.status(error.status).json({message: error.message});
-  }
-  else if(error instanceof DuplicateException){
-    response.status(error.code).json({messages: error.message});
-  }
-  else if(error instanceof UniqueConstraintError){
-    response.status(400).json({message: error.errors[0].message})
-  }
-  else if( error instanceof ZodError){
-    response.status(400).json({message: zodErrorParser(error.errors)})
-  }
-  response.status(500).json({message: error.stack});
+  if (error instanceof UsernameException) response.status(error.status).json(error.message)
+  else if(error instanceof jwt.TokenExpiredError) response.status(400).json({message: "Authentikasi gagal", errors: [{type: "Invalid token", message: "Token tidak valid atau telah kadaluarsa"}]})
+  else if(error instanceof jwt.JsonWebTokenError) response.status(400).json({message: "Authentikasi gagal", errors: [{type: "Invalid signature", message: "Token tidak valid"}]})
+  else if(error instanceof BadRequestException) response.status(error.status).json({message: error.message})
+  else if(error instanceof DuplicateException) response.status(error.code).json({messages: error.message})
+  else if(error instanceof UniqueConstraintError) response.status(400).json({message: error.message, errors: error.errors.map(err => { return {field: err.path, message: err.message }})})
+  else if( error instanceof ZodError) response.status(400).json({message: zodErrorParser(error.errors)})  
+  else if(error instanceof UnauthorizeException) response.status(error.code).json(error.message)
+  else if(error instanceof NotFoundException) response.status(error.code).json({message: error.message});
+  response.status(500).json({message: error.message});
 };
 
 export default errorMiddleware;

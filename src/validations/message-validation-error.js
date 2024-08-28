@@ -18,7 +18,7 @@ const dokterUuidRequired = `dokter ${REQUIRED}`;
 const phoneRequired = `phone ${REQUIRED}`;
 const iventoryMedisRequired = `iventoryMedis ${REQUIRED}`;
 const iventoryNonMedisRequired = `iventoryNonMedis ${REQUIRED}`;
-const roleUuidRequired = `roleUuid ${REQUIRED}`
+const roleRequired = `role ${REQUIRED}`
 
 export {
   passwordRequired,
@@ -40,5 +40,5 @@ export {
   uuidRequired,
   subMenuNameRequired,
   usernameRequired,
-  roleUuidRequired
+  roleRequired
 };

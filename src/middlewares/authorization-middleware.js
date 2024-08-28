@@ -1,27 +1,24 @@
+import redisClient from "../configurations/redis-client-config.js";
+import UnauthorizeException from "../errors/unauthorize-exception.js";
 import JwtHelper from "../helpers/jwt-helper.js";
 import AuthenticationService from "../services/authentication-service.js";
 
 const authorizationMiddleware = async (request, response, nextFunction) => {
   try {
-    
     const ignoreUrl = ["/v1/login", "/v1/register"]; // url yang 
     if (ignoreUrl.includes(request.originalUrl)) nextFunction();
     const BEARER_TOKEN = request.get("Authorization");
-    if (!BEARER_TOKEN){
-      response.status(401).json({ message: `silakan login terlebih dahulu!`});
-    }
-    else {
-      const token = BEARER_TOKEN.substring(7);
-      const isTokenValid = await JwtHelper.veryfy(token);
-      if (!isTokenValid) response.status(401).json({ message: "token tidak valid, silakan login kembali!" });
-      request.author = isTokenValid;
-      const user = await AuthenticationService.isTokenExist(isTokenValid.username);
-      if(!user) response.status(401).json({message: `token tidak valid, silakan login kembali`})
-      nextFunction();
-    }
+    if (!BEARER_TOKEN) throw new UnauthorizeException({message: "Authentikasi gagal", errors: [{type: "Authorization required", message: "silakan login terlebih dahulu"}]});
+    const token = BEARER_TOKEN.substring(7);
+    const author = await JwtHelper.veryfy(token);
+    request.author = author;
+    request.body.faskesUuid = author.faskesUuid;
+    console.log(author);
+    const user = await redisClient.exists(`token-${AuthenticationService.generateRedisKeyByJwtToken(token)}`);
+    if(user == 0) throw new UnauthorizeException({message: "Authentikasi gagal", errors: [{type: "Invalid token", message: "Token tidak valid atau telah kadaluarsa"}]});
+      else nextFunction();
   } catch (error) {
-    // throw error;
-    response.status(500).json({message: error.message})
+    nextFunction(error);
   }
 };
 export default authorizationMiddleware;

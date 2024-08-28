@@ -3,6 +3,13 @@ import { passwordRequired, usernameRequired } from "./message-validation-error.j
 
 export default class AuthenticationValidation {
   static LOGIN = z.object({
+    faskesUuid: z.string().optional(),
+    username: z.string().min(1, usernameRequired),
+    password: z.string().min(1, passwordRequired),
+  });
+
+  static UPDATE_TOKEN_ADMIN = z.object({
+    faskesUuid: z.string().optional(),
     username: z.string().min(1, usernameRequired),
     password: z.string().min(1, passwordRequired),
   });

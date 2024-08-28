@@ -1,29 +1,13 @@
 import { DataTypes, Model } from "sequelize";
 import sequlizeInstance from "../configurations/sequelize-configuration.js";
-import fieldTime from "./base-model.js";
-import { uuidv7 } from "uuidv7";
+import defaultTimesatamp from "./common/default-timestamp.js";
+import { defaultHook } from "./common/default-hook.js";
+import defaultIdentifier from "./common/default-identifier.js";
 
 export default class RoleModel extends Model {}
 RoleModel.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      unique: true,
-      allowNull: false,
-    },
-    uuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: true,
-      defaultValue: uuidv7()
-    },
-    faskesUuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: false,
-    },
+    ...defaultIdentifier,
     code: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -33,17 +17,13 @@ RoleModel.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    permisionUuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: false,
-    },
-    ...fieldTime
+    ...defaultTimesatamp
   },
   {
     sequelize: sequlizeInstance,
     tableName: "roles",
     underscored: true,
-    timestamps: false
+    timestamps: false,
+    hooks: {...defaultHook }
   }
 );

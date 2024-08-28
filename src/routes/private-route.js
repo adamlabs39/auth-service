@@ -5,6 +5,7 @@ import authorizationMiddleware from "../middlewares/authorization-middleware.js"
 import AuthenticationController from "../controllers/authentication-controller.js";
 import PermisionController from "../controllers/permisison-controller.js";
 import DokterController from "../controllers/dokter-controller.js";
+import FaskesController from "../controllers/faskes-controller.js";
 
 const privateRoute = express.Router();
 privateRoute.use(authorizationMiddleware);
@@ -12,6 +13,7 @@ const URL_VERISON = "/v1"
 
 // user
 privateRoute.delete(`${URL_VERISON}/logout`, AuthenticationController.logout);
+privateRoute.put(`${URL_VERISON}/token/:faskes`, AuthenticationController.updateToken);
 
 // route
 privateRoute.post(`${URL_VERISON}/role`, RoleController.create);
@@ -26,6 +28,8 @@ privateRoute.post(`${URL_VERISON}/user`, UserController.create);
 privateRoute.put(`${URL_VERISON}/user/:uuid`, UserController.update);
 privateRoute.get(`${URL_VERISON}/user`, UserController.findAll);
 privateRoute.get(`${URL_VERISON}/user/deleted`, UserController.findAllDeleted);
+privateRoute.get(`${URL_VERISON}/user/:uuid/user-role`, UserController.findByUuidIncludeRole);
+privateRoute.patch(`${URL_VERISON}/user/:uuid`, UserController.updatePassword);
 
 // permision
 privateRoute.post(`${URL_VERISON}/permision`, PermisionController.create)
@@ -39,6 +43,10 @@ privateRoute.post(`${URL_VERISON}/dokter`, DokterController.create);
 privateRoute.put(`${URL_VERISON}/dokter/:uuid`, DokterController.update);
 privateRoute.delete(`${URL_VERISON}/dokter/:uuid`, DokterController.delete);
 privateRoute.get(`${URL_VERISON}/dokter/:uuid`, DokterController.findByUuid);
+privateRoute.get(`${URL_VERISON}/dokter`, DokterController.findAll);
+
+// faskes
+privateRoute.post(`${URL_VERISON}/faskes`, FaskesController.create);
 
 
 export default privateRoute;

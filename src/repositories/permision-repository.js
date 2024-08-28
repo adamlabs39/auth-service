@@ -7,10 +7,11 @@ import RoleModel from "../models/role-model.js";
 export default class PermisisonRepository {
   static async create(permision) {
     const result = await sequlizeInstance.transaction(async (tr) => {
-      const newPermison = await PermisionModel.create(permision, {
+      console.log(permision);
+      
+      return await PermisionModel.create(permision, {
         transaction: tr,
       });
-      return newPermison;
     });
     return result;
   }
@@ -119,5 +120,16 @@ export default class PermisisonRepository {
       });
     });
     return result;
+  }
+
+  static async findSome(...permisions){
+    return await sequlizeInstance.transaction(async tr => {
+      return await PermisionModel.findAll({
+        where: {
+          [Op.or]: () => permisions.map(permision =>  { name: permision })
+        },
+        transaction: tr
+      })
+    })
   }
 }

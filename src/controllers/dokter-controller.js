@@ -37,4 +37,13 @@ export default class DokterController {
       nextFunction(error);
     }
   }
+
+  static async findAll(request, response, nextFunction){
+    try{
+      const result = await DokterService.findAll();
+      response.status(200).json(result);
+    }catch(error){
+      nextFunction(error);
+    }
+  }
 }

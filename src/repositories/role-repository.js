@@ -5,18 +5,11 @@ import { toEpochDate } from "../helpers/date-helper.js";
 
 export default class RoleRepository {
   static async create(roleReq) {
-    const result = await sequlizeInstance.transaction(async (tr) => {
-      try {
-        const role = await RoleModel.create(roleReq, {
-          transaction: tr,
-        });
-        return role;
-      } catch (error) {
-        throw error;
-      }
-    });
-    return result;
+    return await sequlizeInstance.transaction(async tr => {
+      return await RoleModel.create(roleReq, {transaction: tr});
+    })
   }
+  
 
   static async update(updateReq) {
     try {
@@ -116,5 +109,24 @@ export default class RoleRepository {
       })
     })
     return result
+  }
+
+  static async findByName(name){
+    return sequlizeInstance.transaction(async tr => {
+      const role = await RoleModel.findOne({
+        where: {
+          [Op.and]: [
+            { name },
+            {
+              deletedAt: {
+                [Op.is]: null
+              }
+            }
+          ]
+        },
+        transaction: tr
+      });
+      return role;
+    })
   }
 }

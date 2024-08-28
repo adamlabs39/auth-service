@@ -1,5 +1,4 @@
 import AuthenticationService from "../services/authentication-service.js";
-import RoleService from "../services/role-service.js";
 
 export default class AuthenticationController {
   static async login(request, response, nextFunction) {
@@ -13,7 +12,16 @@ export default class AuthenticationController {
 
   static async logout(request, response, nextFunction){
     try{
-      const result = await AuthenticationService.logout(request.author);
+      const result = await AuthenticationService.logout(request.author, request.get('Authorization'));
+      response.status(202).json(result);
+    }catch(error){
+      nextFunction(error);
+    }
+  }
+
+  static async updateToken(request, response, nextFunction){
+    try{
+      const result = await AuthenticationService.updateToken(request.author, request.params.faskes);
       response.status(202).json(result);
     }catch(error){
       nextFunction(error);

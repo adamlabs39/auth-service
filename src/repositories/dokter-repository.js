@@ -44,14 +44,14 @@ export default class DokterReposiotry {
           transaction: tr,
           where: {
             [Op.and]: [
-              {uuid},
+              { uuid },
               {
                 deletedAt: {
-                  [Op.is]: null
-                }
-              }
-            ]
-          }
+                  [Op.is]: null,
+                },
+              },
+            ],
+          },
         }
       );
       return affectedRow[0];
@@ -72,9 +72,22 @@ export default class DokterReposiotry {
             },
           ],
         },
-        transaction: tr
+        transaction: tr,
       });
     });
     return result;
+  }
+
+  static async findAll() {
+    return sequelizeInstance.transaction(async (tr) => {
+      return await DokterModel.findAll({
+        where: {
+          deletedAt: {
+            [Op.is]: null,
+          },
+        },
+        transaction: tr,
+      });
+    });
   }
 }
