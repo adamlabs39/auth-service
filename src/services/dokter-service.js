@@ -5,17 +5,21 @@ import DokterReposiotry from "../repositories/dokter-repository.js";
 
 export default class DokterService {
   static async create(author, dokterReq) {
-    const dokterReqValid = ZodValidator.validate(DokterValidation.CREATE, dokterReq);
+    dokterReq = ZodValidator.validate(DokterValidation.CREATE, dokterReq);
     await RoleService.checkRole(author, "super admin", "menambahkan dokter baru");
-    const dokter = await DokterReposiotry.create(dokterReqValid);
+    const { uuid: roleUuid } = await RoleService.findByName(dokterReq.role)
+    dokterReq = {...dokterReq, roleUuid }
+    const dokter = await DokterReposiotry.create(dokterReq);
     if(dokter.get() == null) throw Error(`gagal menambahkan dokter baru`);
     return { message: "berhasil menambahkan dokter baru" }
   }
 
   static async update(author, dokterReq) {
-    const dokterValid = await ZodValidator.validate(DokterValidation.UPDATE, dokterReq);
+    dokterReq = await ZodValidator.validate(DokterValidation.UPDATE, dokterReq);
     await RoleService.checkRole(author, "super admin", "memperbarui dokter");
-    const affectedRows = await DokterReposiotry.update(dokterValid);
+    const { uuid: roleUuid } = await RoleService.findByName(dokterReq.role)
+    dokterReq = {...dokterReq, roleUuid }
+    const affectedRows = await DokterReposiotry.update(dokterReq);
     if(affectedRows == 0) throw new Error("gagal memperbarui dokter");
     return { message: `berhasil memperbarui ${affectedRows} dokter`}
 }
@@ -30,5 +34,9 @@ static async delete(author, uuid) {
 
   static async findByUuid(uuid) {
     return await DokterReposiotry.findByUuid(uuid);
+  }
+
+  static async findAll() {
+    return await DokterReposiotry.findAll();
   }
 }

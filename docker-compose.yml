@@ -1,22 +1,35 @@
 version: "3.3"
 services:
-  app:
-    build: .
-    container_name: adameds-auth
+  postgres:
+    container_name: postgresql
+    image: postgres:latest
     ports:
       - ${APPLICATION_PORT}:${APPLICATION_PORT}
     restart: always
     networks:
         - adameds-network
     environment:
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_DIALECT=${DB_DIALECT}
-      - DB_NAME=${DB_NAME}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - APPLICATION_PORT=${APPLICATION_PORT}
-      - APPLICATION_HOST=${APPLICATION_HOST}
+      - POSTGRES_PASSWORD=secreet_pass
+      - POSTGRES_USER=alliano-dev
+  redis:
+    container_name: redis
+    image: redis:latest
+    command:
+      - bash
+      - -c
+      - redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-volume:/data
+      - type: bind
+        source: ./redis.conf
+        target: /usr/local/etc/redis/redis.conf
+    networks:
+      - adameds
+volumes:
+  redis-volume: {}
+  pg-data-volume: {}
 networks:
-    adameds-network:
-        driver: bridge
+  adameds:
+    driver: bridge

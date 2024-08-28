@@ -1,33 +1,16 @@
 import { DataTypes, Model } from "sequelize";
-import fieldTime from "./base-model.js";
 import sequlizeInstance from "../configurations/sequelize-configuration.js";
-import { uuidv7 } from "uuidv7";
+import defaultTimesatamp from "./common/default-timestamp.js";
+import { defaultHook } from "./common/default-hook.js";
+import defaultIdentifier from "./common/default-identifier.js";
 
 export default class DokterModel extends Model {}
 DokterModel.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      unique: true,
-    },
-    uuid: {
-      type: DataTypes.STRING(255),
-      primaryKey: true,
-      allowNull: false,
-      defaultValue: uuidv7(),
-      unique: true,
-    },
-    faskesUuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: false,
-    },
+    ...defaultIdentifier,
     roleUuid: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      defaultValue: uuidv7()
     },
     bpjsCode: {
       type: DataTypes.STRING(255),
@@ -70,12 +53,13 @@ DokterModel.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    ...fieldTime,
+    ...defaultTimesatamp,
   },
   {
     sequelize: sequlizeInstance,
     tableName: "dokters",
     underscored: true,
-    timestamps: false
+    timestamps: false,
+    hooks: { ...defaultHook },
   }
 );

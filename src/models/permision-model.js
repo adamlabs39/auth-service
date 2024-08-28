@@ -1,29 +1,14 @@
 import { DataTypes, Model } from "sequelize";
-import fieldTime from "./base-model.js";
 import { sequlizeInstance } from "./model-synchronize.js";
-import { uuidv7 } from "uuidv7";
+import defaultTimesatamp from "./common/default-timestamp.js";
+import { defaultHook } from "./common/default-hook.js";
+import defaultIdentifier from "./common/default-identifier.js";
+
 
 export default class PermisionModel extends Model {}
 PermisionModel.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: true,
-      autoIncrement: true,
-    },
-    uuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: true,
-      primaryKey: true,
-      defaultValue: uuidv7()
-    },
-    faskesUuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: false,
-    },
+    ...defaultIdentifier,
     category: {
       type: DataTypes.STRING(150),
       allowNull: false,
@@ -54,12 +39,13 @@ PermisionModel.init(
         allowNull: true,
         unique: false
     },
-    ...fieldTime,
+    ...defaultTimesatamp,
   },
   {
     sequelize: sequlizeInstance,
     tableName: "permisions",
     underscored: true,
-    timestamps: false
+    timestamps: false,
+    hooks: {...defaultHook }
   }
 );

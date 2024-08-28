@@ -22,71 +22,56 @@ app.use(errorMiddleware);
 redisClient.on("connect", () => console.log("Redis alredy accept request"));
 app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
   // await sequlizeInstance.sync({ alter: true, force: true });
+  await redisClient.connect();
   await sequlizeInstance.transaction(async (tr) => {
-    const permision = await PermisionModel.findOrCreate(
-      {
-        transaction: tr,
-        where: {
-          category: "sample category"
-        },
-        defaults: {
-          faskesUuid: "id4u8r8ru93yf7gg3ygffh9d",
-          category: "sample category",
-          mainMenuCode: "MN",
-          mainMenuName: "Brogil",
-          mainMenu: "core menu",
-          subMenuCode: "CR",
-          subMenuName: "core",
-          status: true,
-        },
+    const roleSuperAdmin = await RoleModel.findOrCreate({
+      where: {
+        [Op.and]: [
+          {
+            name: "super admin"
+          },
+          {
+            code: "SPR-ADM"
+          }
+        ]
+      },
+      defaults: {
+        name: "super admin",
+        code: "SPR-ADM",
+        status: true
+      },
+      transaction: tr
+    });
+    const superAdmin = await UserModel.findOrCreate({
+      where: {
+        [Op.and]: [
+          {
+            email: "admin@gmail.com"
+          },
+          {
+            name: "Nadila Aulya",
+          }
+        ]
+      },
+      defaults: {
+        roleUuid: roleSuperAdmin[0].get().uuid,
+        name: "Nadila Aulya",
+        phone: "081341079104",
+        email: "admin@gmail.com",
+        username: "nadila",
+        password: await bcrypt.hash("admin123", 10),
+        inventoryMedis: true,
+        inventoryNonMedis: true,
+        status: true,
+      },
+      transaction: tr
+    });
+    await UserActionModel.findOrCreate({
+      where: { userUuid: superAdmin[0].get().uuid },
+      defaults: {
+        actionCode: "ALL-FEATURE-CRUD"
       }
-    );
-    const { uuid: permisionUuid } = permision[0].get();
-
-
-    const role = await RoleModel.findOrCreate(
-      {
-        transaction: tr,
-        where: {
-          name: "super admin"
-        },
-        defaults: {
-          faskesUuid: "0191019c-608b-773c-928b-eba6b915291",
-          code: "SPR-ADMN",
-          name: "super admin",
-          permisionUuid: permisionUuid,
-          status: true,
-        }
-      }
-    );
-
-    const { uuid: roleUuid } = role[0].get();
-    await UserModel.findOrCreate(
-      { 
-        transaction: tr,
-        where: {
-          [Op.and]: [
-            {
-              email: "alliano@gmail.com",
-              username: "alliano-dev"
-            }
-          ]
-        },
-        defaults: {
-          faskesUuid: "9d403ufjh43ufh3uf8430ihf",
-          roleUuid: roleUuid,
-          dokterUuid: "coijr0i3nh0uc30hfjij3ci",
-          name: "alliano",
-          phone: "0811341082934",
-          email: "alliano@gmail.com",
-          username: "alliano-dev",
-          password: await bcrypt.hash("secreet_pass", 10),
-          inventoryMedis: true,
-          inventoryNonMedis: true,
-          status: true,
-        }
-      }
-    );
+    })
   });
   console.log(`The server running on http://${APPLICATION_HOST}:${APPLICATION_PORT}`);
 });
