@@ -14,9 +14,9 @@ UserModel.init(
       allowNull: false,
       unique: false,
     },
-    doctor_uuid: {
+    dokterUuid: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true,  
       unique: true
     },
     nakesUuid: {
@@ -58,6 +58,18 @@ UserModel.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       unique: false,
+    },
+    photo: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    awalGelar: {
+      type: DataTypes.STRING(10),
+      allowNull: true
+    },
+    akhirGelar: {
+      type: DataTypes.STRING(10),
+      allowNull: true
     },
     ...defaultTimesatamp,
   },
