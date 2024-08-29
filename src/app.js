@@ -1,11 +1,6 @@
 import express from "express";
 import "dotenv/config";
-import {
-  RoleModel,
-  sequlizeInstance,
-  UserActionModel,
-  UserModel,
-} from "./models/model-synchronize.js";
+import { RoleModel, sequlizeInstance, UserActionModel, UserModel } from "./models/model-synchronize.js";
 import errorMiddleware from "./middlewares/error-middleware.js";
 import publicRoutes from "./routes/public-route.js";
 import privateRoute from "./routes/private-route.js";
@@ -24,7 +19,7 @@ app.use(privateRoute);
 app.use(errorMiddleware);
 redisClient.on("connect", () => console.log("Redis alredy accept request"));
 app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
-  // await sequlizeInstance.sync({ alter: true, force: true });
+  await sequlizeInstance.sync({ alter: true, force: true });
   await redisClient.connect();
   await sequlizeInstance.transaction(async (tr) => {
     const roleSuperAdmin = await RoleModel.findOrCreate({
