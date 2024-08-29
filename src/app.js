@@ -21,7 +21,7 @@ app.use(privateRoute);
 app.use(errorMiddleware);
 redisClient.on("connect", () => console.log("Redis alredy accept request"));
 app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
-  // await sequlizeInstance.sync({ alter: true, force: true });
+  await sequlizeInstance.sync({ alter: true, force: true });
   await redisClient.connect();
   await sequlizeInstance.transaction(async (tr) => {
     const roleSuperAdmin = await RoleModel.findOrCreate({

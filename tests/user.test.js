@@ -135,7 +135,5 @@ describe("API /v1/user", () => {
         status: true,
       }
     );
-
-    console.log(permision);
   });
 });
