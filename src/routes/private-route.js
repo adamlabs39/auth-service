@@ -3,9 +3,8 @@ import RoleController from "../controllers/role-controller.js";
 import UserController from "../controllers/user-controller.js";
 import authorizationMiddleware from "../middlewares/authorization-middleware.js";
 import AuthenticationController from "../controllers/authentication-controller.js";
-import PermisionController from "../controllers/permisison-controller.js";
-import DokterController from "../controllers/dokter-controller.js";
-import FaskesController from "../controllers/faskes-controller.js";
+import FaskesController from "../controllers/faskes-controller.js"
+import permissionMiddleware from "permission-sdk";
 
 const privateRoute = express.Router();
 privateRoute.use(authorizationMiddleware);
@@ -28,22 +27,12 @@ privateRoute.post(`${URL_VERISON}/user`, UserController.create);
 privateRoute.put(`${URL_VERISON}/user/:uuid`, UserController.update);
 privateRoute.get(`${URL_VERISON}/user`, UserController.findAll);
 privateRoute.get(`${URL_VERISON}/user/deleted`, UserController.findAllDeleted);
+privateRoute.delete(`${URL_VERISON}/user/:uuid`, UserController.delete);
 privateRoute.get(`${URL_VERISON}/user/:uuid/user-role`, UserController.findByUuidIncludeRole);
 privateRoute.patch(`${URL_VERISON}/user/:uuid`, UserController.updatePassword);
 
-// permision
-privateRoute.post(`${URL_VERISON}/permision`, PermisionController.create)
-privateRoute.put(`${URL_VERISON}/permision/:uuid`, PermisionController.update)
-privateRoute.delete(`${URL_VERISON}/permision/:uuid`, PermisionController.delete)
-privateRoute.get(`${URL_VERISON}/permision/:uuid`, PermisionController.findByUuid)
-privateRoute.get(`${URL_VERISON}/permision/role/:uuid`, PermisionController.findAllByRole);
 
-// dokter
-privateRoute.post(`${URL_VERISON}/dokter`, DokterController.create);
-privateRoute.put(`${URL_VERISON}/dokter/:uuid`, DokterController.update);
-privateRoute.delete(`${URL_VERISON}/dokter/:uuid`, DokterController.delete);
-privateRoute.get(`${URL_VERISON}/dokter/:uuid`, DokterController.findByUuid);
-privateRoute.get(`${URL_VERISON}/dokter`, DokterController.findAll);
+privateRoute.get("/dev", permissionMiddleware("Admisi", "Antrian", "CHECKIN"), (req, res) => res.send("DEv"));
 
 // faskes
 privateRoute.post(`${URL_VERISON}/faskes`, FaskesController.create);

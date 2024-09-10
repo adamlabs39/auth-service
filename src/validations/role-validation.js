@@ -6,7 +6,6 @@ export default class RoleValidation {
     faskesUuid: z.string().min(1, faskesUuidRequired),
     code: z.string().min(1, codeRequired),
     name: z.string().min(1, nameRequired),
-    permisionUuid: z.string().min(1, permisionUuidRequired),
     status: z.boolean(),
   });
 
@@ -15,7 +14,6 @@ export default class RoleValidation {
     faskesUuid: z.string().min(1, faskesUuidRequired),
     code: z.string().min(1, codeRequired),
     name: z.string().min(1, nameRequired),
-    permisionUuid: z.string().min(1, permisionUuidRequired),
     status: z.boolean(),
   });
 }

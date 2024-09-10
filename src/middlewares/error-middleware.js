@@ -15,10 +15,11 @@ const errorMiddleware = (error, request, response, nextFunction) => {
   else if(error instanceof BadRequestException) response.status(error.status).json({message: error.message})
   else if(error instanceof DuplicateException) response.status(error.code).json({messages: error.message})
   else if(error instanceof UniqueConstraintError) response.status(400).json({message: error.message, errors: error.errors.map(err => { return {field: err.path, message: err.message }})})
-  else if( error instanceof ZodError) response.status(400).json({message: zodErrorParser(error.errors)})  
+  // else if( error instanceof ZodError) response.status(400).json({message: zodErrorParser(error.errors)})  
+  else if( error instanceof ZodError) response.status(400).json({message: error.errors})  
   else if(error instanceof UnauthorizeException) response.status(error.code).json(error.message)
   else if(error instanceof NotFoundException) response.status(error.code).json({message: error.message});
-  response.status(500).json({message: error.message});
+  response.status(500).json({message: error.message, stack: error.stack});
 };
 
 export default errorMiddleware;

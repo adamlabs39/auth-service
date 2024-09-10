@@ -3,10 +3,29 @@ import { dokterUuidRequired, emailRequired, faskesUuidRequired, nameRequired, pa
 
 export default class UserValidation {
 
+  static #PERMISSIONS = z.array(z.object({
+    module: z.string(),
+    subModules: z.array(z.union([
+      z.object({
+        name: z.string(),
+        allows: z.array(z.string())
+      }),
+      
+      z.object({
+        name: z.string(),
+        features: z.array(z.object({
+          name: z.string(),
+          allows: z.array(z.string())
+          
+        }))
+      })
+    ]))
+  }))
+
   static CREATE = z.object({
     faskesUuid: z.string().min(1).optional(),
-    actionCode: z.string(),
     roleUuid: z.string(),
+    permissions: this.#PERMISSIONS,
     name: z.string().min(1, nameRequired),
     phone: z.string().min(1, phoneRequired),
     email: z.string().email().min(1, emailRequired),

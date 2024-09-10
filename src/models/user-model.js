@@ -71,6 +71,10 @@ UserModel.init(
       type: DataTypes.STRING(10),
       allowNull: true
     },
+    permissions: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
     ...defaultTimesatamp,
   },
   {

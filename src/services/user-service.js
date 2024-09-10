@@ -10,11 +10,12 @@ export default class UserService {
   
   static async create(author, userReq) { 
     userReq = ZodValidator.validate(UserValidation.CREATE, userReq);
-    userReq = {...userReq, password: await bcrypt.hash(userReq.password, 10) };
+    const { password } = userReq;
+    userReq = {...userReq, password: await bcrypt.hash(password, 10)}
     const user = await UserRepository.create(userReq);
     return {
       message: "Berhasil menambahkan user baru",
-      payload: { ...user }
+      payload: user.toJSON()
     }
   }
 
@@ -42,7 +43,7 @@ export default class UserService {
  
   static async findAllDeleted() {
     return {
-      message: "Berhasil menampilkan semua user",
+      message: "Berhasil menampilkan semua user yang telah dihapus",
       payload: await UserRepository.findAllDeleted()
     };
   }
