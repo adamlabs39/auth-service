@@ -12,6 +12,7 @@ services:
       - pg-data-volume:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=resman56adam
+      - POSTGRES_DB=auth
       - POSTGRES_USER=wmi_user_db
   redis:
     container_name: redis

@@ -1,33 +1,23 @@
 import { Op } from "sequelize";
 import sequlizeInstance from "../configurations/sequelize-configuration.js";
 import UserModel from "../models/user-model.js";
-import { RoleModel, UserActionModel } from "../models/model-synchronize.js";
+import RoleModel from "../models/role-model.js";
 
 export default class AuthenticationRepository {
   
   static async findUser(username) {
-    UserModel.hasOne(UserActionModel, {
-      foreignKey: "userUuid",
-      sourceKey: "uuid",
-      constraints: false
-    });
-    UserActionModel.belongsTo(UserModel, {
-      foreignKey: "uuid",
-      targetKey: "roleUuid",
-      constraints: false
-    });
-    UserModel.hasOne(RoleModel, {
-      foreignKey: "uuid",
-      sourceKey: "roleUuid",
-      constraints: false
-    });
-    RoleModel.belongsTo(UserModel, {
-      foreignKey: "uuid",
-      targetKey: "roleUuid",
-      constraints: false
-    });
     return await sequlizeInstance.transaction(async tr => {
-      let userXUserAction = await UserModel.findOne({
+      UserModel.hasOne(RoleModel, {
+        foreignKey: "uuid",
+        sourceKey: "roleUuid",
+        constraints: false
+      });
+      RoleModel.belongsTo(UserModel, {
+        foreignKey: "uuid",
+        targetKey: "roleUuid",
+        constraints: false
+      })
+      const user = await UserModel.findOne({
         where: {
           [Op.and]: [
             {
@@ -45,14 +35,9 @@ export default class AuthenticationRepository {
             }
           ]
         },
-        attributes: ["uuid", ["faskes_uuid", "faskesUuid"], "username", "name", "email", "phone", ["role_uuid", "roleUuid"], "password"],
+        attributes: ["uuid", ["faskes_uuid", "faskesUuid"], "username", "name", "email", "phone", ["role_uuid", "roleUuid"], "password", "permissions"],
         transaction: tr,
         include: [
-          {
-            model: UserActionModel,
-            required: true,
-            attributes: ["actionCode"],
-          },
           {
             model: RoleModel,
             required: true,
@@ -60,11 +45,12 @@ export default class AuthenticationRepository {
           }
         ]
       });
-      if(userXUserAction) {
-        userXUserAction = {...userXUserAction.toJSON(), actionCode: userXUserAction.UserActionModel.actionCode, role: userXUserAction.RoleModel.name };
-        delete userXUserAction.RoleModel;
-        delete userXUserAction.UserActionModel;
-        return userXUserAction;
+      if(user) {
+        const userResp = user.toJSON();
+        userResp.role = userResp.RoleModel.name;
+        delete userResp.RoleModel;
+        delete userResp.roleUuid;
+        return userResp;
       }
     });
   }
@@ -90,12 +76,17 @@ export default class AuthenticationRepository {
     return reuslt;
   }
 
-  static async deleteToken(username){
-    return sequlizeInstance.transaction(async tr => {
-      const user = await UserModel.update({token: null}, {
+  static async findByUsername(username){
+    return await sequlizeInstance.transaction(async tr => {
+      const user = await UserModel.findOne({
         where: {
           [Op.and]: [
-            { username },
+            {
+              [Op.or]: [
+                { username },
+                { email: username}
+              ]
+            },
             {
               deletedAt: {
                 [Op.is]: null
@@ -104,23 +95,9 @@ export default class AuthenticationRepository {
           ]
         },
         transaction: tr
-      });
-      return Number(user[0].toPrecision());
-    })
-  }
-
-  static async isTokenExist(username){
-    return await UserModel.findOne({
-      where: {
-        [Op.and]: [
-          { username },
-          {
-            token: {
-              [Op.not]: null
-            }
-          }
-        ]
-      }
+      })
+      if(user) return user.toJSON();
+        else return null;
     })
   }
 }

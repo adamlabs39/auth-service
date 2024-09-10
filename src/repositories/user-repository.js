@@ -3,44 +3,43 @@ import sequlizeInstance from "../configurations/sequelize-configuration.js";
 import UserModel from "../models/user-model.js";
 import { toEpochDate } from "../helpers/date-helper.js";
 import RoleModel from "../models/role-model.js";
-import { UserActionModel } from "../models/model-synchronize.js";
 
 export default class UserRepository {
-  static async create(userReq) {
-    const result = await sequlizeInstance.transaction(async tr => {
-      const user = await UserModel.create(userReq, { transaction: tr });
-      const { uuid: userUuid } = user.toJSON();
-      const { actionCode } = userReq;
-      const userAction = await UserActionModel.create({ userUuid, actionCode }, { 
-        transaction: tr,
-        returning: ["id", "user_action", "action_code"]
-       });
-      return {
-        userUuid: user.toJSON().uuid,
-        userAction: userAction.toJSON().actionCode
-      }
+  static async create(user) {
+    return await sequlizeInstance.transaction(async tr => {
+      return await UserModel.create(user, 
+        { 
+          transaction: tr,
+          returning: true
+          // returning: false,
+          // fields: ["name","username", "faskesUuid", "roleUuid", "phone", "email", "username", "inventoryMedis", "inventoryNonMedis", "status", "permissions"]
+        });
     });
-    return result;
   }
 
-  static async update(userUpdate){
-    const user = await sequlizeInstance.transaction(async tr => {
-      try{
-        const user = await UserModel.update(userUpdate, {
-          where: { uuid: userUpdate.uuid },
-          transaction: tr,
-        });
-        return user[0];
-      }catch(error){
-        throw error;
-      }
-    });
-    return user;
+  static async update(user){
+    return sequlizeInstance.transaction(async tr => {
+      const { uuid } = user;
+      const userUpdate = await UserModel.update(user, {
+        where: {
+          [Op.and]: [
+            { uuid },
+            {
+              deletedAt: {
+                [Op.is]: null
+              }
+            }
+          ]
+        },
+        transaction: tr
+      });
+      return userUpdate[0]
+    })
   }
 
   static async countUserByUuid(uuid) {
-    const total = await sequlizeInstance.transaction(async tr => {
-        return await UserModel.count({
+    return await sequlizeInstance.transaction(async tr => {
+      return await UserModel.count({
         where: { 
           [Op.and]: [
             { uuid },
@@ -51,10 +50,9 @@ export default class UserRepository {
             }
           ]
         },
-          transaction: tr
-        });
+        transaction: tr
+      });
     });
-    return total;
   }
 
   static async findAll(page, limit, sortBy, role){
@@ -144,14 +142,14 @@ export default class UserRepository {
           }
         },
         transaction: tr,
-        attributes: ["uuid", ["role_uuid", "roleUuid"], "name", "username", "email", "phone", ["created_at", "createdAt"], ["updated_at", "updatedAt"]]
+        attributes: ["uuid", ["role_uuid", "roleUuid"], "name", "username", "email", "phone", ["created_at", "createdAt"], ["updated_at", "updatedAt"], ["deleted_at", "deletedAt"]]
       });
     });
-    return result;
+    return result !== null ? result.map(userDeleted => userDeleted.toJSON()) : result;
   }
 
   static async updatePassword(password, uuid){
-    const result = await sequlizeInstance.transaction(async tr => {
+    return await sequlizeInstance.transaction(async tr => {
       const afectedRow = await UserModel.update({password}, {
         where: {
           [Op.and]: [
@@ -168,7 +166,6 @@ export default class UserRepository {
       });
       return afectedRow[1][0];
     });
-    return result;
   }
 
   static async delete(uuid){
@@ -214,7 +211,6 @@ export default class UserRepository {
             association: UserModel.belongsTo(RoleModel, {
               foreignKey: "roleUuid",
               targetKey: "uuid",
-              as: "role"
             })
           }
         ]

@@ -10,27 +10,31 @@ import bcrypt from "bcrypt";
 export default class AuthenticationService {
 
   static async login(loginRequest) {
-    const validReq = ZodValidator.validate(AuthenticationValidation.LOGIN, loginRequest);
-    const user = await AuthenticationRepository.findUser(validReq.username);
-    if(!user) throw new UsernameException({ message: "Gagal login", errors: [{ field: "username", message: "username", message: `username ${validReq.username} belum terdaftar!`}] }, 401);
-    const isPasswordValid = await bcrypt.compare(validReq.password, user.password);
+    const { username, password: rawPassword } = loginRequest;
+    loginRequest =  ZodValidator.validate(AuthenticationValidation.LOGIN, loginRequest);
+    const user = await AuthenticationRepository.findUser(username);
+    if(!user) throw new UsernameException({ message: "Gagal login", errors: [{ field: "username", message: "username", message: `username ${username} belum terdaftar!`}] }, 401);
+    const isPasswordValid = await bcrypt.compare(rawPassword, user.password);
     if(!isPasswordValid) throw new UnauthorizeException({message: "Autentikasi gagal", errors: [{field: "password", message: "password anda tidak sesuai"}]});
-    const { role, username, actionCode, faskesUuid } = user;
-    const token = await JwtHelper.sign({ role, username, actionCode, faskesUuid });
-    await redisClient.set(`token-${this.generateRedisKeyByJwtToken(token)}`, token, 'EX', (3 * 60 * 60 * 1000));
+    const { role, faskesUuid, permissions } = user;
+    const token = await JwtHelper.sign({ role, username, faskesUuid });
+    const keyRedis = this.generateRedisKeyByJwtToken(token);
+    await redisClient.set(`token-${keyRedis}`, JSON.stringify({ token, permissions}), 'EX', (3 * 60 * 60 * 1000));
     return {
       message: "Login berhasil!",
       payload: { token }
     }
   }
   
-  static async updateToken(author, faskesUuid){
-    const {role, username, actionCode } = author; 
-    const token = await JwtHelper.sign({role, username, actionCode, faskesUuid});
-    await redisClient.set(`token-${this.generateRedisKeyByJwtToken(token)}`, token, 'EX', (3 * 60 * 60 * 1000));
+  static async updateToken(author, faskesUuid, token){
+    const { username, role } = author;
+    const { permission } = await AuthenticationRepository.findByUsername(username);
+    const newToken = await JwtHelper.sign({role, username, faskesUuid});
+    await redisClient.set(`token-${this.generateRedisKeyByJwtToken(newToken)}`, JSON.stringify({token: newToken, permission}), 'EX', (3 * 60 * 60 * 1000));
+    await redisClient.del(this.generateRedisKeyByJwtToken(token));
     return {
       message: "Success update token!",
-      payload: { token }
+      payload: { newToken }
     }
   }
 

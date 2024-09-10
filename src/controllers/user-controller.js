@@ -32,12 +32,21 @@ export default class UserController {
 
   static async findAll(request, response, nextFunction) {
     try{
-      const page = request.query.page == null ? 1 : request.query.page;
+      const page = request.query.page == null ? 0 : request.query.page;
       const limit = request.query.limit == null ? 10 : request.query.limit;
       const sortBy = request.query.sort == null ? "ASC" : request.query.sort;
       const role = request.query.role == null ? undefined : { name: request.query.role };
       const result = await UserService.findAll(page, limit, sortBy, role);
       response.status(200).json(result);
+    }catch(error){
+      nextFunction(error);
+    }
+  }
+
+  static async delete(request, response, nextFunction){
+    try{
+      const result = await UserService.delete(request.author, request.params.uuid);
+      response.status(202).json(result);
     }catch(error){
       nextFunction(error);
     }
