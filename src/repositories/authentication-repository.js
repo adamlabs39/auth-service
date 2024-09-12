@@ -1,12 +1,11 @@
 import { Op } from "sequelize";
-import sequlizeInstance from "../configurations/sequelize-configuration.js";
-import UserModel from "../models/user-model.js";
+import { UserModel, sequelizeInstance } from "@adameds-engineer/model-sdk";
 import RoleModel from "../models/role-model.js";
 
 export default class AuthenticationRepository {
   
   static async findUser(username) {
-    return await sequlizeInstance.transaction(async tr => {
+    return await sequelizeInstance.transaction(async tr => {
       UserModel.hasOne(RoleModel, {
         foreignKey: "uuid",
         sourceKey: "roleUuid",
@@ -56,7 +55,7 @@ export default class AuthenticationRepository {
   }
 
   static async updateToken(uuid, token){
-    const reuslt = await sequlizeInstance.transaction(async tr => {
+    const reuslt = await sequelizeInstance.transaction(async tr => {
       const user = await UserModel.update({token}, {
         where: {
           [Op.and]: [
@@ -77,7 +76,7 @@ export default class AuthenticationRepository {
   }
 
   static async findByUsername(username){
-    return await sequlizeInstance.transaction(async tr => {
+    return await sequelizeInstance.transaction(async tr => {
       const user = await UserModel.findOne({
         where: {
           [Op.and]: [

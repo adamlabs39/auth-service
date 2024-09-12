@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import defaultTimesatamp from "./common/default-timestamp.js";
-import sequlizeInstance from "../configurations/sequelize-configuration.js";
 import { uuidv7 } from "uuidv7";
+import { sequelizeInstance } from "@adameds-engineer/model-sdk";
 
 export default class FaskesModel extends Model {}
 FaskesModel.init(
@@ -38,7 +38,7 @@ FaskesModel.init(
   {
     timestamps: false,
     tableName: "faskes",
-    sequelize: sequlizeInstance,
+    sequelize: sequelizeInstance,
     underscored: true,
   }
 );
