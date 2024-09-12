@@ -1,24 +1,21 @@
 import { Op } from "sequelize";
-import sequlizeInstance from "../configurations/sequelize-configuration.js";
-import UserModel from "../models/user-model.js";
 import { toEpochDate } from "../helpers/date-helper.js";
 import RoleModel from "../models/role-model.js";
+import { UserModel, sequelizeInstance } from "@adameds-engineer/model-sdk";
 
 export default class UserRepository {
   static async create(user) {
-    return await sequlizeInstance.transaction(async tr => {
+    return await sequelizeInstance.transaction(async tr => {
       return await UserModel.create(user, 
         { 
           transaction: tr,
           returning: true
-          // returning: false,
-          // fields: ["name","username", "faskesUuid", "roleUuid", "phone", "email", "username", "inventoryMedis", "inventoryNonMedis", "status", "permissions"]
         });
     });
   }
 
   static async update(user){
-    return sequlizeInstance.transaction(async tr => {
+    return sequelizeInstance.transaction(async tr => {
       const { uuid } = user;
       const userUpdate = await UserModel.update(user, {
         where: {
@@ -38,7 +35,7 @@ export default class UserRepository {
   }
 
   static async countUserByUuid(uuid) {
-    return await sequlizeInstance.transaction(async tr => {
+    return await sequelizeInstance.transaction(async tr => {
       return await UserModel.count({
         where: { 
           [Op.and]: [
@@ -66,7 +63,7 @@ export default class UserRepository {
       targetKey: "roleUuid",
       constraints: false
     })
-    return await sequlizeInstance.transaction(async tr => {
+    return await sequelizeInstance.transaction(async tr => {
       let user = await UserModel.findAll({
         where: {
           deletedAt: {
@@ -99,7 +96,7 @@ export default class UserRepository {
   }
 
   static async findByUuid(uuid){
-    return await sequlizeInstance.transaction(async tr => {
+    return await sequelizeInstance.transaction(async tr => {
       const user =  await UserModel.findOne({
         where: {
           [Op.and]: [
@@ -120,7 +117,7 @@ export default class UserRepository {
 
   static async findByUsername(username) {
     try{
-      const result = await sequlizeInstance.transaction(async tr => {
+      const result = await sequelizeInstance.transaction(async tr => {
         return await UserModel.findOne({
           where: { username },
           transaction: tr,
@@ -134,7 +131,7 @@ export default class UserRepository {
   }
 
   static async findAllDeleted() {
-    const result = await sequlizeInstance.transaction(async tr => {
+    const result = await sequelizeInstance.transaction(async tr => {
       return await UserModel.findAll({
         where: { 
           deletedAt: {
@@ -149,7 +146,7 @@ export default class UserRepository {
   }
 
   static async updatePassword(password, uuid){
-    return await sequlizeInstance.transaction(async tr => {
+    return await sequelizeInstance.transaction(async tr => {
       const afectedRow = await UserModel.update({password}, {
         where: {
           [Op.and]: [
@@ -169,7 +166,7 @@ export default class UserRepository {
   }
 
   static async delete(uuid){
-    const result = await sequlizeInstance.transaction(async tr => {
+    const result = await sequelizeInstance.transaction(async tr => {
       const afectedRow = await UserModel.update({deletedAt: toEpochDate(new Date())}, {
         where: {
           [Op.and]: [
@@ -190,7 +187,7 @@ export default class UserRepository {
   }
 
   static async findByUuidIncludeRole(uuid){
-    return await sequlizeInstance.transaction(async tr => {
+    return await sequelizeInstance.transaction(async tr => {
       const user = await UserModel.findOne({
         where: {
           [Op.and]: [

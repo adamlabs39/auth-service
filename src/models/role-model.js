@@ -1,8 +1,8 @@
 import { DataTypes, Model } from "sequelize";
-import sequlizeInstance from "../configurations/sequelize-configuration.js";
 import defaultTimesatamp from "./common/default-timestamp.js";
 import { defaultHook } from "./common/default-hook.js";
 import defaultIdentifier from "./common/default-identifier.js";
+import { sequelizeInstance } from "@adameds-engineer/model-sdk";
 
 export default class RoleModel extends Model {}
 RoleModel.init(
@@ -20,7 +20,7 @@ RoleModel.init(
     ...defaultTimesatamp
   },
   {
-    sequelize: sequlizeInstance,
+    sequelize: sequelizeInstance,
     tableName: "roles",
     underscored: true,
     timestamps: false,

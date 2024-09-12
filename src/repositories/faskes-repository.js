@@ -1,17 +1,17 @@
 import { Op } from "sequelize";
-import sequlizeInstance from "../configurations/sequelize-configuration.js";
+import { sequelizeInstance } from "@adameds-engineer/model-sdk";
 import FaskesModel from "../models/faskes-model.js";
 import { toEpochDate } from "../helpers/date-helper.js";
 
 export default class FaskesRepository {
   static async create(faskes) {
-    return sequlizeInstance.transaction(async (tr) => {
+    return sequelizeInstance.transaction(async (tr) => {
       return await FaskesModel.create(faskes, { transaction: tr });
     });
   }
 
   static async findByName(name) {
-    return await sequlizeInstance.transaction(async (tr) => {
+    return await sequelizeInstance.transaction(async (tr) => {
       return await FaskesModel.findOne({
         where: {
           [Op.and]: [
@@ -28,7 +28,7 @@ export default class FaskesRepository {
     });
   }
   static async findByUuid(uuid) {
-    return await sequlizeInstance.transaction(async (tr) => {
+    return await sequelizeInstance.transaction(async (tr) => {
       return await FaskesModel.findOne({
         where: {
           [Op.and]: [
@@ -46,7 +46,7 @@ export default class FaskesRepository {
   }
 
   static async update(faskes) {
-    return await sequlizeInstance.transaction(async (tr) => {
+    return await sequelizeInstance.transaction(async (tr) => {
       const affectedRow = await FaskesModel.update(faskes, {
         where: {
           [Op.and]: [
@@ -65,7 +65,7 @@ export default class FaskesRepository {
   }
 
   static async deleteByUuid(uuid) {
-    return await sequlizeInstance.transaction(async (tr) => {
+    return await sequelizeInstance.transaction(async (tr) => {
       const affectedRow = await FaskesModel.update(
         {
           deletedAt: toEpochDate(new Date()),
@@ -90,7 +90,7 @@ export default class FaskesRepository {
   }
 
   static async findAll() {
-    return await sequlizeInstance.transaction(async (tr) => {
+    return await sequelizeInstance.transaction(async (tr) => {
       return await FaskesModel.findAll({
         where: {
           deletedAt: {
