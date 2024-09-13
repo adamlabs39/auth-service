@@ -17,7 +17,7 @@
   "author": "https://github.com/alliano",
   "license": "ISC",
   "dependencies": {
-    "@adameds-engineer/model-sdk": "https://:engineer-adam:glpat-5AYRBzE9mqa8SybUrE9m@gitlab.com/adamedsbe/adameds-sdk/model-sdk.git",
+    "@adameds-engineer/model-sdk": "https://engineer-adam:glpat-5AYRBzE9mqa8SybUrE9m@gitlab.com/adamedsbe/adameds-sdk/model-sdk.git",
     "@redis/client": "^1.6.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
