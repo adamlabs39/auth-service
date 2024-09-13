@@ -10,10 +10,12 @@ import bcrypt from "bcrypt";
 import { Op } from "sequelize";
 import { sequelizeInstance, UserModel } from "@adameds-engineer/model-sdk";
 import RoleModel from "./models/role-model.js";
+import morgan from "morgan";
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
 const APPLICATION_HOST = process.env.APPLICATION_HOST;
 const app = express();
 app.use(express.json());
+app.use(morgan("dev"))
 app.use(express.urlencoded({ extended: true }));
 app.use(requestResponseFormatterMidddleware);
 app.use(publicRoutes);
@@ -50,7 +52,7 @@ app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
             email: "dontol@gmail.com"
           },
           {
-            name: "grandong",
+            name: "dontol",
           }
         ]
       },
