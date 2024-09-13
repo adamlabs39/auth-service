@@ -22,7 +22,7 @@ export default class AuthenticationService {
     await redisClient.set(`token-${keyRedis}`, JSON.stringify({ token, permissions}), 'EX', (3 * 60 * 60 * 1000));
     return {
       message: "Login berhasil!",
-      payload: { token }
+      payload: { token, permissions }
     }
   }
   
