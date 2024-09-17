@@ -16,13 +16,13 @@ export default class AuthenticationService {
     if(!user) throw new UsernameException({ message: "Gagal login", errors: [{ field: "username", message: "username", message: `username ${username} belum terdaftar!`}] }, 401);
     const isPasswordValid = await bcrypt.compare(rawPassword, user.password);
     if(!isPasswordValid) throw new UnauthorizeException({message: "Autentikasi gagal", errors: [{field: "password", message: "password anda tidak sesuai"}]});
-    const { role, faskesUuid, permissions } = user;
+    const { role, faskesUuid, permissions, name } = user;
     const token = await JwtHelper.sign({ role, username, faskesUuid });
     const keyRedis = this.generateRedisKeyByJwtToken(token);
     await redisClient.set(`token-${keyRedis}`, JSON.stringify({ token, permissions}), 'EX', (3 * 60 * 60 * 1000));
     return {
       message: "Login berhasil!",
-      payload: { token, permissions }
+      payload: { token, permissions, user: { name, role} }
     }
   }
   

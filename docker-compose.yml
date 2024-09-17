@@ -4,10 +4,10 @@ services:
     container_name: postgresql
     image: postgres:latest
     ports:
-      - ${APPLICATION_PORT}:${APPLICATION_PORT}
+      - 5432:5432
     restart: always
     networks:
-        - adameds-network
+        - adameds
     environment:
       - POSTGRES_PASSWORD=resman56adam
       - POSTGRES_DB=auth

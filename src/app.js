@@ -11,11 +11,13 @@ import { Op } from "sequelize";
 import { sequelizeInstance, UserModel } from "@adameds-engineer/model-sdk";
 import RoleModel from "./models/role-model.js";
 import morgan from "morgan";
+import cors from "cors";
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
 const APPLICATION_HOST = process.env.APPLICATION_HOST;
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"))
+app.use(cors({ origin: "*", methods: ["GET","HEAD","PUT","PATCH","POST","DELETE"] }))
 app.use(express.urlencoded({ extended: true }));
 app.use(requestResponseFormatterMidddleware);
 app.use(publicRoutes);
