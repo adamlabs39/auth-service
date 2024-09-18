@@ -314,47 +314,47 @@ app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
             ]
           },
           {
-            "modeule": "IGD",
+            "module": "IGD",
             "sub_modules": []
           },
           {
-            "modeule": "Farmasi",
+            "module": "Farmasi",
             "sub_modules": []
           },
           {
-            "modeule": "Lab",
+            "module": "Lab",
             "sub_modules": []
           },
           {
-            "modeule": "Fisioterapi",
+            "module": "Fisioterapi",
             "sub_modules": []
           },
           {
-            "modeule": "Training",
+            "module": "Training",
             "sub_modules": []
           },
           {
-            "modeule": "Pembayaran",
+            "module": "Pembayaran",
             "sub_modules": []
           },
           {
-            "modeule": "Stok",
+            "module": "Stok",
             "sub_modules": []
           },
           {
-            "modeule": "Inventory",
+            "module": "Inventory",
             "sub_modules": []
           },
           {
-            "modeule": "Datamaster",
+            "module": "Datamaster",
             "sub_modules": []
           },
           {
-            "modeule": "Laporan",
+            "module": "Laporan",
             "sub_modules": []
           },
           {
-            "modeule": "Setting",
+            "module": "Setting",
             "sub_modules": []
           }
         ],
