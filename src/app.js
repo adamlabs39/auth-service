@@ -194,10 +194,10 @@ app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
                   }
                 ]
               },
-             {
-               "name": "RME",
-               "features": [
-                 {
+            {
+              "name": "RME",
+              "features": [
+                {
                   "name": "Rekap Medis",
                   "allows": ["READ", "UPDATE PEMERIKSAAN GIGI", "UPDATE PEMERIKSAAN MATA", "UPDATE PEMERIKSAAN FISIK", "UPDATE DERAJAT LUKA BAKAR", "UPDATE PEMERIKSAAN DAN TINDAKAN", "UPDATE REKAM MEDIS", "CETAK LABEL", "TUTUP SEMUA FORM", "BUKAN SEMUA FORM", "RIWAYAT", "SEMBUNYIKAN DETAIL PASIEN", "TAMPILKAN DETAIL PASIEN"]
                 },
@@ -230,7 +230,7 @@ app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
                   "allows": ["READ", "CREATE SURAT KETERANGAN", "DELETE SURAT KETERANGAN"]
                 }
               ]
-             }
+            }
             ]
           },
           {
@@ -312,8 +312,52 @@ app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
                 ]
               }
             ]
+          },
+          {
+            "modeule": "IGD",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Farmasi",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Lab",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Fisioterapi",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Training",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Pembayaran",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Stok",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Inventory",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Datamaster",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Laporan",
+            "sub_modules": []
+          },
+          {
+            "modeule": "Setting",
+            "sub_modules": []
           }
-         ],
+        ],
         password: await bcrypt.hash("admin123", 10),
         inventoryMedis: true,
         inventoryNonMedis: true,
