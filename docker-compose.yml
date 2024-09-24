@@ -7,7 +7,7 @@ services:
     image: web-auth-service:dev
     container_name: web-auth-service
     ports:
-      - 9001:9001
+      - 8081:8081
     networks:
       - adameds
     environment:
