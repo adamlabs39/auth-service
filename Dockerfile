@@ -6,6 +6,6 @@ ENV APPLICATION_HOST=${APPLICATION_HOST}
 COPY . .
 RUN npm uninstall bcrypt
 RUN npm install bcrypt
-EXPOSE $APPLICATION_PORT/tcp
+EXPOSE 8081/tcp
 
 CMD ["npm" , "run", "start"]
