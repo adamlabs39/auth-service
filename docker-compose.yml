@@ -1,36 +1,61 @@
-version: "3.3"
+version: '3.8'
 services:
-  postgres:
-    container_name: postgresql
-    image: postgres:latest
+  web-auth-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    image: web-auth-service:dev
+    container_name: web-auth-service
     ports:
-      - 5432:5432
-    restart: always
-    networks:
-        - adameds
-    environment:
-      - POSTGRES_PASSWORD=resman56adam
-      - POSTGRES_DB=auth
-      - POSTGRES_USER=wmi_user_db
-  redis:
-    container_name: redis
-    image: redis:latest
-    command:
-      - bash
-      - -c
-      - redis-server /usr/local/etc/redis/redis.conf
-    ports:
-      - 6379:6379
-    volumes:
-      - redis-volume:/data
-      - type: bind
-        source: ./redis.conf
-        target: /usr/local/etc/redis/redis.conf
+      - 9001:9001
     networks:
       - adameds
-volumes:
-  redis-volume: {}
-  pg-data-volume: {}
+    environment:
+      - APPLICATION_PORT=8081
+      - APPLICATION_HOST=0.0.0.0
+    volumes:
+      - type: bind
+        source: ./private.key
+        target: /web-auth/private.key
+      - type: bind
+        source: ./public.key
+        target: /web-auth/public.key
 networks:
   adameds:
     driver: bridge
+# version: "3.3"
+# services:
+#   postgres:
+#     container_name: postgresql
+#     image: postgres:latest
+#     ports:
+#       - 5432:5432
+#     restart: always
+#     networks:
+#         - adameds
+#     environment:
+#       - POSTGRES_PASSWORD=resman56adam
+#       - POSTGRES_DB=auth
+#       - POSTGRES_USER=wmi_user_db
+#   redis:
+#     container_name: redis
+#     image: redis:latest
+#     command:
+#       - bash
+#       - -c
+#       - redis-server /usr/local/etc/redis/redis.conf
+#     ports:
+#       - 6379:6379
+#     volumes:
+#       - redis-volume:/data
+#       - type: bind
+#         source: ./redis.conf
+#         target: /usr/local/etc/redis/redis.conf
+#     networks:
+#       - adameds
+# volumes:
+#   redis-volume: {}
+#   pg-data-volume: {}
+# networks:
+#   adameds:
+#     driver: bridge
