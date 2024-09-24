@@ -51,19 +51,19 @@ app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
       where: {
         [Op.and]: [
           {
-            email: "dontol@gmail.com"
+            email: "admin@gmail.com"
           },
           {
-            name: "dontol",
+            name: "admin",
           }
         ]
       },
       defaults: {
         roleUuid: roleSuperAdmin[0].get().uuid,
-        name: "Dontol maulana",
+        name: "Bang boger",
         phone: "081341079104",
         email: "admin@gmail.com",
-        username: "dontol",
+        username: "boger",
         permissions: [
           {
             "module": "Antrian",
