@@ -1,7 +1,11 @@
-FROM node:16-alpine
-
-WORKDIR /adameds-be
-COPY package.json .
-RUN npm install
+FROM --platform=linux/x86_64 node:19.5.0-alpine
+LABEL application="web-auth-service"
+WORKDIR /web-auth
+ENV APPLICATION_PORT=${APPLICATION_PORT}
+ENV APPLICATION_HOST=${APPLICATION_HOST}
 COPY . .
-CMD npm start
+RUN npm uninstall bcrypt
+RUN npm install bcrypt
+EXPOSE 9001/tcp
+
+CMD ["npm" , "run", "start"]
