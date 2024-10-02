@@ -1,7 +1,7 @@
 import { Op } from "sequelize";
 import { toEpochDate } from "../helpers/date-helper.js";
-import RoleModel from "../models/role-model.js";
-import { UserModel, sequelizeInstance } from "@adameds-engineer/model-sdk";
+import sequelizeInstance from "model-sdk/instance";
+import { RoleModel, UserModel } from "model-sdk/datamaster";
 
 export default class UserRepository {
   static async create(user) {

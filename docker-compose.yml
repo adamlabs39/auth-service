@@ -23,39 +23,3 @@ services:
 networks:
   adameds:
     driver: bridge
-# version: "3.3"
-# services:
-#   postgres:
-#     container_name: postgresql
-#     image: postgres:latest
-#     ports:
-#       - 5432:5432
-#     restart: always
-#     networks:
-#         - adameds
-#     environment:
-#       - POSTGRES_PASSWORD=resman56adam
-#       - POSTGRES_DB=auth
-#       - POSTGRES_USER=wmi_user_db
-#   redis:
-#     container_name: redis
-#     image: redis:latest
-#     command:
-#       - bash
-#       - -c
-#       - redis-server /usr/local/etc/redis/redis.conf
-#     ports:
-#       - 6379:6379
-#     volumes:
-#       - redis-volume:/data
-#       - type: bind
-#         source: ./redis.conf
-#         target: /usr/local/etc/redis/redis.conf
-#     networks:
-#       - adameds
-# volumes:
-#   redis-volume: {}
-#   pg-data-volume: {}
-# networks:
-#   adameds:
-#     driver: bridge
