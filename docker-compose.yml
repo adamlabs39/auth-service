@@ -11,8 +11,26 @@ services:
     networks:
       - adameds
     environment:
-      - APPLICATION_PORT=8081
-      - APPLICATION_HOST=0.0.0.0
+      # Application config
+      APPLICATION_PORT: 8081
+      APPLICATION_HOST: 0.0.0.0
+      API_URL_VERSION: v3
+
+      # Database config
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_DIALECT: ${DB_DIALECT}
+      DB_NAME: ${DB_NAME}
+      DB_POOL: ${DB_POOL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+
+      # Redis Configuration
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_USERNAME: ${REDIS_USERNAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: 6379
+      REDIS_DATABASE: 0
     volumes:
       - type: bind
         source: ./private.key
