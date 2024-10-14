@@ -1,6 +1,6 @@
+import { RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
+import sequelizeInstance from "@adameds/model-sdk/instance";
 import { Op } from "sequelize";
-import { RoleModel, UserModel } from "model-sdk/datamaster";
-import sequelizeInstance from "model-sdk/instance";
 
 export default class AuthenticationRepository {
   
