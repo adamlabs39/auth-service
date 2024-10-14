@@ -1,7 +1,7 @@
 import { Op } from "sequelize";
 import { toEpochDate } from "../helpers/date-helper.js";
-import { FaskesModel } from "model-sdk/datamaster";
-import sequelizeInstance from "model-sdk/instance";
+import sequelizeInstance from "@adameds/model-sdk/instance";
+import { FaskesModel } from "@adameds/model-sdk/datamaster";
 
 export default class FaskesRepository {
   static async create(faskes) {

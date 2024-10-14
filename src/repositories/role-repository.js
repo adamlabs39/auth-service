@@ -1,7 +1,6 @@
 import { Op } from "sequelize";
 import { toEpochDate } from "../helpers/date-helper.js";
-import sequelizeInstance from "model-sdk/instance";
-import { RoleModel } from "model-sdk/datamaster";
+import sequelizeInstance from "@adameds/model-sdk/instance";
 
 export default class RoleRepository {
   static async create(roleReq) {
