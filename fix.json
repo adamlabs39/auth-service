@@ -249,6 +249,50 @@
             ]
           }
         ]
+      },
+      {
+        "module": "IGD",
+        "sub_modules": []
+      },
+      {
+        "module": "Farmasi",
+        "sub_modules": []
+      },
+      {
+        "module": "Lab",
+        "sub_modules": []
+      },
+      {
+        "module": "Fisioterapi",
+        "sub_modules": []
+      },
+      {
+        "module": "Training",
+        "sub_modules": []
+      },
+      {
+        "module": "Pembayaran",
+        "sub_modules": []
+      },
+      {
+        "module": "Stok",
+        "sub_modules": []
+      },
+      {
+        "module": "Inventory",
+        "sub_modules": []
+      },
+      {
+        "module": "Datamaster",
+        "sub_modules": []
+      },
+      {
+        "module": "Laporan",
+        "sub_modules": []
+      },
+      {
+        "module": "Setting",
+        "sub_modules": []
       }
      ],
     "phone": "081341079104",

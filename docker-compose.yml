@@ -1,38 +1,43 @@
-version: "3.3"
+version: '3.8'
 services:
-  postgres:
-    container_name: postgresql
-    image: postgres:latest
+  web-auth-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    image: web-auth-service:dev
+    container_name: web-auth-service
     ports:
-      - 5432:5432
-    restart: no
+      - 8081:8081
     networks:
       - adameds
-    volumes:
-      - pg-data-volume:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=resman56adam
-      - POSTGRES_DB=auth
-      - POSTGRES_USER=wmi_user_db
-  redis:
-    container_name: redis
-    image: redis:latest
-    command:
-      - bash
-      - -c
-      - redis-server /usr/local/etc/redis/redis.conf
-    ports:
-      - 6379:6379
+      # Application config
+      APPLICATION_PORT: 8081
+      APPLICATION_HOST: 0.0.0.0
+      API_URL_VERSION: v3
+
+      # Database config
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_DIALECT: ${DB_DIALECT}
+      DB_NAME: ${DB_NAME}
+      DB_POOL: ${DB_POOL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+
+      # Redis Configuration
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_USERNAME: ${REDIS_USERNAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: 6379
+      REDIS_DATABASE: 0
     volumes:
-      - redis-volume:/data
       - type: bind
-        source: ./redis.conf
-        target: /usr/local/etc/redis/redis.conf
-    networks:
-      - adameds
-volumes:
-  redis-volume: {}
-  pg-data-volume: {}
+        source: ./private.key
+        target: /web-auth/private.key
+      - type: bind
+        source: ./public.key
+        target: /web-auth/public.key
 networks:
   adameds:
     driver: bridge

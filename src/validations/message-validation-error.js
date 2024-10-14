@@ -16,8 +16,6 @@ const nameRequired = `name ${REQUIRED}`;
 const emailRequired = `email ${REQUIRED}`;
 const dokterUuidRequired = `dokter ${REQUIRED}`;
 const phoneRequired = `phone ${REQUIRED}`;
-const iventoryMedisRequired = `iventoryMedis ${REQUIRED}`;
-const iventoryNonMedisRequired = `iventoryNonMedis ${REQUIRED}`;
 const roleRequired = `role ${REQUIRED}`
 
 export {
@@ -27,8 +25,6 @@ export {
   dokterUuidRequired,
   emailRequired,
   faskesUuidRequired,
-  iventoryMedisRequired,
-  iventoryNonMedisRequired,
   mainMenuCodeRequired,
   mainMenuNameRequired,
   mainMenuRequired,
