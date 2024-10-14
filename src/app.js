@@ -8,7 +8,7 @@ import requestResponseFormatterMidddleware from "./middlewares/request-response-
 import morgan from "morgan";
 import cors from "cors";
 import { initAdmin, initSueprAdmin } from "./init/init-db.js";
-import { FaskesModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
+// import { FaskesModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
 
 
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
@@ -28,9 +28,9 @@ redisClient.on("connect", () => console.log("Redis alredy accept request"));
 
 app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
   await redisClient.connect();
-  await FaskesModel.sync({force: true});
-  await RoleModel.sync({force: true});
-  await UserModel.sync({force: true});
+  // await FaskesModel.sync({force: true});
+  // await RoleModel.sync({force: true});
+  // await UserModel.sync({force: true});
   await initSueprAdmin();
   await initAdmin();
   console.log(`The server running on http://${APPLICATION_HOST}:${APPLICATION_PORT}`);
