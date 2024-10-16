@@ -18,7 +18,7 @@ export default class AuthenticationService {
     const isPasswordValid = await bcrypt.compare(rawPassword, user.password);
     if(!isPasswordValid) throw new UnauthorizeException({message: "Autentikasi gagal", errors: [{field: "password", message: "password anda tidak sesuai"}]});
     const { role, faskesUuid, permissions, name } = user;
-    const token = await JwtHelper.sign({ role, username, faskesUuid });
+    const token = await JwtHelper.sign({ role, username, faskesUuid, name });
     const keyRedis = generateRedisKeyByJwtToken(token)
     await redisClient.set(`token-${keyRedis}`, JSON.stringify({ token, permissions}), { EX: 3 * (60 * 60), NX: true });
     return {
@@ -28,9 +28,9 @@ export default class AuthenticationService {
   }
   
   static async updateToken(author, faskesUuid, token){
-    const { username, role } = author;
+    const { username, role, name } = author;
     const { permission } = await AuthenticationRepository.findByUsername(username);
-    const newToken = await JwtHelper.sign({role, username, faskesUuid});
+    const newToken = await JwtHelper.sign({role, username, faskesUuid, name});
     await redisClient.set(`token-${generateRedisKeyByJwtToken(newToken)}`, JSON.stringify({token: newToken, permission}), { EX: 3 * (60 * 60), NX: true });
     await redisClient.del(generateRedisKeyByJwtToken(token));
     return {
