@@ -34,10 +34,12 @@ export default class UserService {
     }
   }
 
-  static async findAll(page, limit, sortBy, role){
+  static async findAll(page, pageSize, order, role){
+    const { properties, payload } =  await UserRepository.findAll(page, pageSize, order, role)
     return {
       message: "Berhasil menampilkan semua user",
-      payload: await UserRepository.findAll(page, limit, sortBy, role)
+      payload,
+      properties
     }
   }
  

@@ -32,11 +32,11 @@ export default class UserController {
 
   static async findAll(request, response, nextFunction) {
     try{
-      const page = request.query.page == null ? 0 : request.query.page;
-      const limit = request.query.limit == null ? 10 : request.query.limit;
-      const sortBy = request.query.sort == null ? "ASC" : request.query.sort;
-      const role = request.query.role == null ? undefined : { name: request.query.role };
-      const result = await UserService.findAll(page, limit, sortBy, role);
+      const page = request.query.page !== undefined ? parseInt(request.query.page) : 0;
+      const pageSize = request.query.pageSize !== undefined ? parseInt(request.query.pageSize) : 10;
+      const order = request.query.order !== undefined ? request.query.order : "ASC";
+      const role = request.query.role !== undefined ? { name: request.query.role } : undefined;
+      const result = await UserService.findAll(page, pageSize, order, role);
       response.status(200).json(result);
     }catch(error){
       nextFunction(error);
