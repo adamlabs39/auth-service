@@ -52,7 +52,8 @@ export default class UserRepository {
     });
   }
 
-  static async findAll(page, limit, sortBy, role){
+  static async findAll(page, pageSize, order, role){
+    const offset = page * pageSize;
     UserModel.hasOne(RoleModel, {
       foreignKey: "uuid",
       sourceKey: "roleUuid",
@@ -64,34 +65,42 @@ export default class UserRepository {
       constraints: false
     })
     return await sequelizeInstance.transaction(async tr => {
-      let user = await UserModel.findAll({
-        where: {
-          deletedAt: {
-            [Op.is]: null
-          }
-        },
+      const { count, rows } = await UserModel.findAndCountAll({
+        limit: pageSize,
+        offset: offset,
+        order: [["id", order]],
         transaction: tr,
-        attributes: ["uuid", ["role_uuid", "roleUuid"], "name", "username", "email", "phone", ["created_at", "createdAt"], ["updated_at", "updatedAt"], ["faskes_uuid", "faskesUuid"], "status"],
-        limit,
-        offset: page,
-        order: [
-          ["uuid", sortBy]
-        ],
         include: [
           {
             model: RoleModel,
-            required: true,
             attributes: ["name"],
-            where: role
+            where: role,
+            required: true
           }
-        ],
+        ]
       });
-      if(user.length > 0) return user.map(usr => {
-        const role = usr.RoleModel.name;
-        const { uuid, name, username, email, phone, createdAt, updatedAt, deletedAt, status, faskesUuid } = usr;
-        return {uuid, name, username, email, phone, createdAt, updatedAt, deletedAt, status, faskesUuid, role};
+      const payload = rows.map(user => {
+        const role = user.toJSON().RoleModel.name;
+        const { 
+          uuid, name, username, email, phone,
+          createdAt, updatedAt, deletedAt,
+          status, faskesUuid
+        } = user;
+        return {
+          uuid, name, username, email, phone,
+          createdAt, updatedAt, deletedAt, status,
+          faskesUuid, role
+        }
       })
-      else return []
+
+      return {
+        payload,
+        properties: {
+          totalItem: count,
+          totalPage: Math.ceil(count / pageSize),
+          currentPage: page,
+        }
+      }
     });
   }
 
