@@ -34,8 +34,8 @@ export default class UserService {
     }
   }
 
-  static async findAll(page, pageSize, order, role){
-    const { properties, payload } =  await UserRepository.findAll(page, pageSize, order, role)
+  static async findAll(page, pageSize, order, role, name){
+    const { properties, payload } =  await UserRepository.findAll(page, pageSize, order, role, name)
     return {
       message: "Berhasil menampilkan semua user",
       payload,
