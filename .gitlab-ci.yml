@@ -10,7 +10,7 @@ build:
     stage: build
     script:
         - echo "Building imgae...."
-        - docker info
+        - docker build -t auth:latest .
 
     only:
         - main
