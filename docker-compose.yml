@@ -1,9 +1,6 @@
 version: '3.8'
 services:
   web-auth-service:
-    build:
-      dockerfile: Dockerfile
-      context: ./
     image: web-auth-service:dev
     container_name: web-auth-service
     ports:

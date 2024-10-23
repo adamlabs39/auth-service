@@ -7,4 +7,11 @@ build-image:
   before_script:
    - docker compose down --rmi all
   script:
-    - echo "success..."
+    - docker build -t web-auth-service:dev ./
+    - echo "Success build image ...."
+
+deploy-app:
+  stage: deploy
+  script:
+    - docker compose --env-file /home/admin/adameds/.env up -d
+    - echo "success deploy...."
