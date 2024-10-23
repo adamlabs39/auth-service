@@ -6,7 +6,7 @@ import sequelizeInstance from "@adameds/model-sdk/instance";
 export async function initSueprAdmin() {
   await sequelizeInstance.transaction(async (tr) => {
     // create super admin
-    const roleSuperAdmin = await RoleModel.findOrCreate({
+    const [roleSuperAdmin, ] = await RoleModel.findOrCreate({
       where: {
         [Op.and]: [
           {
@@ -36,7 +36,7 @@ export async function initSueprAdmin() {
         ],
       },
       defaults: {
-        roleUuid: roleSuperAdmin[0].toJSON().uuid,
+        roleUuid: roleSuperAdmin.toJSON().uuid,
         name: "Bang boger",
         phone: "081341079104",
         email: "admin@gmail.com",
@@ -421,7 +421,7 @@ export async function initSueprAdmin() {
 
 export async function initAdmin() {
   await sequelizeInstance.transaction(async (tr) => {
-    const roleAdmmin = await RoleModel.findOrCreate({
+    const [roleAdmin, ] = await RoleModel.findOrCreate({
       where: {
         [Op.and]: [{ name: "admin" }, { code: "ADM" }],
       },
@@ -433,24 +433,21 @@ export async function initAdmin() {
       transaction: tr,
     });
 
-    const faskes = await FaskesModel.findOrCreate({
+
+    const [ faskes, ] = await FaskesModel.findOrCreate({
       where: {
         [Op.and]: [
-          { name: "Klinik insyaallah sehat" },
-          {
-            deletedAt: {
-              [Op.is]: null,
-            },
-          },
-        ],
+          { code: "CLS" },
+          { name: "Cliic Long Sehat" }
+        ]
       },
       transaction: tr,
       defaults: {
-        name: "Klinik insyaallah sehat ",
-        code: "KIS",
-        status: true,
-      },
-    });
+        code: "CLS",
+        name: "Cliic Long Sehat",
+        status: true
+      }
+    })
 
     await UserModel.findOrCreate({
       where: {
@@ -458,9 +455,9 @@ export async function initAdmin() {
       },
       transaction: tr,
       defaults: {
-        roleUuid: roleAdmmin[0].toJSON().uuid,
+        roleUuid: roleAdmin.toJSON().uuid,
         name: "khabib UFC",
-        faskesUuid: faskes[0].toJSON().uuid,
+        faskesUuid: faskes.toJSON().uuid,
         phone: "081341922345",
         username: "khabib77",
         email: "khabib@gmail.com",
