@@ -4,8 +4,7 @@ WORKDIR /web-auth
 ENV APPLICATION_PORT=8081
 ENV APPLICATION_HOST=0.0.0.0
 COPY . .
-RUN npm uninstall bcrypt
-RUN npm install bcrypt
+RUN npm install
 EXPOSE ${APPLICATION_PORT}/tcp
 
 CMD ["npm" , "run", "start"]
