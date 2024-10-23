@@ -7,3 +7,4 @@ docker-compose-dev.yml
 redis.conf
 .idea
 .npmrc
+deploy.sh
