@@ -10,6 +10,7 @@ build:
     stage: build
     script:
         - echo "Building imgae...."
+        - docker info
 
     only:
         - main
