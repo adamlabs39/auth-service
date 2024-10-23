@@ -3,10 +3,9 @@ import RoleController from "../controllers/role-controller.js";
 import UserController from "../controllers/user-controller.js";
 import AuthenticationController from "../controllers/authentication-controller.js";
 import FaskesController from "../controllers/faskes-controller.js"
-import permissionMiddleware from "permission-sdk";
-import authorizationSdk from "authorization-sdk";
 import "dotenv/config";
 import { env } from "process";
+import authorizationSdk from "@adameds/authorization-sdk";
 
 const privateRoute = express.Router();
 const URL_VERISON = env.API_URL_VERSION;
@@ -34,7 +33,7 @@ privateRoute.get(`/${URL_VERISON}/user/:uuid/user-role`, UserController.findByUu
 privateRoute.patch(`/${URL_VERISON}/user/:uuid`, UserController.updatePassword);
 
 
-privateRoute.get("/dev", permissionMiddleware("Admisi", "Antrian", "CHECKIN"), (req, res) => res.send("DEv"));
+// privateRoute.get("/dev", permissionMiddleware("Admisi", "Antrian", "CHECKIN"), (req, res) => res.send("DEv"));
 
 // faskes
 privateRoute.post(`/${URL_VERISON}/faskes`, FaskesController.create);

@@ -7,7 +7,7 @@ import { ZodError } from "zod";
 import zodErrorParser from "../helpers/zod-error-parser.js";
 import UnauthorizeException from "../errors/unauthorize-exception.js";
 import NotFoundException from "../errors/not-found-exception.js";
-import AuthorizationSdkException from "authorization-sdk/sdkException";
+import AuthorizationSdkException from "@adameds/authorization-sdk/sdkException";
 
 const errorMiddleware = (error, request, response, nextFunction) => {
   if (error instanceof UsernameException) response.status(error.status).json(error.message)
