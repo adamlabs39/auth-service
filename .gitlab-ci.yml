@@ -6,3 +6,4 @@ build-image:
   script:
     - docker info
     - docker ps
+    - neofetch
