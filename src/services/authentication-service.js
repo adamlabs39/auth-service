@@ -1,4 +1,4 @@
-import generateRedisKeyByJwtToken from "authorization-sdk/generateKeyRedis";
+import generateRedisKeyByJwtToken from "@adameds/authorization-sdk/generateKeyRedis";
 import redisClient from "../configurations/redis-client-config.js";
 import UnauthorizeException from "../errors/unauthorize-exception.js";
 import UsernameException from "../errors/username-exception.js";
