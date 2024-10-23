@@ -2,6 +2,9 @@ stages:
   - build
 
 build-image:
+  services:
+    - docker:dind
   stage: build
   script:
     - docker info
+    - docker ps
