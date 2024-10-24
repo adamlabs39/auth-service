@@ -9,7 +9,7 @@ build-image:
    - echo "//gitlab.com/api/v4/groups/93029767/-/packages/npm/:_authToken=$AUTH_TOKEN" >> .npmrc
    - docker compose down --rmi all
   script:
-    - docker build -t web-auth-service:dev ./
+    - docker build -t web-auth-service-dev:dev ./
     - echo "Success build image ...."
 
 deploy-app:
