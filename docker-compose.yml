@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   web-auth-service:
-    image: web-auth-service:dev
+    image: adameds/web-auth-service:dev
     container_name: web-auth-service-dev
     ports:
       - 8081:8081
@@ -24,8 +24,8 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       REDIS_USERNAME: ${REDIS_USERNAME}
       REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: 6379
-      REDIS_DATABASE: 0
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_DATABASE: ${REDIS_DATABASE}
     volumes:
       - type: bind
         source: /home/admin/adameds/private.key
