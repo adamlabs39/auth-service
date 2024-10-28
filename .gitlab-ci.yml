@@ -7,9 +7,9 @@ build-image:
   before_script:
    - echo "@adameds:registry=https://gitlab.com/api/v4/groups/93029767/-/packages/npm/" >> .npmrc
    - echo "//gitlab.com/api/v4/groups/93029767/-/packages/npm/:_authToken=$AUTH_TOKEN" >> .npmrc
-   - docker compose down --rmi all
+   - docker compose --env-file /home/admin/adameds/.env down --rmi all
   script:
-    - docker build -t web-auth-service:dev ./ --no-cache
+    - docker build -t adameds/web-auth-service:dev ./ --no-cache
     - echo "Success build image ...."
 
 deploy-app:

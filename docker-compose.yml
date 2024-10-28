@@ -33,6 +33,7 @@ services:
       - type: bind
         source: /home/admin/adameds/public.key
         target: /web-auth/public.key
+    restart: always
 networks:
   adameds:
     driver: bridge
