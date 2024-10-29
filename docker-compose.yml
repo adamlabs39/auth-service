@@ -1,19 +1,14 @@
 version: '3.8'
 services:
   web-auth-service:
-    build:
-      dockerfile: Dockerfile
-      context: ./
-    image: web-auth-service:dev
-    container_name: web-auth-service
+    image: adameds/web-auth-service:dev
+    container_name: web-auth-service-dev
     ports:
       - 8081:8081
     networks:
       - adameds
     environment:
       # Application config
-      APPLICATION_PORT: 8081
-      APPLICATION_HOST: 0.0.0.0
       API_URL_VERSION: v3
 
       # Database config
@@ -29,15 +24,16 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       REDIS_USERNAME: ${REDIS_USERNAME}
       REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: 6379
-      REDIS_DATABASE: 0
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_DATABASE: ${REDIS_DATABASE}
     volumes:
       - type: bind
-        source: ./private.key
+        source: /home/admin/adameds/private.key
         target: /web-auth/private.key
       - type: bind
-        source: ./public.key
+        source: /home/admin/adameds/public.key
         target: /web-auth/public.key
+    restart: always
 networks:
   adameds:
     driver: bridge
