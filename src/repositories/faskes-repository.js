@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import { toEpochDate } from "../helpers/date-helper.js";
 import sequelizeInstance from "@adameds/model-sdk/instance";
 import { FaskesModel } from "@adameds/model-sdk/datamaster";
+import { NotfoundException } from "@adameds/model-sdk/exceptions";
 
 export default class FaskesRepository {
   static async create(faskes) {
@@ -29,7 +30,7 @@ export default class FaskesRepository {
   }
   static async findByUuid(uuid) {
     return await sequelizeInstance.transaction(async (tr) => {
-      return await FaskesModel.findOne({
+      const faskes =  await FaskesModel.findOne({
         where: {
           [Op.and]: [
             { uuid },
@@ -42,6 +43,21 @@ export default class FaskesRepository {
         },
         transaction: tr,
       });
+      if(faskes){
+        return faskes.toJSON();
+      }
+      else {
+        throw new NotfoundException(
+          {
+            message: "faskes tidak ditemukan",
+            errors: [
+              {
+                message: `pastikan uuid faskes valid`
+              }
+            ]
+          }
+        )
+      }
     });
   }
 

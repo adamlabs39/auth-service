@@ -4,12 +4,25 @@ import sequelizeInstance from "@adameds/model-sdk/instance";
 import { RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
 
 export default class UserRepository {
-  static async create(user) {
+  static async create(request) {
     return await sequelizeInstance.transaction(async (tr) => {
-      return await UserModel.create(user, {
+      const user =  await UserModel.create(request, {
         transaction: tr,
-        returning: true,
+        returning: true
       });
+      const 
+      { 
+        uuid, roleUuid, practitionerUuid, name,
+        phone, email, username, photo, awalGelar,
+        akhirGelar, permissions,
+        createdAt
+      } = user.toJSON();
+      return { 
+        uuid, roleUuid, practitionerUuid, name,
+        phone, email, username, photo, awalGelar,
+        akhirGelar, permissions,
+        createdAt
+      }
     });
   }
 
@@ -70,11 +83,11 @@ export default class UserRepository {
           offset: offset,
           order: [["id", order]],
           transaction: tr,
-          where: {
-            name: {
-              [Op.like]: `%${name}%`,
-            },
-          },
+          where: sequelizeInstance.where(
+            sequelizeInstance.fn("LOWER", sequelizeInstance.col("UserModel.name")),
+            Op.like,
+            `%${name.toLowerCase()}%`
+          ),
           include: [
             {
               model: RoleModel,
@@ -89,7 +102,7 @@ export default class UserRepository {
           const { uuid, name, username, email, phone, createdAt, updatedAt, deletedAt, status, faskesUuid } = user;
           return {
             uuid, name, username, email,
-            phone, createdAt, updatedAt,
+            phone, createdAt, updatedAt,  
             deletedAt, status, faskesUuid,
             role,
           };
@@ -166,7 +179,7 @@ export default class UserRepository {
         return await UserModel.findOne({
           where: { username },
           transaction: tr,
-          attributes: ["uuid", ["role_uuid", "roleUuid"], "name", "username", "email", "phone", ["created_at", "createdAt"], ["updated_at", "updatedAt"]],
+          attributes: ["uuid", ["role_uuid", "roleUuid"], "username", "email", "phone", ["created_at", "createdAt"], ["updated_at", "updatedAt"]],
         });
       });
       return result.get();

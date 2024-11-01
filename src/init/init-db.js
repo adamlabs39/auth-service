@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
 import * as bcrypt from "bcrypt";
-import { FaskesModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
+import { FaskesModel, PegawaiModel, PractitionerModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
 import sequelizeInstance from "@adameds/model-sdk/instance";
 
 export async function initSueprAdmin() {
@@ -29,18 +29,14 @@ export async function initSueprAdmin() {
         [Op.and]: [
           {
             email: "admin@gmail.com",
-          },
-          {
-            name: "Bang boger",
-          },
+          }
         ],
       },
       defaults: {
         roleUuid: roleSuperAdmin.toJSON().uuid,
-        name: "Bang boger",
         phone: "081341079104",
         email: "admin@gmail.com",
-        username: "boger",
+        username: "adameds-service-center",
         permissions: [
           {
             module: "Antrian",
@@ -410,8 +406,8 @@ export async function initSueprAdmin() {
           },
         ],
         password: await bcrypt.hash("admin123", 10),
-        inventoryMedis: true,
-        inventoryNonMedis: true,
+        awalGelar: "spr",
+        akhirGelar: ".ad",
         status: true,
       },
       transaction: tr,
@@ -430,10 +426,11 @@ export async function initAdmin() {
         code: "ADM",
         status: true,
       },
-      transaction: tr,
+      transaction: tr
     });
-
-
+    
+    
+    
     const [ faskes, ] = await FaskesModel.findOrCreate({
       where: {
         [Op.and]: [
@@ -441,13 +438,55 @@ export async function initAdmin() {
           { name: "Cliic Long Sehat" }
         ]
       },
-      transaction: tr,
       defaults: {
         code: "CLS",
         name: "Cliic Long Sehat",
         status: true
-      }
+      },
+      transaction: tr
     })
+    
+
+    const [pegawai, ] = await PegawaiModel.findOrCreate(
+      {
+        where: {
+          nik: "9999999999999999"
+        },
+        defaults: {
+          faskes_uuid: faskes.toJSON().uuid,
+          name: "Alliano",
+          nik: "9999999999999999",
+          tanggal_lahir: new Date(),
+          gender: "Laki-laki",
+          status: true
+         },
+         transaction: tr
+      }
+    )
+
+    const [practitioner, ] = await PractitionerModel.findOrCreate(
+      {
+        where: {
+          [Op.and]: [
+            {
+              code_bpjs: "cd_bpj",
+            },
+            {
+              deletedAt: {
+                [Op.is]: null
+              }
+            }
+          ]
+        },
+        transaction: tr,
+        defaults: {
+          faskes_uuid: faskes.toJSON().uuid,
+          pegawai_uuid: pegawai.toJSON().uuid,
+          is_doctor: true,
+          status: true,
+        }
+      }
+    )
 
     await UserModel.findOrCreate({
       where: {
@@ -456,14 +495,14 @@ export async function initAdmin() {
       transaction: tr,
       defaults: {
         roleUuid: roleAdmin.toJSON().uuid,
-        name: "khabib UFC",
         faskesUuid: faskes.toJSON().uuid,
+        practitionerUuid: practitioner.toJSON().uuid,
         phone: "081341922345",
         username: "khabib77",
         email: "khabib@gmail.com",
         password: await bcrypt.hash("khabib123", 10),
-        inventoryMedis: true,
-        inventoryNonMedis: true,
+        awalGelar: "ad",
+        akhirGelar: ".cd",
         status: true,
         permissions: [
           {

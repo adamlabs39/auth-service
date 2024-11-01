@@ -8,14 +8,13 @@ import BadRequestException from "../errors/bad-request-exception.js";
 
 export default class UserService {
   
-  static async create(author, userReq) { 
-    userReq = ZodValidator.validate(UserValidation.CREATE, userReq);
-    const { password } = userReq;
-    userReq = {...userReq, password: await bcrypt.hash(password, 10)}
-    const user = await UserRepository.create(userReq);
+  static async create(author, request) { 
+    ZodValidator.validate(UserValidation.CREATE, request);
+    request.password = await bcrypt.hash(request.password, 10);
+    const result = await UserRepository.create(request);
     return {
       message: "Berhasil menambahkan user baru",
-      payload: user.toJSON()
+      payload: result
     }
   }
 

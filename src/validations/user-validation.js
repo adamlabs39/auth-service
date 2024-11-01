@@ -25,14 +25,15 @@ export default class UserValidation {
   static CREATE = z.object({
     faskesUuid: z.string().min(1).optional(),
     roleUuid: z.string(),
+    practitionerUuid: z.string().min(1, "practitioner uuid tidak boleh kosong"),
     permissions: this.#PERMISSIONS,
-    name: z.string().min(1, nameRequired),
     phone: z.string().min(1, phoneRequired),
     email: z.string().email().min(1, emailRequired),
+    akhirGelar: z.string().min(1, "akhir gelar tidak boleh kosong"),
+    awalGelar: z.string().min(1, "awal gelar tidak boleh kosong"),
+    photo: z.string().optional(),
     username: z.string().min(1, usernameRequired),
     password: z.string().min(1, passwordRequired),
-    inventoryMedis: z.boolean(),
-    inventoryNonMedis: z.boolean(),
     status: z.boolean(),
   });
 
