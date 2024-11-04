@@ -120,6 +120,9 @@ export default class UserRepository {
           order: [["id", order]],
           transaction: tr,
           attributes: ["uuid", "username", "email", "phone", "status", "permissions", "faskesUuid", "createdAt"],
+          where: {
+            faskesUuid
+          },
           include: [
             {
               model: RoleModel,
@@ -182,6 +185,9 @@ export default class UserRepository {
           offset: offset,
           order: [["id", order]],
           transaction: tr,
+          where: {
+            faskesUuid
+          },
           attributes: ["uuid", "username", "email", "phone", "status", "permissions", "faskesUuid", "createdAt"],
           include: [
             {
