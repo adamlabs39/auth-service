@@ -54,8 +54,7 @@ export default class UserService {
 
   static async delete(author, uuid){
     const uuidValid = ZodValidator.validate(UserValidation.DELETE, uuid);
-    const userHasDeleted = await UserRepository.delete(uuidValid);
-    if(userHasDeleted == 0) throw new Error('gagal menghapus user');
+    await UserRepository.delete(uuidValid);
     return { message: `berhasil menghapus user` }
   }
 

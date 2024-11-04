@@ -330,7 +330,7 @@ export default class UserRepository {
 
   static async delete(uuid) {
     const result = await sequelizeInstance.transaction(async (tr) => {
-      const afectedRow = await UserModel.update(
+      const [affectedRow, userDeleted] = await UserModel.update(
         { deletedAt: toEpochDate(new Date()) },
         {
           where: {
@@ -347,7 +347,16 @@ export default class UserRepository {
           returning: ["username"],
         }
       );
-      return afectedRow[0];
+      if(affectedRow !== 1) {
+        throw new HttpException(
+          {
+            message: "Gagal menghapus user"
+          }, 500
+        )
+      }
+      else {
+        return userDeleted[0].toJSON();
+      }
     });
     return result;
   }
