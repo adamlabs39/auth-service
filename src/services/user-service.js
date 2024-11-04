@@ -3,7 +3,6 @@ import ZodValidator from "../validations/zod-validator.js";
 import { toEpochDate } from "../helpers/date-helper.js";
 import bcrypt from "bcrypt";
 import UserRepository from "../repositories/user-repository.js";
-import UsernameException from "./../errors/username-exception.js"
 import BadRequestException from "../errors/bad-request-exception.js";
 
 export default class UserService {
@@ -11,6 +10,7 @@ export default class UserService {
   static async create(author, request) { 
     ZodValidator.validate(UserValidation.CREATE, request);
     request.password = await bcrypt.hash(request.password, 10);
+    request.faskesUuid = author.faskesUuid;
     const result = await UserRepository.create(request);
     return {
       message: "Berhasil menambahkan user baru",
@@ -18,23 +18,18 @@ export default class UserService {
     }
   }
 
-  static async update(author, userReq){
-    let userValid = ZodValidator.validate(UserValidation.UPDATE, userReq);
-    const user = await UserRepository.findByUuid(userValid.uuid);
-    if(!user) throw new UsernameException(`user dengan uuid ${userValid.uuid} belum terdaftar!`, 400);
-    const affectedRows =  await UserRepository.update({...user, ...userValid, updatedAt: toEpochDate(new Date())});
-    if(affectedRows == 0) throw new Error("gagal memperbarui user");
+  static async update(author, request){
+    ZodValidator.validate(UserValidation.UPDATE, request);
+    const user = await UserRepository.findByUuid(request.uuid);
+    await UserRepository.update({...user, ...request, updatedAt: toEpochDate(new Date())});
     return { 
-      message: `Berhasil memperbarui ${affectedRows} user`,
-      payload: {
-        userUuid: user.toJSON().uuid,
-        username: user.toJSON().username
-      }
+      message: `Data berhasil di edit`,
     }
   }
 
-  static async findAll(page, pageSize, order, role, name){
-    const { properties, payload } =  await UserRepository.findAll(page, pageSize, order, role, name)
+  static async findAll(page, pageSize, order, role, name, author){
+    const { faskesUuid } = author;
+    const { properties, payload } =  await UserRepository.findAll(page, pageSize, order, role, name, faskesUuid)
     return {
       message: "Berhasil menampilkan semua user",
       payload,

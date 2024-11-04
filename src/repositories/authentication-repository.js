@@ -149,27 +149,6 @@ export default class AuthenticationRepository {
     });
   }
 
-  static async updateToken(uuid, token){
-    const reuslt = await sequelizeInstance.transaction(async tr => {
-      const user = await UserModel.update({token}, {
-        where: {
-          [Op.and]: [
-            { uuid },
-            {
-              deletedAt: {
-                [Op.is]: null
-              }
-            }
-          ]
-        },
-        transaction: tr,
-        returning: ["uuid", "username", "name", "email", "phone", "role_uuid"]
-      });
-      return user[1][0];
-    });
-    return reuslt;
-  }
-
   static async findByUsername(username){
     return await sequelizeInstance.transaction(async tr => {
       const user = await UserModel.findOne({

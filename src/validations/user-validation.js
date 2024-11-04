@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { dokterUuidRequired, emailRequired, faskesUuidRequired, nameRequired, passwordRequired, phoneRequired, roleRequired, usernameRequired, uuidRequired } from "./message-validation-error.js";
+import { emailRequired, faskesUuidRequired, nameRequired, passwordRequired, phoneRequired, roleRequired, usernameRequired, uuidRequired } from "./message-validation-error.js";
 
 export default class UserValidation {
 
@@ -25,31 +25,31 @@ export default class UserValidation {
   static CREATE = z.object({
     faskesUuid: z.string().min(1).optional(),
     roleUuid: z.string(),
-    practitionerUuid: z.string().min(1, "practitioner uuid tidak boleh kosong"),
+    practitionerUuid: z.string().min(1, "practitioner uuid tidak boleh kosong").optional(),
     permissions: this.#PERMISSIONS,
     phone: z.string().min(1, phoneRequired),
     email: z.string().email().min(1, emailRequired),
     akhirGelar: z.string().min(1, "akhir gelar tidak boleh kosong"),
     awalGelar: z.string().min(1, "awal gelar tidak boleh kosong"),
-    photo: z.string().optional(),
     username: z.string().min(1, usernameRequired),
     password: z.string().min(1, passwordRequired),
     status: z.boolean(),
   });
 
   static UPDATE = z.object({
-    uuid: z.string().min(1, uuidRequired),
-    faskesUuid: z.string().min(1, faskesUuidRequired),
     roleUuid: z.string().min(1, roleRequired),
-    dokterUuid: z.string().min(1, dokterUuidRequired).optional(),
-    name: z.string().min(1, nameRequired),
+    practitionerUuid: z.string().min(1, "uuid praktisioner tidak boleh kosong").optional(),
     phone: z.string().min(1, phoneRequired),
     email: z.string().email().min(1, emailRequired),
     username: z.string().min(1, usernameRequired),
-    inventoryMedis: z.boolean(),
-    inventoryNonMedis: z.boolean(),
+    password: z.string().min(1, passwordRequired).optional(),
+    confirmPassword: z.string().min(1, "konfirmasi password tidak boleh kosong").optional(),
+    awalGelar: z.string().optional(),
+    akhirGelar: z.string().optional(),
     status: z.boolean(),
-  });
+  }).refine(
+    (ctx) => ctx.password === ctx.confirmPassword, { message: "konfirmasi password harus sama dengan password", path: ["confirmPassword"] }
+  );
 
   static UPDATE_PASSWORD = z.object({
     uuid: z.string().min(1, uuidRequired),

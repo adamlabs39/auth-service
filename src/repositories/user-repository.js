@@ -1,7 +1,9 @@
 import { Op } from "sequelize";
 import { toEpochDate } from "../helpers/date-helper.js";
 import sequelizeInstance from "@adameds/model-sdk/instance";
-import { RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
+import { PegawaiModel, PractitionerModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
+import { HttpException } from "../errors/http-exception.js";
+import { NotfoundException } from "@adameds/model-sdk/exceptions";
 
 export default class UserRepository {
   static async create(request) {
@@ -12,13 +14,13 @@ export default class UserRepository {
       });
       const 
       { 
-        uuid, roleUuid, practitionerUuid, name,
+        uuid, roleUuid, practitionerUuid,
         phone, email, username, photo, awalGelar,
         akhirGelar, permissions,
         createdAt
       } = user.toJSON();
       return { 
-        uuid, roleUuid, practitionerUuid, name,
+        uuid, roleUuid, practitionerUuid,
         phone, email, username, photo, awalGelar,
         akhirGelar, permissions,
         createdAt
@@ -26,13 +28,14 @@ export default class UserRepository {
     });
   }
 
-  static async update(user) {
+  static async update(request) {
     return sequelizeInstance.transaction(async (tr) => {
-      const { uuid } = user;
-      const userUpdate = await UserModel.update(user, {
+      const { email, faskesUuid, username } = request;
+      const [ affectedRow, [userUpdated] ] = await UserModel.update(request, {
         where: {
           [Op.and]: [
-            { uuid },
+            { email },
+            { faskesUuid },
             {
               deletedAt: {
                 [Op.is]: null,
@@ -40,9 +43,30 @@ export default class UserRepository {
             },
           ],
         },
+        returning: true,
         transaction: tr,
       });
-      return userUpdate[0];
+      if(affectedRow !== 1){
+        throw new HttpException(
+          {
+            message: "Data gagal di edit",
+          }, 500
+        )
+      }
+      else {
+        const { 
+          uuid, roleUuid, practitionerUuid,
+          phone, username, photo, awalGelar,
+          akhirGelar, permissions,
+          createdAt
+         } = userUpdated.toJSON();
+         return {
+          uuid, roleUuid, practitionerUuid,
+          phone, email, username, photo, awalGelar,
+          akhirGelar, permissions,
+          createdAt
+         }
+      }
     });
   }
 
@@ -64,7 +88,7 @@ export default class UserRepository {
     });
   }
 
-  static async findAll(page, pageSize, order, role, name) {
+  static async findAll(page, pageSize, order, role, name, faskesUuid) {
     const offset = page * pageSize;
     UserModel.hasOne(RoleModel, {
       foreignKey: "uuid",
@@ -76,6 +100,18 @@ export default class UserRepository {
       targetKey: "roleUuid",
       constraints: false,
     });
+
+    UserModel.hasOne(PractitionerModel, {
+      foreignKey: "uuid",
+      sourceKey: "practitionerUuid",
+      constraints: false
+    })
+
+    PractitionerModel.belongsTo(UserModel, {
+      foreignKey: "practitionerUuid",
+      targetKey: "uuid",
+      constraints: false
+    })
     return await sequelizeInstance.transaction(async (tr) => {
       if (name) {
         const { count, rows } = await UserModel.findAndCountAll({
@@ -83,28 +119,52 @@ export default class UserRepository {
           offset: offset,
           order: [["id", order]],
           transaction: tr,
-          where: sequelizeInstance.where(
-            sequelizeInstance.fn("LOWER", sequelizeInstance.col("UserModel.name")),
-            Op.like,
-            `%${name.toLowerCase()}%`
-          ),
+          attributes: ["uuid", "username", "email", "phone", "status", "permissions", "faskesUuid", "createdAt"],
           include: [
             {
               model: RoleModel,
-              attributes: ["name"],
+              attributes: ["name", "uuid"],
               where: role,
               required: true,
             },
+            {
+              model: PractitionerModel,
+              required: true,
+              attributes: ["uuid"],
+              include: [
+                {
+                  model: PegawaiModel,
+                  required: true,
+                  attributes: ["uuid", "name", "nik", "first_title", "last_title", "gender", "tanggal_lahir"],
+                  where:
+                    sequelizeInstance.where(
+                      sequelizeInstance.fn("LOWER", sequelizeInstance.col("PractitionerModel->PegawaiModel.name")),
+                      Op.like,
+                      `%${name.toLowerCase()}%`
+                  )
+                }
+              ]
+            }
           ],
-        });
+        });        
         const payload = rows.map((user) => {
-          const role = user.toJSON().RoleModel.name;
-          const { uuid, name, username, email, phone, createdAt, updatedAt, deletedAt, status, faskesUuid } = user;
+          const practitionerUuid = user.toJSON().PractitionerModel.uuid;
+          const { name, nik, first_title, last_title, gender, tanggal_lahir } = user.toJSON().PractitionerModel.PegawaiModel;
+          const { name: roleName, uuid: roleUuid} = user.toJSON().RoleModel;
+          const { uuid, username, email, phone, createdAt, status, faskesUuid, permissions } = user;
           return {
-            uuid, name, username, email,
-            phone, createdAt, updatedAt,  
-            deletedAt, status, faskesUuid,
-            role,
+            faskesUuid, uuid, name, username, email,
+            phone, status, createdAt,
+            practitioner: {
+              uuid: practitionerUuid,
+              nik, first_title, last_title,
+              gender, tanggal_lahir,
+            },
+            role: {
+              uuid: roleUuid,
+              name: roleName
+            },
+            permissions
           };
         });
         return {
@@ -122,23 +182,46 @@ export default class UserRepository {
           offset: offset,
           order: [["id", order]],
           transaction: tr,
+          attributes: ["uuid", "username", "email", "phone", "status", "permissions", "faskesUuid", "createdAt"],
           include: [
             {
               model: RoleModel,
-              attributes: ["name"],
+              attributes: ["name", "uuid"],
               where: role,
               required: true,
             },
+            {
+              model: PractitionerModel,
+              required: true,
+              attributes: ["uuid"],
+              include: [
+                {
+                  model: PegawaiModel,
+                  required: true,
+                  attributes: ["uuid", "name", "nik", "first_title", "last_title", "gender", "tanggal_lahir"],
+                }
+              ]
+            }
           ],
-        });
+        });        
         const payload = rows.map((user) => {
-          const role = user.toJSON().RoleModel.name;
-          const { uuid, name, username, email, phone, createdAt, updatedAt, deletedAt, status, faskesUuid } = user;
+          const practitionerUuid = user.toJSON().PractitionerModel.uuid;
+          const { name, nik, first_title, last_title, gender, tanggal_lahir } = user.toJSON().PractitionerModel.PegawaiModel;
+          const { name: roleName, uuid: roleUuid} = user.toJSON().RoleModel;
+          const { uuid, username, email, phone, createdAt, status, faskesUuid, permissions } = user;
           return {
-            uuid, name, username, email,
-            phone, createdAt, updatedAt,
-            deletedAt, status, faskesUuid,
-            role,
+            faskesUuid, uuid, name, username, email,
+            phone, status, createdAt,
+            practitioner: {
+              uuid: practitionerUuid,
+              nik, first_title, last_title,
+              gender, tanggal_lahir,
+            },
+            role: {
+              uuid: roleUuid,
+              name: roleName
+            },
+            permissions
           };
         });
         return {
@@ -158,7 +241,7 @@ export default class UserRepository {
       const user = await UserModel.findOne({
         where: {
           [Op.and]: [
-            { uuid },
+            { uuid: uuid },
             {
               deletedAt: {
                 [Op.is]: null,
@@ -167,9 +250,22 @@ export default class UserRepository {
           ],
         },
         transaction: tr,
-        attributes: ["uuid", ["role_uuid", "roleUuid"], "name", "username", "email", "phone", ["created_at", "createdAt"], ["updated_at", "updatedAt"]],
+        attributes: ["uuid", "roleUuid", "faskesUuid","username", "email", "phone", "createdAt", "updatedAt"],
       });
-      return user;
+      if(user){
+        const { uuid, roleUuid, faskesUuid, username, email, phone, createdAt} = user.toJSON();
+        return {
+          uuid, roleUuid, faskesUuid, username, email,
+          phone, createdAt
+        }
+      }
+      else {
+        throw new NotfoundException(
+          {
+            message: `uuid tidak diketahui`
+          }
+        )
+      }
     });
   }
 
