@@ -121,7 +121,14 @@ export default class UserRepository {
           transaction: tr,
           attributes: ["uuid", "username", "email", "phone", "status", "permissions", "faskesUuid", "createdAt"],
           where: {
-            faskesUuid
+            [Op.and]: [
+              { faskesUuid },
+              {
+                deletedAt: {
+                  [Op.is]: null
+                }
+              }
+            ]
           },
           include: [
             {
@@ -186,7 +193,14 @@ export default class UserRepository {
           order: [["id", order]],
           transaction: tr,
           where: {
-            faskesUuid
+            [Op.and]: [
+              { faskesUuid },
+              {
+                deletedAt: {
+                  [Op.is]: null
+                }
+              }
+            ]
           },
           attributes: ["uuid", "username", "email", "phone", "status", "permissions", "faskesUuid", "createdAt"],
           include: [
