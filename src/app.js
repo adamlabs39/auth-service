@@ -27,11 +27,11 @@ redisClient.on("connect", () => console.log("Redis alredy accept request"));
 
 app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
   await redisClient.connect();
-  // await FaskesModel.sync({ force: true });
-  // await RoleModel.sync({ force: true });
-  // await UserModel.sync({ force: true });
-  // await PegawaiModel.sync({ force: true });
-  // await PractitionerModel.sync({ force: true });
+  await FaskesModel.sync({ force: true });
+  await RoleModel.sync({ force: true });
+  await UserModel.sync({ force: true });
+  await PegawaiModel.sync({ force: true });
+  await PractitionerModel.sync({ force: true });
   await initSueprAdmin();
   await initAdmin();
   console.log(`The server running on http://${APPLICATION_HOST}:${APPLICATION_PORT}`);
