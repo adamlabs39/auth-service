@@ -8,3 +8,8 @@ redis.conf
 .idea
 .npmrc
 deploy.sh
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
+.env.vault

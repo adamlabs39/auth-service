@@ -3,3 +3,7 @@ fix.json
 redis.conf
 .env.example
 babel.config.json
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
