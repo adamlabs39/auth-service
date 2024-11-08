@@ -1,24 +1,13 @@
 stages:
-  - build
-  - deploy
+  - build-deploy
 
 build-image:
-  stage: build
+  stage: build-deploy
   before_script:
    - docker compose --env-file /home/admin/adameds/.env-web-auth down --rmi all
    - echo "@adameds:registry=https://gitlab.com/api/v4/groups/93029767/-/packages/npm/" >> .npmrc
    - echo "//gitlab.com/api/v4/groups/93029767/-/packages/npm/:_authToken=$AUTH_TOKEN" >> .npmrc
-   - cat .npmrc
-  script:
-    - docker build -t adameds/web-auth-service:dev ./ --no-cache
-    - echo "Success build image ...."
-  only:
-    - dev-deployment
-
-deploy-app:
-  stage: deploy
   script:
     - docker compose --env-file /home/admin/adameds/.env-web-auth up -d
-    - echo "success deploy...."
   only:
     - dev-deployment

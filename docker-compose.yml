@@ -1,6 +1,10 @@
 version: '3.8'
 services:
   web-auth-service:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+      no_cache: true
     image: adameds/web-auth-service:dev
     container_name: web-auth-service-dev
     ports:
@@ -10,22 +14,7 @@ services:
     environment:
       # Application config
       API_URL_VERSION: v3
-
-      # Database config
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_DIALECT: ${DB_DIALECT}
-      DB_NAME: ${DB_NAME}
-      DB_POOL: ${DB_POOL}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-
-      # Redis Configuration
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      REDIS_USERNAME: ${REDIS_USERNAME}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_DATABASE: ${REDIS_DATABASE}
+      DOTENV_KEY: ${DOTENV_KEY}
     volumes:
       - type: bind
         source: /home/admin/adameds/private.key
@@ -33,6 +22,9 @@ services:
       - type: bind
         source: /home/admin/adameds/public.key
         target: /web-auth/public.key
+      - type: bind
+        source: /home/admin/adameds/.env.vault
+        target: /web-auth/.env.vault
     restart: always
 networks:
   adameds:
