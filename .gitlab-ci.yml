@@ -1,7 +1,7 @@
 stages:
   - build-deploy
 
-build-image:
+build-deplly:
   stage: build-deploy
   before_script:
    - docker compose --env-file /home/admin/adameds/.env-web-auth down --rmi all
