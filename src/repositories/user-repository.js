@@ -6,8 +6,37 @@ import { HttpException } from "../errors/http-exception.js";
 import { NotfoundException } from "@adameds/model-sdk/exceptions";
 
 export default class UserRepository {
-  static async create(request) {
+
+  static async countPractitioner(faskesUuid, practitionerUuid){
+    return await UserModel.count({
+      where: {
+        [Op.and]: [
+          {
+            faskesUuid
+          },
+          {
+            practitionerUuid
+          }
+        ]
+      }
+    })
+  }
+  static async create(request, faskesUuid) {
     return await sequelizeInstance.transaction(async (tr) => {
+      const totalPractitioner = await this.countPractitioner(faskesUuid, request.practitionerUuid);
+      if(totalPractitioner !== 0){
+        throw new HttpException(
+          {
+            message: "Data gagal disimpan",
+            errors: [
+              {
+                type: "conflict",
+                message: "Data yang diinputkan sudah ada"
+              }
+            ]
+          }, 409
+        )
+      }
       const user =  await UserModel.create(request, {
         transaction: tr,
         returning: true

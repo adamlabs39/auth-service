@@ -11,7 +11,7 @@ export default class UserService {
     ZodValidator.validate(UserValidation.CREATE, request);
     request.password = await bcrypt.hash(request.password, 10);
     request.faskesUuid = author.faskesUuid;
-    const result = await UserRepository.create(request);
+    const result = await UserRepository.create(request, author.faskesUuid);
     return {
       message: "Berhasil menambahkan user baru",
       payload: result
