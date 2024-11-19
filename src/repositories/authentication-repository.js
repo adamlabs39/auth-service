@@ -115,6 +115,7 @@ export default class AuthenticationRepository {
             include: [
               {
                 model: PegawaiModel,
+                as: "pegawai",
                 required: true,
                 attributes: ["name"]
               }
@@ -130,7 +131,7 @@ export default class AuthenticationRepository {
           } = user.toJSON();
         return {
           uuid, faskesUuid, username, email, password, phone,
-          role: role.name, name: practitioner.PegawaiModel.name,
+          role: role.name, name: practitioner.pegawai.name,
           permissions
         }
       }

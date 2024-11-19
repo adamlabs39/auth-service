@@ -9,7 +9,11 @@ import authorizationSdk from "@adameds/authorization-sdk";
 
 const privateRoute = express.Router();
 const URL_VERISON = env.API_URL_VERSION;
-privateRoute.use(authorizationSdk([`/${URL_VERISON}/login`]));
+privateRoute.use(authorizationSdk(
+    [
+        `/${URL_VERISON}/login`
+    ]
+));
 
 // user
 privateRoute.delete(`/${URL_VERISON}/logout`, AuthenticationController.logout);
