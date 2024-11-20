@@ -173,6 +173,7 @@ export default class UserRepository {
               include: [
                 {
                   model: PegawaiModel,
+                  as: "pegawai",
                   required: true,
                   attributes: ["uuid", "name", "nik", "first_title", "last_title", "gender", "tanggal_lahir"],
                   where:
@@ -188,7 +189,7 @@ export default class UserRepository {
         });        
         const payload = rows.map((user) => {
           const practitionerUuid = user.toJSON().PractitionerModel.uuid;
-          const { name, nik, first_title, last_title, gender, tanggal_lahir } = user.toJSON().PractitionerModel.PegawaiModel;
+          const { name, nik, first_title, last_title, gender, tanggal_lahir } = user.toJSON().PractitionerModel.pegawai;
           const { name: roleName, uuid: roleUuid} = user.toJSON().RoleModel;
           const { uuid, username, email, phone, createdAt, status, faskesUuid, permissions } = user;
           return {
@@ -246,6 +247,7 @@ export default class UserRepository {
               include: [
                 {
                   model: PegawaiModel,
+                  as: "pegawai",
                   required: true,
                   attributes: ["uuid", "name", "nik", "first_title", "last_title", "gender", "tanggal_lahir"],
                 }
@@ -255,7 +257,7 @@ export default class UserRepository {
         });        
         const payload = rows.map((user) => {
           const practitionerUuid = user.toJSON().PractitionerModel.uuid;
-          const { name, nik, first_title, last_title, gender, tanggal_lahir } = user.toJSON().PractitionerModel.PegawaiModel;
+          const { name, nik, first_title, last_title, gender, tanggal_lahir } = user.toJSON().PractitionerModel.pegawai;
           const { name: roleName, uuid: roleUuid} = user.toJSON().RoleModel;
           const { uuid, username, email, phone, createdAt, status, faskesUuid, permissions } = user;
           return {
