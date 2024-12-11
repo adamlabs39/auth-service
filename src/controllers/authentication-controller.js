@@ -27,4 +27,19 @@ export default class AuthenticationController {
       nextFunction(error);
     }
   }
+
+  /**
+   * 
+   * @param {Request} request 
+   * @param {Response} response 
+   * @param {nextFunction} nextFunction 
+   */
+  static async refreshToken(request, response, nextFunction){
+    try{
+      const result = await AuthenticationService.refreshToken(request.body);
+      response.status(200).json(result);
+    }catch(error){
+      nextFunction(error);
+    }
+  }
 }

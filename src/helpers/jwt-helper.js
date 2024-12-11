@@ -1,21 +1,34 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config"
-import fs from "fs/promises";
 
-export default class JwtHelper {
+export class JwtHelper {
 
-  static async sign(payload) {
-    return jwt.sign(payload, await this.#getPrivateKey(), { algorithm: "RS256", expiresIn: '3h', issuer: "authentication-serivice" });
+  static sign(payload) {
+    return jwt.sign(payload, process.env.PRIVATE_KEY, { algorithm: "RS256", expiresIn: '3600s', issuer: "authentication-serivice" });
   }
 
-  static async veryfy(token) {
-    return jwt.verify(token, await this.#getPublicKey(), { algorithms: "RS256" });
+  static veryfy(token) {
+    return jwt.verify(token, process.env.PUBLIC_KEY, { algorithms: "RS256" });
   }
 
-  static async #getPrivateKey() {
-    return await fs.readFile(`${process.cwd()}/private.key`, 'utf-8');
+  static signRefreshToken(payload) {
+    return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "4200s", algorithm: "HS256", issuer: "authentication-serivic"});
   }
-  static async #getPublicKey() {
-    return await fs.readFile(`${process.cwd()}//public.key`, 'utf-8');
+
+  static verifyRefreshToken(token){
+    return jwt.verify(token, process.env.SECRET_KEY, {algorithms: "HS256"});
+  }
+
+}
+
+
+export function genereateAuthToken(payload) {
+  return {
+    token: JwtHelper.sign({
+      role: payload.role,
+      username: payload.username,
+      faskesUuid: payload.faskesUuid
+    }),
+    refreshToken: JwtHelper.signRefreshToken({username: payload.username})
   }
 }

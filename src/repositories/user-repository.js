@@ -7,6 +7,25 @@ import { NotfoundException } from "@adameds/model-sdk/exceptions";
 
 export default class UserRepository {
 
+
+  static async findAllAsSuperadmin(page, pageSize, orderby) {
+    const {count, rows } = await UserModel.findAndCountAll({
+      limit: pageSize,
+      offset: page,
+      order: [["id", orderby]]
+    });
+
+    return {
+      data: rows.map(user => user.toJSON()),
+      properties: {
+        currentPage: page,
+        totalItem: count,
+        totalPage: Math.ceil(count/pageSize),
+        perPage: pageSize 
+      }
+    }
+  }
+
   static async countPractitioner(faskesUuid, practitionerUuid){
     return await UserModel.count({
       where: {

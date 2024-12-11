@@ -2,12 +2,12 @@ import generateRedisKeyByJwtToken from "@adameds/authorization-sdk/generateKeyRe
 import redisClient from "../configurations/redis-client-config.js";
 import UnauthorizeException from "../errors/unauthorize-exception.js";
 import UsernameException from "../errors/username-exception.js";
-import JwtHelper from "../helpers/jwt-helper.js";
 import AuthenticationRepository from "../repositories/authentication-repository.js";
 import AuthenticationValidation from "../validations/authentication-validation.js";
 import ZodValidator from "../validations/zod-validator.js";
 import bcrypt from "bcrypt";
 import FaskesRepository from "../repositories/faskes-repository.js";
+import { genereateAuthToken, JwtHelper } from "../helpers/jwt-helper.js";
 
 export default class AuthenticationService {
 
@@ -19,13 +19,13 @@ export default class AuthenticationService {
     const isPasswordValid = await bcrypt.compare(rawPassword, user.password);
     if(!isPasswordValid) throw new UnauthorizeException({message: "Autentikasi gagal", errors: [{field: "password", message: "password anda tidak sesuai"}]});
     const { role, faskesUuid, permissions, name } = user;
-    const token = await JwtHelper.sign({ role, username, faskesUuid });
+    const { token, refreshToken} = genereateAuthToken({role, username, faskesUuid});
     const keyRedis = generateRedisKeyByJwtToken(token)
-    await redisClient.set(`token-${keyRedis}`, JSON.stringify({ token, permissions}), { EX: 3 * (60 * 60), NX: true });
+    await redisClient.set(`token-${keyRedis}`, JSON.stringify({permissions}), { EX: 3 * (60 * 60), NX: true });
     return {
       message: "Login berhasil!",
       payload: { 
-        token, permissions, 
+        token, refreshToken, permissions, 
         user: { 
           faskesUuid,
           role,
@@ -51,13 +51,13 @@ export default class AuthenticationService {
     }
     const { permission } = await AuthenticationRepository.findByUsername(username);
     const { name: faskesName} = await FaskesRepository.findByUuid(faskesUuid);
-    const newToken = await JwtHelper.sign({role, username, faskesUuid, name});
-    await redisClient.set(`token-${generateRedisKeyByJwtToken(newToken)}`, JSON.stringify({token: newToken, permission}), { EX: 3 * (60 * 60), NX: true });
-    await redisClient.del(generateRedisKeyByJwtToken(token));
+    const { token: newToken, refreshToken: newRefreshToken } = genereateAuthToken({role, username, faskesUuid, name});
+    await redisClient.set(`token-${generateRedisKeyByJwtToken(newToken)}`, JSON.stringify({permission}), { EX: 3 * (60 * 60), NX: true });
+    await redisClient.del(`token-${generateRedisKeyByJwtToken(token)}`);
     return {
       message: "Success update token!",
       payload: { 
-        newToken, faskesName, faskesUuid
+        newToken, newRefreshToken, faskesName, faskesUuid
        }
     }
   }
@@ -69,17 +69,24 @@ export default class AuthenticationService {
     return { message: `${author.username} berhasil logout` }
   }
 
-  /**
-   * 
-   * @deprecated
-   * 
-   * use this method is not recomended again, because developer has chage some logic. 
-   * u can change this method with generateRedisKeyByJwtToken(token: string) that import from authorization sdk
-   * @param {string} token 
-   * @returns 
-   */
-  static generateRedisKeyByJwtToken(token) {
-    const [, , signature ] = token.split(".");
-    return signature.substring(1, 11);
+
+
+  static async refreshToken(request){
+    ZodValidator.validate(AuthenticationValidation.REFRESH_TOKEN, request);
+    const decodeToken = JwtHelper.verifyRefreshToken(request.refreshToken);
+    const user = await AuthenticationRepository.findByUsername(decodeToken.username);
+    const { token, refreshToken } = genereateAuthToken({
+      role: user.role,
+      username: user.username,
+      faskesUuid: user.faskesUuid
+    });
+    await redisClient.set(`token-${generateRedisKeyByJwtToken(token)}`, JSON.stringify({permissions: user.permissions}), { EX: 3 * (60 * 60), NX: true });
+    await redisClient.del(`token-${generateRedisKeyByJwtToken(request.token)}`);
+    return {
+      message: "Berhasil refresh token",
+      payload: {
+        token, refreshToken
+      }
+    }
   }
 }

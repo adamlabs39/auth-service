@@ -501,8 +501,6 @@ export async function initAdmin() {
         username: "khabib77",
         email: "khabib@gmail.com",
         password: await bcrypt.hash("khabib123", 10),
-        awalGelar: "ad",
-        akhirGelar: ".cd",
         status: true,
         permissions: [
           {

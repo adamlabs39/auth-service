@@ -29,59 +29,7 @@ export default class AuthenticationRepository {
         constraints: false,
         foreignKey: "uuid",
         targetKey: "practitionerUuid"
-      })
-      if(username == "admin@gmail.com" || username == "adameds-service-center"){
-        const user = await UserModel.findOne(
-          {
-            transaction: tr,
-            where: {
-              [Op.and]: [
-                {
-                  [Op.or]: [
-                    { username },
-                    { email: username}
-                  ]
-                },
-                {
-                  deletedAt: {
-                    [Op.is]: null
-                  }
-                }
-              ]
-            },
-            attributes: ["uuid", ["faskes_uuid", "faskesUuid"], "username", "email", "phone", ["role_uuid", "roleUuid"], "password", "permissions"],
-            include: [
-              {
-                required: true,
-                attributes: ["name"],
-                model: RoleModel
-              }
-            ]
-          }
-        );
-        if(user){
-          const { 
-            uuid, faskesUuid, username, email, password, phone,
-            RoleModel: role, permissions
-           } = user.toJSON();
-           return {
-            uuid, faskesUuid, username, email, password, phone,
-            role: role.name, permissions
-           }
-        }
-        else {
-          throw new UnauthorizeException(
-            {
-              message: "gagal login",
-              errors: [
-                {
-                  message: `user tidak ditemukan`
-                }
-              ]
-            }
-          )
-        }
-      }
+      });
       const user = await UserModel.findOne({
         where: {
           [Op.and]: [
@@ -136,16 +84,56 @@ export default class AuthenticationRepository {
         }
       }
       else {
-        throw new UnauthorizeException(
+        const user = await UserModel.findOne(
           {
-            message: `gagal login`,
-            errors: [
+            transaction: tr,
+            where: {
+              [Op.and]: [
+                {
+                  [Op.or]: [
+                    { username },
+                    { email: username}
+                  ]
+                },
+                {
+                  deletedAt: {
+                    [Op.is]: null
+                  }
+                }
+              ]
+            },
+            attributes: ["uuid", ["faskes_uuid", "faskesUuid"], "username", "email", "phone", ["role_uuid", "roleUuid"], "password", "permissions"],
+            include: [
               {
-                message: `username ${username} bekum terdaftar`
+                required: true,
+                attributes: ["name"],
+                model: RoleModel
               }
             ]
           }
-        )
+        );
+        if(user){
+          const { 
+            uuid, faskesUuid, username, email, password, phone,
+            RoleModel: role, permissions
+           } = user.toJSON();
+           return {
+            uuid, faskesUuid, username, email, password, phone,
+            role: role.name, permissions
+           }
+        }
+        else {
+          throw new UnauthorizeException(
+            {
+              message: `gagal login`,
+              errors: [
+                {
+                  message: `username ${username} belum terdaftar`
+                }
+              ]
+            }
+          )  
+        }
       }
     });
   }
@@ -172,8 +160,7 @@ export default class AuthenticationRepository {
         transaction: tr
       })
       if(user){
-        const { permissions } = user.toJSON();
-        return { permissions }
+        return user.toJSON();
       }
       else {
         throw new NotfoundException(

@@ -7,8 +7,8 @@ import redisClient from "./configurations/redis-client-config.js";
 import requestResponseFormatterMidddleware from "./middlewares/request-response-formatter-middleware.js";
 import morgan from "morgan";
 import cors from "cors";
-import { initAdmin, initSueprAdmin } from "./init/init-db.js";
 import { FaskesModel, PegawaiModel, PractitionerModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
+import { initAdmin, initSueprAdmin } from "./seeders/db-seed.js";
 
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
 const APPLICATION_HOST = process.env.APPLICATION_HOST;

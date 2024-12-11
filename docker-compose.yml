@@ -12,15 +12,8 @@ services:
       - adameds
     environment:
       # Application config
-      API_URL_VERSION: v3
       DOTENV_KEY: ${DOTENV_KEY}
     volumes:
-      - type: bind
-        source: /home/admin/adameds/private.key
-        target: /web-auth/private.key
-      - type: bind
-        source: /home/admin/adameds/public.key
-        target: /web-auth/public.key
       - type: bind
         source: /home/admin/adameds/.env.vault
         target: /web-auth/.env.vault

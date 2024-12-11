@@ -17,7 +17,7 @@
   "author": "https://github.com/alliano",
   "license": "ISC",
   "dependencies": {
-    "@adameds/authorization-sdk": "^1.0.3",
+    "@adameds/authorization-sdk": "^1.0.5",
     "@adameds/model-sdk": "^1.0.27",
     "@redis/client": "^1.6.0",
     "bcrypt": "^5.1.1",

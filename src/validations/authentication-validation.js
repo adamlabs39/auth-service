@@ -14,5 +14,10 @@ export default class AuthenticationValidation {
     password: z.string().min(1, passwordRequired),
   });
 
-  static LOGOUT = z.string()
+  static LOGOUT = z.string();
+
+  static REFRESH_TOKEN = z.object({
+    refreshToken: z.string().min(1, "refresh_token tidak boleh kosong"),
+    token: z.string().min(1, "token tidak boleh kosong")
+  });
 }

@@ -29,8 +29,6 @@ export default class UserValidation {
     permissions: this.#PERMISSIONS,
     phone: z.string().min(1, phoneRequired),
     email: z.string().email().min(1, emailRequired),
-    akhirGelar: z.string().min(1, "akhir gelar tidak boleh kosong").optional(),
-    awalGelar: z.string().min(1, "awal gelar tidak boleh kosong").optional(),
     username: z.string().min(1, usernameRequired),
     password: z.string().min(1, passwordRequired),
     status: z.boolean(),
@@ -44,8 +42,6 @@ export default class UserValidation {
     username: z.string().min(1, usernameRequired),
     password: z.string().min(1, passwordRequired).optional(),
     confirmPassword: z.string().min(1, "konfirmasi password tidak boleh kosong").optional(),
-    awalGelar: z.string().optional(),
-    akhirGelar: z.string().optional(),
     status: z.boolean(),
   }).refine(
     (ctx) => ctx.password === ctx.confirmPassword, { message: "konfirmasi password harus sama dengan password", path: ["confirmPassword"] }
