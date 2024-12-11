@@ -1,10 +1,9 @@
 {
-    "name": "",
-    "role_uuid": "",
-    "permissions": [
+  "permissions": [
+    [
       {
         "module": "Farmasi",
-        "sub_module": [
+        "sub_modules": [
           {
             "name": "Panggil Antrian",
             "allows": ["PANGGIL", "LEWATI", "VERIFIKASI", "PENYERAHAN OBAT"]
@@ -211,7 +210,7 @@
       },
       {
         "module": "Laboratorium",
-        "sub_module": [
+        "sub_modules": [
           {
             "name": "Order Lab",
             "allows": [
@@ -333,8 +332,8 @@
         ]
       },
       {
-        "name": "Order Fisioterapi",
-        "sub_module": [
+        "module": "Order Fisioterapi",
+        "sub_modules": [
           {
             "name": "Order Fisioterapi",
             "allows": [
@@ -502,8 +501,8 @@
         ]
       },
       {
-        "name": "Training",
-        "sub_module": [
+        "module": "Training",
+        "sub_modules": [
           {
             "name": "Daftar Kelas",
             "allows": ["READ", "CREATE DAFTAR KELAS", "BATAL DAFTAR"]
@@ -536,8 +535,8 @@
         ]
       },
       {
-        "name": "Pembayaran",
-        "sub_module": [
+        "module": "Pembayaran",
+        "sub_modules": [
           {
             "name": "Kasir",
             "allows": [
@@ -554,8 +553,8 @@
         ]
       },
       {
-        "name": "Pembayaran",
-        "sub_module": [
+        "module": "Pembayaran",
+        "sub_modules": [
           {
             "name": "Kasir",
             "allows": [
@@ -593,8 +592,8 @@
         ]
       },
       {
-        "name": "STOK",
-        "sub_module": [
+        "module": "STOK",
+        "sub_modules": [
           {
             "name": "Permintaan Barang",
             "features": [
@@ -691,8 +690,8 @@
         ]
       },
       {
-        "name": "Inventory",
-        "sub_module": [
+        "module": "Inventory",
+        "sub_modules": [
           {
             "name": "Pengadaan Barang",
             "features": [
@@ -815,8 +814,8 @@
         ]
       },
       {
-        "name": "Datamaster",
-        "sub_module": [
+        "module": "Datamaster",
+        "sub_modules": [
           {
             "name": "User",
             "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
@@ -933,8 +932,8 @@
         ]
       },
       {
-        "name": "Laporan",
-        "sub_module": [
+        "module": "Laporan",
+        "sub_modules": [
           {
             "name": "Jumlah Kunjungan Berdasarkan Status Rawat",
             "allows": ["READ", "CETAK LAPORAN"]
@@ -958,8 +957,8 @@
         ]
       },
       {
-        "name": "Setting",
-        "sub_module": [
+        "module": "Setting",
+        "sub_modules": [
           {
             "name": "Profile Faskes",
             "allows": ["READ", "UPDATE PROFILE", "UPDATE LOGO DAN WARNA"]
@@ -991,5 +990,219 @@
           }
         ]
       }
+    ],
+    [
+      {
+        "module": "Farmasi",
+        "sub_modules": [
+          {
+            "name": "Panggil Antrian",
+            "allows": ["PANGGIL", "LEWATI", "VERIFIKASI", "PENYERAHAN OBAT"]
+          },
+          {
+            "name": "Resep Dokter",
+            "allows": [
+              "READ",
+              "UPDATE OBAT",
+              "RESEP MASUK BATAL ORDER",
+              "RESEP MASUK PINDAH LOKASI",
+              "RESEP MASUK CETAK",
+              "RESEP MASUK SIMPAN TELAAH",
+              "RESEP MASUK VERIFIKASI",
+              "EDIT OBAT",
+              "SIMPAN EDIT",
+              "OBAT DIGERUS",
+              "SIMPAN DAN UBAH MENJADI RACIK",
+              "MENUNGGU PEMBAYARAN BATAL",
+              "MENUGGU PEMBAYARAN CETAK",
+              "OBAT DISIAPKAN TUNAI CETAK",
+              "OBAT DISIAPKAN TUNAI OBAT SIAP DISERAHKAN",
+              "OBAT DISIAPKAN ASURANSI BATAL",
+              "OBAT DISIAPKAN ASURANSI CETAK",
+              "OBAT DISIAPKAN ASURANSI OBAT SIAP DISERAHKAN",
+              "PENYERAHAN OBAT BATAL PENYERAHAN",
+              "PENYERAHAN OBAT CETAK",
+              "PENYERAHAN OBAT SERAHKAN OBAT"
+            ]
+          },
+          {
+            "name": "Penjualan Obat",
+            "allows": [
+              "READ",
+              "CREATE BELI OBAT",
+              "CREATE ITEM",
+              "CREATE ITEM OBAT",
+              "CREATE ITEM MULTIPLE",
+              "BATAL PEMBELIAN"
+            ]
+          },
+          {
+            "name": "Retur Obat dan Material",
+            "allows": ["READ", "RETUR"]
+          },
+          {
+            "name": "Farmasi Ruangan",
+            "allows": [
+              "READ",
+              "ORDER MASUK UPDATE ITEM",
+              "ORDER MASUK BATAL",
+              "ORDER MASUK PINDAH LOKASI ORDER",
+              "ORDER MASUK CETAK",
+              "ORDER MASUK VERIFIKASI",
+              "SEDANG DISIAPKAN BATAL",
+              "SEDANG DISIAPKAN CETAK",
+              "SEDANG DISIAPKAN ALKES SIAP DISERAHKAN",
+              "PENYERAHAN BATAL",
+              "PENYERAHAN CETAK",
+              "PENYERAHAN SERAHKAN"
+            ]
+          },
+          {
+            "name": "Riwayat Transaksi",
+            "allows": ["READ", "CETAK"]
+          },
+          {
+            "name": "Datamaster",
+            "features": [
+              {
+                "name": "Satuan",
+                "allows": [
+                  "READ",
+                  "CREATE",
+                  "UPDATE",
+                  "DELETE",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Bentuk Sediaan",
+                "allows": [
+                  "READ",
+                  "CREATE",
+                  "UPDATE",
+                  "DELETE",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Kategori Obat",
+                "allows": [
+                  "READ",
+                  "CREATE",
+                  "UPDATE",
+                  "DELETE",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Manufaktur",
+                "allows": [
+                  "READ",
+                  "CREATE",
+                  "UPDATE",
+                  "DELETE",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Jenis Stok",
+                "allows": [
+                  "READ",
+                  "CREATE",
+                  "UPDATE",
+                  "DELETE",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Lokasi Stok",
+                "allows": [
+                  "READ",
+                  "CREATE",
+                  "UPDATE",
+                  "DELETE",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Item Medis",
+                "allows": [
+                  "READ",
+                  "CREATE ITEM MEDIS",
+                  "UPDATE",
+                  "DELETE ITEM MEDIS",
+                  "CREATE KONVERSI SATUAN",
+                  "DELETE SATUAN PEMBELIAN",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Aturan Pakai",
+                "allows": [
+                  "READ",
+                  "CREATE",
+                  "UPDATE",
+                  "DELETE",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Komposisi",
+                "allows": [
+                  "READ",
+                  "CREATE",
+                  "UPDATE",
+                  "DELETE",
+                  "IMPORT",
+                  "EXPORT"
+                ]
+              },
+              {
+                "name": "Konfigurasi Harga",
+                "allows": [
+                  "READ",
+                  "CREATE TARIF JASA BARU EMBALASE DAN RACIK",
+                  "UPDATE TARIF JASA BARU EMBALASE DAN RACIK",
+                  "DELETE TARIF JASA BARU EMBALASE DAN RACIK",
+                  "SIMPAN PERUBAHAN",
+                  "SIMPAN BENTUK RACIKAN",
+                  "INPUT MARGIN",
+                  "INPUT PPN"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Riwayat Transaksi",
+            "features": [
+              {
+                "name": "Pendapatan",
+                "allows": ["READ", "CETAK"]
+              },
+              {
+                "name": "Waktu Tunggu",
+                "allows": ["READ", "CETAK"]
+              },
+              {
+                "name": "Rekap Pendapatan Per Apotik",
+                "allows": ["READ", "CETAK"]
+              }
+            ]
+          }
+        ]
+      }
     ]
-  }
+  ]
+}
+
+
+
+

@@ -80,7 +80,7 @@ export default class AuthenticationRepository {
         return {
           uuid, faskesUuid, username, email, password, phone,
           role: role.name, name: practitioner.pegawai.name,
-          permissions
+          permissions: JSON.parse(permissions)
         }
       }
       else {
@@ -119,7 +119,7 @@ export default class AuthenticationRepository {
            } = user.toJSON();
            return {
             uuid, faskesUuid, username, email, password, phone,
-            role: role.name, permissions
+            role: role.name, permissions: JSON.parse(permissions)
            }
         }
         else {
@@ -156,7 +156,6 @@ export default class AuthenticationRepository {
             }
           ]
         },
-        attributes: ["permissions"],
         transaction: tr
       })
       if(user){
