@@ -4,7 +4,7 @@ public.key
 .env
 package-lock.json
 docker-compose-dev.yml
-redis.conf
+*.conf
 .idea
 .npmrc
 deploy.sh
