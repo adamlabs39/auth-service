@@ -16,7 +16,12 @@ export default class UserRepository {
     });
 
     return {
-      data: rows.map(user => user.toJSON()),
+      data: rows.map(user => {
+        const usr =  user.toJSON();
+        delete usr.permissions;
+        return usr.permissions = JSON.parse(user.toJSON().permissions);
+        
+      }),
       properties: {
         currentPage: page,
         totalItem: count,
@@ -223,7 +228,7 @@ export default class UserRepository {
               uuid: roleUuid,
               name: roleName
             },
-            permissions
+            permissions: JSON.parse(permissions)
           };
         });
         return {
@@ -291,7 +296,7 @@ export default class UserRepository {
               uuid: roleUuid,
               name: roleName
             },
-            permissions
+            permissions: JSON.parse(permissions)
           };
         });
         return {
@@ -451,7 +456,7 @@ export default class UserRepository {
           },
         ],
       });
-      return user;
+      return user.toJSON();
     });
   }
 }
