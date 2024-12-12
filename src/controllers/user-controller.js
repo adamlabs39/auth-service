@@ -34,7 +34,7 @@ export default class UserController {
     try{
       const page = request.query.page !== undefined ? parseInt(request.query.page) : 0;
       const pageSize = request.query.pageSize !== undefined ? parseInt(request.query.pageSize) : 10;
-      const order = request.query.order !== undefined ? request.query.order : "ASC";
+      const order = request.query.order !== undefined ? request.query.order : "DESC";
       const role = request.query.role !== undefined ? { name: request.query.role } : undefined;
       const name = request.query.name !== undefined ? request.query.name :  "";
       const result = await UserService.findAll(page, pageSize, order, role, name, request.author);

@@ -30,10 +30,10 @@ export default class UserService {
   static async findAll(page, pageSize, order, role, name, author){
     const { faskesUuid, role: r } = author;
     if(r === "super admin"){
-      const data =  await UserRepository.findAllAsSuperadmin(page, pageSize, order);
+      const data =  await UserRepository.findAllAsSuperadmin(page, pageSize, order, role, name);
       return {
         message: "Berhasil menampilkan semua users",
-        payload: data.data,
+        payload: data.payload,
         properties: data.properties
       }
     }

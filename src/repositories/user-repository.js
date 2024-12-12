@@ -8,29 +8,124 @@ import { NotfoundException } from "@adameds/model-sdk/exceptions";
 export default class UserRepository {
 
 
-  static async findAllAsSuperadmin(page, pageSize, orderby) {
-    const {count, rows } = await UserModel.findAndCountAll({
-      limit: pageSize,
-      offset: page,
-      order: [["id", orderby]]
+  static async findAllAsSuperadmin(page, pageSize, orderby, role, name) {
+    UserModel.hasOne(RoleModel, {
+      foreignKey: "uuid",
+      sourceKey: "roleUuid",
+      constraints: false
+    });
+    RoleModel.belongsTo(UserModel, {
+      foreignKey: "uuid",
+      targetKey: "roleUuid",
+      constraints: false,
     });
 
-    return {
-      data: rows.map(user => {
-        const usr =  user.toJSON();
-        delete usr.permissions;
-        usr.permissions = JSON.parse(user.toJSON().permissions);
-        return usr;
-        
-      }),
-      properties: {
-        currentPage: page,
-        totalItem: count,
-        totalPage: Math.ceil(count/pageSize),
-        perPage: pageSize 
+    UserModel.hasOne(PractitionerModel, {
+      foreignKey: "uuid",
+      sourceKey: "practitionerUuid",
+      constraints: false
+    })
+
+    PractitionerModel.belongsTo(UserModel, {
+      foreignKey: "practitionerUuid",
+      targetKey: "uuid",
+      constraints: false,
+    })
+
+    let searchName;
+    let searchRole;
+    if(name){
+      searchName = {
+        name: {
+          [Op.iLike]: `%${name}%`
+        }
       }
     }
+    if(role){
+      searchRole = {
+        name: {
+          [Op.iLike]: `%${name}%`
+        }
+      }
+    }
+
+
+    const { count, rows } = await UserModel.findAndCountAll({
+      limit: pageSize,
+      offset: page,
+      order: [["id", orderby]],
+      attributes: ["uuid", "username", "email", "phone", "status", "permissions", "faskesUuid", "createdAt"],
+      where: {
+        [Op.and]: [
+          {
+            deletedAt: {
+              [Op.is]: null
+            }
+          }
+        ]
+      },
+      include: [
+        {
+          model: RoleModel,
+          attributes: ["name", "uuid"],
+          where:searchRole,
+          required: true,
+        },
+        {
+          model: PractitionerModel,
+          required: true,
+          attributes: ["uuid"],
+          include: [
+            {
+              model: PegawaiModel,
+              as: "pegawai",
+              required: true,
+              attributes: ["uuid", "name", "nik", "first_title", "last_title", "gender", "tanggal_lahir"],
+              where: searchName
+            }
+          ]
+        }
+      ],
+    });        
+    const payload = rows.map((user) => {
+      const practitionerUuid = user.toJSON().PractitionerModel.uuid;
+      const { name, nik, first_title, last_title, gender, tanggal_lahir } = user.toJSON().PractitionerModel.pegawai;
+      const { name: roleName, uuid: roleUuid} = user.toJSON().RoleModel;
+      const { uuid, username, email, phone, createdAt, status, faskesUuid, permissions } = user;
+      return {
+        faskesUuid, uuid, name, username, email,
+        phone, status, createdAt,
+        practitioner: {
+          uuid: practitionerUuid,
+          nik, first_title, last_title,
+          gender, tanggal_lahir,
+        },
+        role: {
+          uuid: roleUuid,
+          name: roleName
+        },
+        permissions: JSON.parse(permissions)
+      };
+    });
+    return {
+      payload,
+      properties: {
+        totalItem: count,
+        totalPage: Math.ceil(count / pageSize),
+        currentPage: page,
+      },
+    };
   }
+
+
+
+
+
+
+
+
+
+
 
   static async countPractitioner(faskesUuid, practitionerUuid){
     return await UserModel.count({
