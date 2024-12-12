@@ -19,7 +19,8 @@ export default class UserRepository {
       data: rows.map(user => {
         const usr =  user.toJSON();
         delete usr.permissions;
-        return usr.permissions = JSON.parse(user.toJSON().permissions);
+        usr.permissions = JSON.parse(user.toJSON().permissions);
+        return usr;
         
       }),
       properties: {
