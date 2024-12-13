@@ -2,11 +2,730 @@
   "permissions": [
     [
       {
+        "module": "Antrian",
+        "subModules": [
+          {
+            "name": "Konfigurasi",
+            "allows": [
+              "READ",
+              "CREATE",
+              "UPDATE",
+              "DELETE"
+            ]
+          },
+          {
+            "name": "Data Antrian",
+            "allows": [
+              "READ"
+            ]
+          },
+          {
+            "name": "Layar",
+            "allows": [
+              "READ"
+            ]
+          },
+          {
+            "name": "Apm",
+            "allows": [
+              "CREATE PASIEN JKN",
+              "CREATE PASIEN NON-JKN",
+              "CHECKIN",
+              "PRINT"
+            ]
+          }
+        ]
+      },
+      {
+        "module": "Admisi",
+        "subModules": [
+          {
+            "name": "Antrian",
+            "allows": [
+              "PANGGIL",
+              "LEWATI",
+              "PROSSES",
+              "SELESAI",
+              "CHECKIN"
+            ]
+          },
+          {
+            "name": "Admisi RJ",
+            "allows": [
+              "READ",
+              "CREATE PASIEN RJ",
+              "CREATE GENERAL CONSENT",
+              "UPDATE ADMISI RJ",
+              "CETAK KUNJUNGAN",
+              "CETAK LABEL",
+              "DELETE GENERAL CONSENT",
+              "BATAL RJ"
+            ]
+          },
+          {
+            "name": "Admisi RI",
+            "allows": [
+              "READ",
+              "CREATE BAYI BARU LAHIR",
+              "CREATE PASIEN RI",
+              "CREATE GENERAL CONSENT",
+              "UPDATE ADMISI RI",
+              "CETAK GENERAL CONSENT",
+              "CETAK KUNJUNGAN",
+              "CETAK LABEL",
+              "UPDATE ADMISI RI",
+              "DELETE GENERAL CONSENT"
+            ]
+          },
+          {
+            "name": "Admisi IGD",
+            "allows": [
+              "CREATE PASIEN IGD",
+              "CREATE GENERAL CONSENT",
+              "UPDATE ADMISI IGD",
+              "UPDATE GENERAL CONSENT",
+              "BATAL IGD",
+              "CETAK GENERAL CONSENT",
+              "CETAK KUNJUNGAN",
+              "CETAK LABEL",
+              "DELETE GENERAL CONSENT"
+            ]
+          },
+          {
+            "name": "SEP",
+            "allows": [
+              "READ",
+              "CREATE SEP",
+              "CREATE SEP MANUAL",
+              "DELETE",
+              "SIMPAN SEP MANUAL",
+              "DELETE PASIEN"
+            ]
+          },
+          {
+            "name": "Data Pasien",
+            "allows": [
+              "READ",
+              "CREATE PASIEN",
+              "UPDATE BERKAS RM",
+              "UPDATE DATA PASIEN",
+              "DELETE PASIEN",
+              "DELETE BERKAS RM",
+              "IMPORT DATA PASIEN",
+              "CETAK KARTU PASIEN",
+              "UPLOAD BERKAS RM",
+              "PREVIEW BERKAS RM",
+              "GENERAL CONSENT"
+            ]
+          },
+          {
+            "name": "Monitoring Kamar",
+            "allows": [
+              "READ",
+              "CREATE BAD",
+              "DELETE BAD",
+              "SETTING BAD"
+            ]
+          },
+          {
+            "name": "Laporan Admisi",
+            "features": [
+              {
+                "name": "Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Penjamin",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Batal Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Status kamar",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Keperawatan Inap Pasien",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Bayi Baru Lahir",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Rekap Jumlah Pasien BPJS",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "module": "Rawat Jalan",
+        "subModules": [
+          {
+            "name": "Antrian",
+            "allows": [
+              "PANGGIL",
+              "LEWATI",
+              "PROSSES",
+              "SELESAI"
+            ]
+          },
+          {
+            "name": "Poli",
+            "allows": [
+              "READ",
+              "BATAL KUNJUNGAN"
+            ]
+          },
+          {
+            "name": "BPJS-PCARE",
+            "features": [
+              {
+                "name": "Monitoring Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              },
+              {
+                "name": "Monitoring Riwayat Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              },
+              {
+                "name": "Monitoring Obat Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Laporan Rawat Jalan",
+            "features": [
+              {
+                "name": "Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Pembatalan Poli",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Rekap Pembatalan Pasien",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "RME",
+            "features": [
+              {
+                "name": "Rekap Medis",
+                "allows": [
+                  "READ",
+                  "UPDATE PEMERIKSAAN GIGI",
+                  "UPDATE PEMERIKSAAN MATA",
+                  "UPDATE PEMERIKSAAN FISIK",
+                  "UPDATE DERAJAT LUKA BAKAR",
+                  "UPDATE PEMERIKSAAN DAN TINDAKAN",
+                  "UPDATE REKAM MEDIS",
+                  "CETAK LABEL"
+                ]
+              },
+              {
+                "name": "Asesmen",
+                "allows": [
+                  "READ",
+                  "CREATE ALERGI",
+                  "CREATE ANAMESIS",
+                  "CREATE TANDA VITAL",
+                  "CREATE ANTROPOMETRI",
+                  "CREATE ASESMENT NYERI",
+                  "CREATE KESADARAN",
+                  "CREATE PEMERIKSAAN FISIK"
+                ]
+              },
+              {
+                "name": "SOAP",
+                "allows": [
+                  "READ",
+                  "CREATE OBAT",
+                  "CREATEE OBAT RACIKAN",
+                  "UPDATE OBAT",
+                  "DELETE OBAT"
+                ]
+              },
+              {
+                "name": "Akses Dan Penunjang",
+                "allows": [
+                  "READ",
+                  "CREATE ALKES",
+                  "CREATE ALKES MULTIPLE",
+                  "DELETE LIST ALKES",
+                  "DELETE LIST ALKES MULTIPLE",
+                  "DELETE SEMUA",
+                  "AMBIL ITEM",
+                  "SIMPAN ORDER",
+                  "CREATE TINDAKAN",
+                  "DELETE LIST TINDAKAN"
+                ]
+              },
+              {
+                "name": "Inform Consent",
+                "allows": [
+                  "READ",
+                  "CREATE"
+                ]
+              },
+              {
+                "name": "Unggah Berkas",
+                "allows": [
+                  "READ",
+                  "UPDATE FILE",
+                  "DELETE FILE",
+                  "CARI FILE"
+                ]
+              },
+              {
+                "name": "Resume Dan DISHCARGE",
+                "allows": [
+                  "READ",
+                  "CETAK RESUME MEDIS",
+                  "SIMPAN RESUME MEDIS",
+                  "DISHCARGE"
+                ]
+              },
+              {
+                "name": "Cetak Hasil Dan Surat",
+                "allows": [
+                  "READ",
+                  "CETAK HASIL",
+                  "CREATE SURAT",
+                  "DELETE SURAT KERERANGAN",
+                  "CETAK SURAT"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "module": "Rawat Inap",
+        "subModules": [
+          {
+            "name": "Rawat Inap",
+            "allows": [
+              "READ",
+              "BATAL DIRAWAT"
+            ]
+          },
+          {
+            "name": "Perpindahan Bangsal",
+            "allows": [
+              "READ",
+              "BATAL TERIMA",
+              "SETUJU DAN TERIMA"
+            ]
+          },
+          {
+            "name": "BPJS-PCARE",
+            "features": [
+              {
+                "name": "Monitoring Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              },
+              {
+                "name": "Monitoring Riwayat Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              },
+              {
+                "name": "Monitoring Obat Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Laporan",
+            "features": [
+              {
+                "name": "Monitoring Rawat Inap",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Perpindahan Pasien",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Pembatalan Berobat",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Rekap Tindakan Pasien",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Detail Pasien",
+            "features": [
+              {
+                "name": "Rekam Medis",
+                "allows": [
+                  "READ",
+                  "UPDATE PEMERIKSAAN FISIK",
+                  "UPDATE DERAJAT LUKA BAKAR",
+                  "UPDATE PEMERIKSAAN DAN TINDAKAN",
+                  "UPDATE REKAM MEDIS",
+                  "DELETE SESI"
+                ]
+              },
+              {
+                "name": "Asesmen",
+                "allows": [
+                  "READ",
+                  "TIDAK ADA ALERGI",
+                  "CREATE ALERGI",
+                  "CREATE ANAMESIS",
+                  "CREATE TANDA VITAL",
+                  "CREATE ANTROPOMETRI",
+                  "CREATE ASESMENT NYERI",
+                  "CREATE KESADARAN",
+                  "CREATE PEMERIKSAAN FISIK",
+                  "CREATE DERAJAT LUKA BAKAR",
+                  "CREATE CATATAN HASIL PENUNJANG",
+                  "CREATE DIAGNOSIS DIAGNOSIS PENUNJANG",
+                  "CREATE ASUHAN KEPERAWATAN",
+                  "CREATE CATATAN PERAWAT",
+                  "CREATE INTRUKSI MEDIS",
+                  "CREATE PEMERIKSAAN DAN TINDAKAN"
+                ]
+              },
+              {
+                "name": "SOAP Dokter",
+                "allows": [
+                  "READ",
+                  "PLAN CREATE OBAT",
+                  "PLAN CREATE RACIKAN",
+                  "PLAN UPDATE OBAT",
+                  "PLAN DELETE OBAT"
+                ]
+              },
+              {
+                "name": "Inform Consent",
+                "allows": [
+                  "READ",
+                  "CREATE"
+                ]
+              },
+              {
+                "name": "Alkes Dan Penunjang",
+                "allows": [
+                  "READ",
+                  "ORDER ALKES CREATE ALKES",
+                  "ORDER ALKES CREATE ALKES MULTIPLE",
+                  "ORDER ALKES DELETE ALKES",
+                  "ORDER ALKES DELETE MULTIPLE",
+                  "ORDER ALKES DELETE SEMUA",
+                  "ORDER ALKES AMBIL ITEM",
+                  "ORDER LAB SIMPAN ORDER",
+                  "ORDER FISIO CREATE TINDAKAN"
+                ]
+              },
+              {
+                "name": "Perpindahan",
+                "allows": [
+                  "READ",
+                  "PINDAHKAN PASIEN"
+                ]
+              },
+              {
+                "name": "FPO",
+                "allows": [
+                  "CREATE PEMBERIAN OBAT",
+                  "UPDATE PEMBERIAN OBAT",
+                  "TANGGAL PEMERIKSAAN",
+                  "TANGGAL PEMBERIAN OBAT"
+                ]
+              },
+              {
+                "name": "Unggah Berkas",
+                "allows": [
+                  "READ",
+                  "UPDATE FILE",
+                  "DELETE FILE",
+                  "CARI FILE"
+                ]
+              },
+              {
+                "name": "Resume Dan Dishcarge",
+                "allows": [
+                  "READ",
+                  "CETAK RESUME MEDIS",
+                  "SIMPAN RESUME MEDIS",
+                  "DISHCARGE"
+                ]
+              },
+              {
+                "name": "Cetak Hasil Dan Surat",
+                "allows": [
+                  "READ",
+                  "CETAK HASIL PEMERIKSAAN",
+                  "SURAT KETERANGAN CREATE SURAT",
+                  "SURAT KETERANGAN DELETE SURAT KETERANGAN",
+                  "SURAT KETERANGAN CETAK SURAT"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "module": "IGD",
+        "subModules": [
+          {
+            "name": "IGD",
+            "allows": [
+              "READ",
+              "BATAL IGD"
+            ]
+          },
+          {
+            "name": "BPJS-PCARE",
+            "features": [
+              {
+                "name": "Monitoring Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              },
+              {
+                "name": "Monitoring Riwayat Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              },
+              {
+                "name": "Monitoring Obat Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK BPJS"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Laporan IGD",
+            "features": [
+              {
+                "name": "Kunjungan",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Pembatalan Berobat",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              },
+              {
+                "name": "Rekap Tindakan Pasien",
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Detail Pasien",
+            "features": [
+              {
+                "name": "Rekam Medis",
+                "allows": [
+                  "READ",
+                  "UPDATE PEMERIKSAAN FISIK",
+                  "UPDATE DERAJAT LUKA BAKAR",
+                  "UPDATE PEMERIKSAAN DAN TINDAKAN",
+                  "UPDATE REKAM MEDIS",
+                  "DELETE SESI"
+                ]
+              },
+              {
+                "name": "Asesmen",
+                "allows": [
+                  "READ",
+                  "TIDAK ADA ALERGI",
+                  "CREATE ALERGI",
+                  "CREATE ANAMESIS IGD",
+                  "CREATE TRIASE",
+                  "CREATE TANDA VITAL",
+                  "CREATE ANTROPOMETRI",
+                  "CREATE ASESMENT NYERI",
+                  "CREATE KESADARAN",
+                  "CREATE PEMERIKSAAN FISIK",
+                  "CREATE DERAJAT LUKA BAKAR",
+                  "CREATE CATATAN HASIL PENUNJANG",
+                  "CREATE DIAGNOSIS DIAGNOSIS PENUNJANG",
+                  "CREATE ASUHAN KEPERAWATAN",
+                  "CREATE CATATAN PERAWAT",
+                  "CREATE INTRUKSI MEDIS",
+                  "CREATE PEMERIKSAAN DAN TINDAKAN"
+                ]
+              },
+              {
+                "name": "SOAP Dokter",
+                "allows": [
+                  "READ",
+                  "PLAN CREATE OBAT",
+                  "PLAN CREATE RACIKAN",
+                  "PLAN UPDATE OBAT",
+                  "PLAN DELETE OBAT"
+                ]
+              },
+              {
+                "name": "Inform Consent",
+                "allows": [
+                  "READ",
+                  "CREATE"
+                ]
+              },
+              {
+                "name": "Alkes Dan Penunjang",
+                "allows": [
+                  "READ",
+                  "ORDER ALKES CREATE ALKES",
+                  "ORDER ALKES CREATE ALKES MULTIPLE",
+                  "ORDER ALKES DELETE ALKES",
+                  "ORDER ALKES DELETE MULTIPLE",
+                  "ORDER ALKES DELETE SEMUA",
+                  "ORDER ALKES AMBIL ITEM",
+                  "ORDER LAB SIMPAN ORDER",
+                  "ORDER FISIO CREATE TINDAKAN"
+                ]
+              },
+              {
+                "name": "Perpindahan",
+                "allows": [
+                  "READ",
+                  "PINDAHKAN PASIEN"
+                ]
+              },
+              {
+                "name": "FPO",
+                "allows": [
+                  "CREATE PEMBERIAN OBAT",
+                  "UPDATE PEMBERIAN OBAT",
+                  "TANGGAL PEMERIKSAAN",
+                  "TANGGAL PEMBERIAN OBAT"
+                ]
+              },
+              {
+                "name": "Unggah Berkas",
+                "allows": [
+                  "READ",
+                  "UPDATE FILE",
+                  "DELETE FILE",
+                  "CARI FILE"
+                ]
+              },
+              {
+                "name": "Resume Dan Dishcarge",
+                "allows": [
+                  "READ",
+                  "CETAK RESUME MEDIS",
+                  "SIMPAN RESUME MEDIS",
+                  "DISHCARGE"
+                ]
+              },
+              {
+                "name": "Cetak Hasil Dan Surat",
+                "allows": [
+                  "READ",
+                  "CETAK HASIL PEMERIKSAAN",
+                  "SURAT KETERANGAN CREATE SURAT",
+                  "SURAT KETERANGAN DELETE SURAT KETERANGAN",
+                  "SURAT KETERANGAN CETAK SURAT"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
         "module": "Farmasi",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Panggil Antrian",
-            "allows": ["PANGGIL", "LEWATI", "VERIFIKASI", "PENYERAHAN OBAT"]
+            "allows": [
+              "PANGGIL",
+              "LEWATI",
+              "VERIFIKASI",
+              "PENYERAHAN OBAT"
+            ]
           },
           {
             "name": "Resep Dokter",
@@ -47,7 +766,10 @@
           },
           {
             "name": "Retur Obat dan Material",
-            "allows": ["READ", "RETUR"]
+            "allows": [
+              "READ",
+              "RETUR"
+            ]
           },
           {
             "name": "Farmasi Ruangan",
@@ -68,7 +790,10 @@
           },
           {
             "name": "Riwayat Transaksi",
-            "allows": ["READ", "CETAK"]
+            "allows": [
+              "READ",
+              "CETAK"
+            ]
           },
           {
             "name": "Datamaster",
@@ -194,15 +919,24 @@
             "features": [
               {
                 "name": "Pendapatan",
-                "allows": ["READ", "CETAK"]
+                "allows": [
+                  "READ",
+                  "CETAK"
+                ]
               },
               {
                 "name": "Waktu Tunggu",
-                "allows": ["READ", "CETAK"]
+                "allows": [
+                  "READ",
+                  "CETAK"
+                ]
               },
               {
                 "name": "Rekap Pendapatan Per Apotik",
-                "allows": ["READ", "CETAK"]
+                "allows": [
+                  "READ",
+                  "CETAK"
+                ]
               }
             ]
           }
@@ -210,7 +944,7 @@
       },
       {
         "module": "Laboratorium",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Order Lab",
             "allows": [
@@ -317,15 +1051,24 @@
             "features": [
               {
                 "name": "Kunjungan",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               },
               {
                 "name": "Waktu Tunggu TAT",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               },
               {
                 "name": "Rekap Jumlah Pemeriksaan",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               }
             ]
           }
@@ -333,7 +1076,7 @@
       },
       {
         "module": "Fisioterapi",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Order Fisioterapi",
             "allows": [
@@ -362,7 +1105,10 @@
           },
           {
             "name": "Evaluasi Terapi",
-            "allows": ["READ", "EVALUASI"]
+            "allows": [
+              "READ",
+              "EVALUASI"
+            ]
           },
           {
             "name": "Booking Terapi",
@@ -395,15 +1141,24 @@
             "features": [
               {
                 "name": "Kunjungan",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               },
               {
                 "name": "Rekapitulasi Kunjungan Jenis Fisioterapi",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               },
               {
                 "name": "Rekapitulasi Terapi",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               }
             ]
           },
@@ -468,7 +1223,11 @@
               },
               {
                 "name": "Inform Consent",
-                "allows": ["READ", "CETAK LABEL", "CREATE"]
+                "allows": [
+                  "READ",
+                  "CETAK LABEL",
+                  "CREATE"
+                ]
               },
               {
                 "name": "Unggah Berkas",
@@ -502,10 +1261,14 @@
       },
       {
         "module": "Training",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Daftar Kelas",
-            "allows": ["READ", "CREATE DAFTAR KELAS", "BATAL DAFTAR"]
+            "allows": [
+              "READ",
+              "CREATE DAFTAR KELAS",
+              "BATAL DAFTAR"
+            ]
           },
           {
             "name": "Booking Kelas",
@@ -530,31 +1293,15 @@
           },
           {
             "name": "Laporan",
-            "allows": ["READ"]
-          }
-        ]
-      },
-      {
-        "module": "Pembayaran",
-        "sub_modules": [
-          {
-            "name": "Kasir",
             "allows": [
-              "READ",
-              "OPEN KASIR",
-              "BAYAR",
-              "CETAK INVOICE",
-              "CETAK RINCIAN BIAYA",
-              "CLOSE HARIAN",
-              "CLOSE BILL",
-              "CLOSE KASIR"
+              "READ"
             ]
           }
         ]
       },
       {
         "module": "Pembayaran",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Kasir",
             "allows": [
@@ -570,22 +1317,35 @@
           },
           {
             "name": "Transaksi",
-            "allows": ["READ", "CETAK INVOICE", "CETAK RINCIAN BIAYA"]
+            "allows": [
+              "READ",
+              "CETAK INVOICE",
+              "CETAK RINCIAN BIAYA"
+            ]
           },
           {
             "name": "Closed Bill",
-            "allows": ["READ", "LUNASKAN"]
+            "allows": [
+              "READ",
+              "LUNASKAN"
+            ]
           },
           {
             "name": "Laporan Pembayaran",
             "features": [
               {
                 "name": "Kunjungan",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               },
               {
                 "name": "Closing Kasir",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               }
             ]
           }
@@ -593,7 +1353,7 @@
       },
       {
         "module": "STOK",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Permintaan Barang",
             "features": [
@@ -656,17 +1416,24 @@
             "features": [
               {
                 "name": "Penerimaan Unit",
-                "allows": ["READ"]
+                "allows": [
+                  "READ"
+                ]
               },
               {
                 "name": "Penerimaan Retur Unit",
-                "allows": ["READ"]
+                "allows": [
+                  "READ"
+                ]
               }
             ]
           },
           {
             "name": "Kartu Stok dan Mutasi",
-            "allows": ["READ", "CETAK KARTU STOK DAN MUTASI"]
+            "allows": [
+              "READ",
+              "CETAK KARTU STOK DAN MUTASI"
+            ]
           },
           {
             "name": "Stok Opname",
@@ -685,13 +1452,17 @@
           },
           {
             "name": "Stok Adjustment",
-            "allows": ["READ", "ADJUSTMENT", "ADJUST"]
+            "allows": [
+              "READ",
+              "ADJUSTMENT",
+              "ADJUST"
+            ]
           }
         ]
       },
       {
         "module": "Inventory",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Pengadaan Barang",
             "features": [
@@ -713,7 +1484,10 @@
           },
           {
             "name": "Verifikasi Pembelian Barang Supplier",
-            "allows": ["READ", "VERIFIKASI"]
+            "allows": [
+              "READ",
+              "VERIFIKASI"
+            ]
           },
           {
             "name": "Retur dan Penggantian Supplier",
@@ -759,25 +1533,42 @@
             "features": [
               {
                 "name": "Penerimaan Pembelian",
-                "allows": ["READ", "TERIMA PEMBELIAN"]
+                "allows": [
+                  "READ",
+                  "TERIMA PEMBELIAN"
+                ]
               },
               {
                 "name": "Penerimaan Retur Unit",
-                "allows": ["READ"]
+                "allows": [
+                  "READ"
+                ]
               }
             ]
           },
           {
             "name": "Datamaster Supplier",
-            "allows": ["READ", "CREATE", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "READ",
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Riwayat Tarif",
-            "allows": ["READ"]
+            "allows": [
+              "READ"
+            ]
           },
           {
             "name": "Kartu Stok dan Mutasi",
-            "allows": ["READ", "CETAK"]
+            "allows": [
+              "READ",
+              "CETAK"
+            ]
           },
           {
             "name": "Stok Opname",
@@ -796,17 +1587,27 @@
           },
           {
             "name": "Stok Adjustment",
-            "allows": ["READ", "ADJUST", "ADJUST ITEM"]
+            "allows": [
+              "READ",
+              "ADJUST",
+              "ADJUST ITEM"
+            ]
           },
           {
             "name": "Laporan Inventory",
             "features": [
               {
                 "name": "Obat Expired",
-                "allows": ["READ", "CETAK LAPORAN"]
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ]
               },
               {
-                "allows": ["READ", "CETAK LAPORAN"],
+                "allows": [
+                  "READ",
+                  "CETAK LAPORAN"
+                ],
                 "name": "Obat Expired"
               }
             ]
@@ -815,18 +1616,39 @@
       },
       {
         "module": "Datamaster",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "User",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Role",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Pegawai",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Praktisioner",
@@ -842,31 +1664,80 @@
           },
           {
             "name": "Ruangan",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Kategori Ruangan",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Diagnosis ICD-10",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "ICD-9 CM",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Snomed-CT",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "LOINC",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Tindakan",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Tarif",
@@ -887,81 +1758,177 @@
           },
           {
             "name": "Komponen Tarif",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Faskes",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Organisasi",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Lokasi",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Penjamin",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Voucher",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "General Consent",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Gigi FDI",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Kategori Gigi",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Item Gigi",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           },
           {
             "name": "Oklusi",
-            "allows": ["CREATE", "READ", "UPDATE", "DELETE", "IMPORT", "EXPORT"]
+            "allows": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE",
+              "IMPORT",
+              "EXPORT"
+            ]
           }
         ]
       },
       {
         "module": "Laporan",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Jumlah Kunjungan Berdasarkan Status Rawat",
-            "allows": ["READ", "CETAK LAPORAN"]
+            "allows": [
+              "READ",
+              "CETAK LAPORAN"
+            ]
           },
           {
             "name": "Rekapitulasi Tindakan",
-            "allows": ["READ", "CETAK LAPORAN"]
+            "allows": [
+              "READ",
+              "CETAK LAPORAN"
+            ]
           },
           {
             "name": "Rekapitulasi Pemeriksaan Lab",
-            "allows": ["READ", "CETAK LAPORAN"]
+            "allows": [
+              "READ",
+              "CETAK LAPORAN"
+            ]
           },
           {
             "name": "Rekapitulasi Pendapatan Fisioterapi",
-            "allows": ["READ", "CETAK LAPORAN"]
+            "allows": [
+              "READ",
+              "CETAK LAPORAN"
+            ]
           },
           {
             "name": "Rekapitulasi Pendapatan",
-            "allows": ["READ", "CETAK LAPORAN"]
+            "allows": [
+              "READ",
+              "CETAK LAPORAN"
+            ]
           }
         ]
       },
       {
         "module": "Setting",
-        "sub_modules": [
+        "subModules": [
           {
             "name": "Profile Faskes",
-            "allows": ["READ", "UPDATE PROFILE", "UPDATE LOGO DAN WARNA"]
+            "allows": [
+              "READ",
+              "UPDATE PROFILE",
+              "UPDATE LOGO DAN WARNA"
+            ]
           },
           {
             "name": "Konfigurasi Integrasi",
@@ -974,11 +1941,19 @@
           },
           {
             "name": "Print Out",
-            "allows": ["READ", "UPDATE PRINT OUT", "DELETE GAMBAR", "CARI FILE"]
+            "allows": [
+              "READ",
+              "UPDATE PRINT OUT",
+              "DELETE GAMBAR",
+              "CARI FILE"
+            ]
           },
           {
             "name": "System",
-            "allows": ["READ", "UPDATE PPN"]
+            "allows": [
+              "READ",
+              "UPDATE PPN"
+            ]
           },
           {
             "name": "Profile Saya",
