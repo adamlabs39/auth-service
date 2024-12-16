@@ -13,8 +13,6 @@ services:
     environment:
       # Application config
       DOTENV_KEY: ${DOTENV_KEY}
-      APPLICATION_PORT: ${APPLICATION_PORT}
-      APPLICATION_HOST: ${APPLICATION_HOST}
       API_VERSION: ${API_VERSION}
     volumes:
       - type: bind
