@@ -1,3 +1,5 @@
+import { HttpException, HttpStatus } from "../errors/http-exception.js";
+import { generateErrorMessage } from "../helpers/generate-message.js";
 import UserService from "../services/user-service.js";
 
 export default class UserController {
@@ -66,6 +68,27 @@ export default class UserController {
     try{
       const result = await UserService.findByUuidIncludeRole(request.params.uuid);
       response.status(200).json(result);
+    }catch(error){
+      nextFunction(error);
+    }
+  }
+
+  /**
+   * 
+   * @param {Request} request 
+   * @param {Response} response 
+   * @param {NextFunction} nextFunction 
+   */
+  static async import(request, response, nextFunction){
+    try{
+      const files = request.files;
+      if(!files) {
+        throw new HttpException(generateErrorMessage("Gagal import", "required", "file harus di sertakan"), HttpStatus.BAD_REQUEST);
+      }
+      const allowExtentions = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"];
+      if(!allowExtentions.includes(files.file.mimetype)) throw new HttpException(generateErrorMessage("Gagal import", "invalid", "file yang di import harus file excel"), HttpStatus.BAD_REQUEST);
+      const result = await UserService.import(files.file.tempFilePath, request.author.faskesUuid);
+      response.status(HttpStatus.CREATED).json(result);
     }catch(error){
       nextFunction(error);
     }

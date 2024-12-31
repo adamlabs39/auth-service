@@ -7,6 +7,17 @@ import { NotfoundException } from "@adameds/model-sdk/exceptions";
 
 export default class UserRepository {
 
+  /**
+   * 
+   * @param {Array<{}>} users 
+   */
+  static async saveAll(users){
+    await sequelizeInstance.transaction(async tr => {
+      
+    })
+  }
+
+
 
   static async findAllAsSuperadmin(page, pageSize, orderby, role, name) {
     UserModel.hasOne(RoleModel, {
@@ -116,15 +127,6 @@ export default class UserRepository {
       },
     };
   }
-
-
-
-
-
-
-
-
-
 
 
   static async countPractitioner(faskesUuid, practitionerUuid){
@@ -553,6 +555,30 @@ export default class UserRepository {
         ],
       });
       return user.toJSON();
+    });
+  }
+
+
+  /**
+   * 
+   * @param {Array<{}>} usersList 
+   * @param {Array<{}>} practitionerList 
+   * @param {Array<{}>} pegawaiList 
+   */
+  static async importUser(usersList, practitionerList, pegawaiList) {
+    return await sequelizeInstance.transaction(async (tr) => {
+      await PegawaiModel.bulkCreate(pegawaiList, {
+        transaction: tr,
+        returning: true,
+      });
+      await PractitionerModel.bulkCreate(practitionerList, {
+        transaction: tr,
+        returning: true,
+      });
+      await UserModel.bulkCreate(usersList, {
+        transaction: tr,
+        returning: true,
+      });
     });
   }
 }
