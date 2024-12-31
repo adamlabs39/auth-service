@@ -77,7 +77,8 @@ export async function initAdmin() {
         name: "Cliic Long Sehat",
         status: true
       },
-      transaction: tr
+      transaction: tr,
+      attributes: ["uuid", "name", "code", "status"],
     })
     
 
