@@ -42,6 +42,7 @@ export default class FaskesRepository {
           ],
         },
         transaction: tr,
+        attributes: ["code", "name", "status", "createdAt", "updatedAt", "deletedAt"]
       });
       if(faskes){
         return faskes.toJSON();
