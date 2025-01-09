@@ -71,7 +71,7 @@ export default class UserValidation {
       faskes_uuid: z.string().min(1, faskesUuidRequired),
       pegawai_uuid: z.string().min(1, "uuid pegawai tidak boleh kosong"),
       is_doctor: z.boolean(),
-      code_bpjs: z.string().min(1, "kode bpjs tidak boleh kosong"),
+      code_bpjs: z.string().min(1, "kode bpjs tidak boleh kosong").nullable(),
       sip: z.string().min(1, "sip tidak boleh kosong"),
       str: z.string().min(1, "str tidak boleh kosong"),
       code_antrian_dokter: z.string().min(1, "code antrian dokter tidak boleh kosong"),

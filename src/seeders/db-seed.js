@@ -2,11 +2,12 @@ import { Op } from "sequelize";
 import * as bcrypt from "bcrypt";
 import { FaskesModel, PegawaiModel, PractitionerModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
 import sequelizeInstance from "@adameds/model-sdk/instance";
-import permissions from "../../permissions.json" assert { type: 'json'}
+import { admisiPermission, antrianPermission, dashboardPermission, datamasterPermission, farmasiPermission, fisioTerapiPermission, igdPermission, inventoryPermission, laboraturiumPermission, laporanPermission, pembayaranPermission, rawatInapPermission, settingPermission, stokPermission, trainingPermission } from "../helpers/permission-list.js";
 
 export async function initSueprAdmin() {
   await sequelizeInstance.transaction(async (tr) => {
     // create super admin
+    const permissions = [antrianPermission, admisiPermission, rawatInapPermission, rawatInapPermission, igdPermission, farmasiPermission, laboraturiumPermission, fisioTerapiPermission, trainingPermission, pembayaranPermission, stokPermission, inventoryPermission, datamasterPermission, laporanPermission, settingPermission, dashboardPermission];
     const [roleSuperAdmin, ] = await RoleModel.findOrCreate({
       where: {
         [Op.and]: [
@@ -38,7 +39,7 @@ export async function initSueprAdmin() {
         phone: "081341079104",
         email: "admin@gmail.com",
         username: "adameds-service-center",
-        permissions: JSON.stringify(permissions.permissions[0]),
+        permissions: JSON.stringify(permissions),
         password: await bcrypt.hash("admin123", 10),
         first_title: "spr",
         last_title: ".ad",
@@ -51,6 +52,7 @@ export async function initSueprAdmin() {
 
 export async function initAdmin() {
   await sequelizeInstance.transaction(async (tr) => {
+    const permissions = [antrianPermission, admisiPermission, rawatInapPermission, rawatInapPermission, igdPermission, farmasiPermission, laboraturiumPermission, fisioTerapiPermission, trainingPermission, pembayaranPermission, stokPermission, inventoryPermission, datamasterPermission, laporanPermission, settingPermission, dashboardPermission]
     const [roleAdmin, ] = await RoleModel.findOrCreate({
       where: {
         [Op.and]: [{ name: "admin" }, { code: "ADM" }],
@@ -137,7 +139,7 @@ export async function initAdmin() {
         email: "khabib@gmail.com",
         password: await bcrypt.hash("khabib123", 10),
         status: true,
-        permissions: JSON.stringify(permissions.permissions[1]),
+        permissions: JSON.stringify(permissions),
       },
     });
   });

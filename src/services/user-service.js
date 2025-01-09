@@ -10,6 +10,7 @@ import { RoleRepository } from "../repositories/role-repository.js";
 import { checkRole } from "../helpers/permission-list.js";
 import { generateErrorMessage, generateSuccessMessage } from "../helpers/generate-message.js";
 import { HttpException, HttpStatus } from "../errors/http-exception.js";
+import { isThereDuplicate } from "../helpers/helper.js";
 
 export default class UserService {
   
@@ -105,7 +106,7 @@ export default class UserService {
         faskes_uuid: faskesuuid,
         pegawai_uuid: pegawaiUuid,
         is_doctor: row.values[6] === "Dokter" ? true : false,
-        code_bpjs: row.values[7],
+        code_bpjs: row.values[7] !== undefined? row.values[7] : null,
         sip: row.values[8].toString(),
         str: row.values[9].toString(),
         code_antrian_dokter: row.values[10],
@@ -140,6 +141,17 @@ export default class UserService {
       user.permissions = roleList[index].permissions;
       user.roleUuid = roleList[index].uuid;
     });
+    isThereDuplicate(pegawaiPromises.map(p => p.nik), "nik");
+    isThereDuplicate(practitionerPromises.map(p => {
+      if(p.code_bpjs){
+        return p.code_bpjs.toString().toLowerCase();
+      }
+      else {
+        return
+      }
+    }).filter(d => d !== undefined), "code HFIS");
+    isThereDuplicate(users.map(u => u.username.toLowerCase()), "username");
+    isThereDuplicate(users.map(u => u.email.toLowerCase()), "email");
     ZodValidator.validate(UserValidation.IMPORT_USER, users);
     ZodValidator.validate(UserValidation.IMPORT_PRACTITOR, practitionerPromises);
     ZodValidator.validate(UserValidation.IMPORT_PEGAWAI, pegawaiPromises);
