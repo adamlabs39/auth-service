@@ -22,6 +22,7 @@ export async function initSueprAdmin() {
       defaults: {
         name: "super admin",
         code: "SPR-ADM",
+        permissions: JSON.stringify(permissions),
         status: true,
       },
       transaction: tr,
@@ -53,20 +54,6 @@ export async function initSueprAdmin() {
 export async function initAdmin() {
   await sequelizeInstance.transaction(async (tr) => {
     const permissions = [antrianPermission, admisiPermission, rawatInapPermission, rawatInapPermission, igdPermission, farmasiPermission, laboraturiumPermission, fisioTerapiPermission, trainingPermission, pembayaranPermission, stokPermission, inventoryPermission, datamasterPermission, laporanPermission, settingPermission, dashboardPermission]
-    const [roleAdmin, ] = await RoleModel.findOrCreate({
-      where: {
-        [Op.and]: [{ name: "admin" }, { code: "ADM" }],
-      },
-      defaults: {
-        name: "admin",
-        code: "ADM",
-        status: true,
-      },
-      transaction: tr
-    });
-    
-    
-    
     const [ faskes, ] = await FaskesModel.findOrCreate({
       where: {
         [Op.and]: [
@@ -81,7 +68,22 @@ export async function initAdmin() {
       },
       transaction: tr,
       attributes: ["uuid", "name", "code", "status"],
-    })
+    });
+    const [roleAdmin, ] = await RoleModel.findOrCreate({
+      where: {
+        [Op.and]: [{ name: "admin" }, { code: "ADM" }],
+      },
+      defaults: {
+        name: "admin",
+        faskes_uuid: faskes.toJSON().uuid,
+        permissions: JSON.stringify(permissions),
+        code: "ADM",
+        status: true,
+      },
+      transaction: tr
+    });
+    
+    
     
 
     const [pegawai, ] = await PegawaiModel.findOrCreate(
