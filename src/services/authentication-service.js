@@ -18,8 +18,8 @@ export default class AuthenticationService {
     if(!user) throw new UsernameException({ message: "Gagal login", errors: [{ field: "username", message: "username", message: `username ${username} belum terdaftar!`}] }, 401);
     const isPasswordValid = await bcrypt.compare(rawPassword, user.password);
     if(!isPasswordValid) throw new UnauthorizeException({message: "Autentikasi gagal", errors: [{field: "password", message: "password anda tidak sesuai"}]});
-    const { role, faskesUuid, permissions, name } = user;
-    const { token, refreshToken} = genereateAuthToken({role, username, faskesUuid});
+    const { role, faskesUuid, permissions, name, uuid } = user;
+    const { token, refreshToken} = genereateAuthToken({role, username, faskesUuid, user_uuid: uuid});
     const keyRedis = generateRedisKeyByJwtToken(token)
     await redisClient.set(`token-${keyRedis}`, JSON.stringify({permissions}), { EX: 3 * (60 * 60), NX: true });
     return {
@@ -29,7 +29,7 @@ export default class AuthenticationService {
         user: { 
           faskesUuid,
           role,
-          name
+          name,
         }
       }
     }

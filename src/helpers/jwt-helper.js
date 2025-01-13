@@ -27,7 +27,8 @@ export function genereateAuthToken(payload) {
     token: JwtHelper.sign({
       role: payload.role,
       username: payload.username,
-      faskesUuid: payload.faskesUuid
+      faskesUuid: payload.faskesUuid,
+      user_uuid: payload.user_uuid
     }),
     refreshToken: JwtHelper.signRefreshToken({username: payload.username})
   }
