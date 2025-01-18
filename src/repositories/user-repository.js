@@ -9,12 +9,79 @@ export default class UserRepository {
 
   /**
    * 
+   * @param {string} faskes_uuid 
+   * @returns {Promise<Array<UserModel>>}
+   */
+  static async export(faskes_uuid){ 
+    UserModel.hasOne(PractitionerModel, {
+      foreignKey: "uuid",
+      constraints: false,
+      sourceKey: "practitionerUuid"
+    });
+    PractitionerModel.belongsTo(UserModel, {
+      constraints: false,
+      foreignKey: "uuid",
+      targetKey: "uuid"
+    });
+
+    PractitionerModel.hasOne(PegawaiModel, {
+      foreignKey: "uuid",
+      constraints: false,
+      sourceKey: "pegawai_uuid",
+    });
+
+    PegawaiModel.belongsTo(PractitionerModel, {
+      constraints: false,
+      foreignKey: "pegawai_uuid",
+      targetKey: "uuid",
+    })
+    const result = await UserModel.findAll({
+      where: {
+        [Op.and]: [
+          {
+            deletedAt: {
+              [Op.is]: null
+            }
+          },
+          {
+            faskes_uuid: faskes_uuid
+          }
+        ]
+      },
+      include: [
+        {
+          model: PractitionerModel,
+          required: true,
+          attributes: ["sip", "str", "code_bpjs", "satu_sehat_id", "is_doctor", "code_antrian_dokter", "status"],
+          include: [
+            {
+              model: PegawaiModel,
+              required: true,
+              as: "pegawai",
+              attributes: ["name", "nik", "first_title", "last_title", "gender", "tanggal_lahir"],
+            }
+          ]
+        }
+      ]
+    });
+
+    if(result.length >= 0) return result.map(u => {
+      const user = u.toJSON();
+      user.permissions = JSON.parse(u.toJSON().permissions);
+      delete user.PractitionerModel;
+      user.practitioner = u.toJSON().PractitionerModel;
+      return user;
+    });
+    else return [];
+  }
+
+
+  /**
+   * 
    * @param {Array<{}>} users 
    */
-  static async saveAll(users){
-    await sequelizeInstance.transaction(async tr => {
-      
-    })
+  static async saveAll(users, transaction){
+      await UserModel.bulkCreate(users, { transaction });
   }
 
 

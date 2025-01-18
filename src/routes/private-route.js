@@ -27,5 +27,6 @@ privateRoute.post(`/${API_VERSION}/user/import`, fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
     abortOnLimit: true
 }), UserController.import);
+privateRoute.get(`/${API_VERSION}/user/export`, UserController.export);
 
 export default privateRoute;

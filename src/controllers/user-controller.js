@@ -46,6 +46,22 @@ export default class UserController {
     }
   }
 
+  
+  /**
+   * 
+   * @param {Request} request 
+   * @param {Response} response 
+   * @param {import("express").NextFunction} nextFunction 
+   */
+  static async export(request, response, nextFunction){
+    try{
+      const result = await UserService.export(request.author.faskesUuid);
+      response.status(200).json(result);
+    }catch(error) {
+      nextFunction(error);
+    }
+  }
+
   static async delete(request, response, nextFunction){
     try{
       const result = await UserService.delete(request.author, request.params.uuid);

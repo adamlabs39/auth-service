@@ -1,4 +1,3 @@
-version: "3.3"
 services:
   postgres:
     container_name: postgresql
@@ -10,7 +9,7 @@ services:
         - adameds
     environment:
       - POSTGRES_PASSWORD=resman56adam
-      - POSTGRES_DB=adameds
+      - POSTGRES_DB=adameds_v3
       - POSTGRES_USER=wmi_user_db
   redis:
     container_name: redis

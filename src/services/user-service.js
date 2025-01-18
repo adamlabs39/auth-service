@@ -11,6 +11,7 @@ import { checkRole } from "../helpers/permission-list.js";
 import { generateErrorMessage, generateSuccessMessage } from "../helpers/generate-message.js";
 import { HttpException, HttpStatus } from "../errors/http-exception.js";
 import { isThereDuplicate } from "../helpers/helper.js";
+import { UserModel } from "@adameds/model-sdk/datamaster";
 
 export default class UserService {
   
@@ -158,4 +159,19 @@ export default class UserService {
     await UserRepository.importUser(users, practitionerPromises, pegawaiPromises);
     return generateSuccessMessage("Berhasil import user");
   }
+
+
+  /**
+   * 
+   * @param {string} faskes_uuid 
+   * @returns {Promise<Array<UserModel>>}
+   */
+  static async export(faskes_uuid){
+    const userList = await UserRepository.export(faskes_uuid);
+    return {
+      message: "Berhasil menampilkan semua user",
+      payload: userList
+    }
+  }
+
 }
