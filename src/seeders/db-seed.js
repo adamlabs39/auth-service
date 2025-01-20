@@ -64,6 +64,9 @@ export async function initAdmin() {
       defaults: {
         code: "CLS",
         name: "Cliic Long Sehat",
+        organization_ihs_number: "00998274777912",
+        client_id: "203991290803u08ru2304823-29e9ei9191238",
+        client_secret: "00291380e81e981231d791ye7912w391g",
         status: true
       },
       transaction: tr,
