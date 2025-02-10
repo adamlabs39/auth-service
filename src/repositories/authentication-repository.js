@@ -22,13 +22,13 @@ export default class AuthenticationRepository {
       UserModel.hasOne(PractitionerModel, {
         constraints: false,
         foreignKey: "uuid",
-        sourceKey: "practitionerUuid"
+        sourceKey: "practitioner_uuid"
       })
 
       PractitionerModel.belongsTo(UserModel, {
         constraints: false,
         foreignKey: "uuid",
-        targetKey: "practitionerUuid"
+        targetKey: "practitioner_uuid"
       });
       const user = await UserModel.findOne({
         where: {

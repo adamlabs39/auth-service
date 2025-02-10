@@ -11,6 +11,7 @@ import AuthorizationSdkException from "@adameds/authorization-sdk/sdkException";
 import { HttpException } from "../errors/http-exception.js";
 
 const errorMiddleware = (error, request, response, nextFunction) => {
+  console.log(error);
   if (error instanceof UsernameException) response.status(error.status).json(error.message)
   else if(error instanceof jwt.TokenExpiredError) response.status(400).json({message: "Authentikasi gagal", errors: [{type: "Invalid token", message: "Token tidak valid atau telah kadaluarsa"}]})
   else if(error instanceof jwt.JsonWebTokenError) response.status(400).json({message: "Authentikasi gagal", errors: [{type: "Invalid signature", message: "Token tidak valid"}]})

@@ -20,7 +20,7 @@ export default class AuthenticationService {
     if(!isPasswordValid) throw new UnauthorizeException({message: "Autentikasi gagal", errors: [{field: "password", message: "password anda tidak sesuai"}]});
     const { role, faskesUuid, permissions, name, uuid } = user;
     const { token, refreshToken} = genereateAuthToken({role, username, faskesUuid, user_uuid: uuid});
-    const keyRedis = generateRedisKeyByJwtToken(token)
+    const keyRedis = generateRedisKeyByJwtToken(token);
     await redisClient.set(`token-${keyRedis}`, JSON.stringify({permissions}), { EX: 3 * (60 * 60), NX: true });
     return {
       message: "Login berhasil!",
