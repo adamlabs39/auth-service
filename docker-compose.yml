@@ -16,7 +16,7 @@ services:
       API_VERSION: ${API_VERSION}
     volumes:
       - type: bind
-        source: /home/admin/adameds/.env.vault
+        source: /home/engineer/adameds/.env.vault
         target: /web-auth/.env.vault
     restart: always
 networks:
