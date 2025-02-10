@@ -77,6 +77,7 @@ export default class AuthenticationRepository {
             uuid, faskesUuid, username, email, password, phone,
             RoleModel: role, PractitionerModel: practitioner, permissions
           } = user.toJSON();
+          console.log(permissions)
         return {
           uuid, faskesUuid, username, email, password, phone,
           role: role.name, name: practitioner.pegawai.name,

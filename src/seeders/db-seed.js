@@ -2,12 +2,12 @@ import { Op } from "sequelize";
 import * as bcrypt from "bcrypt";
 import { FaskesModel, PegawaiModel, PractitionerModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
 import sequelizeInstance from "@adameds/model-sdk/instance";
-import { admisiPermission, antrianPermission, dashboardPermission, datamasterPermission, farmasiPermission, fisioTerapiPermission, igdPermission, inventoryPermission, laboraturiumPermission, laporanPermission, pembayaranPermission, rawatInapPermission, settingPermission, stokPermission, trainingPermission } from "../helpers/permission-list.js";
+import { admisiPermission, antrianPermission, dashboardPermission, datamasterPermission, farmasiPermission, fisioTerapiPermission, igdPermission, inventoryPermission, laboraturiumPermission, laporanPermission, pembayaranPermission, rawatInapPermission, rawatJalanPermission, settingPermission, stokPermission, trainingPermission } from "../helpers/permission-list.js";
 
 export async function initSueprAdmin() {
   await sequelizeInstance.transaction(async (tr) => {
     // create super admin
-    const permissions = [antrianPermission, admisiPermission, rawatInapPermission, rawatInapPermission, igdPermission, farmasiPermission, laboraturiumPermission, fisioTerapiPermission, trainingPermission, pembayaranPermission, stokPermission, inventoryPermission, datamasterPermission, laporanPermission, settingPermission, dashboardPermission];
+    const permissions = [antrianPermission, admisiPermission, rawatInapPermission, rawatJalanPermission, igdPermission, farmasiPermission, laboraturiumPermission, fisioTerapiPermission, trainingPermission, pembayaranPermission, stokPermission, inventoryPermission, datamasterPermission, laporanPermission, settingPermission, dashboardPermission];
     const [roleSuperAdmin, ] = await RoleModel.findOrCreate({
       where: {
         [Op.and]: [
@@ -53,7 +53,7 @@ export async function initSueprAdmin() {
 
 export async function initAdmin() {
   await sequelizeInstance.transaction(async (tr) => {
-    const permissions = [antrianPermission, admisiPermission, rawatInapPermission, rawatInapPermission, igdPermission, farmasiPermission, laboraturiumPermission, fisioTerapiPermission, trainingPermission, pembayaranPermission, stokPermission, inventoryPermission, datamasterPermission, laporanPermission, settingPermission, dashboardPermission]
+    const permissions = [antrianPermission, admisiPermission, rawatInapPermission, rawatInapPermission, igdPermission, farmasiPermission, laboraturiumPermission, fisioTerapiPermission, trainingPermission, pembayaranPermission, stokPermission, inventoryPermission, laporanPermission, settingPermission, dashboardPermission]
     const [ faskes, ] = await FaskesModel.findOrCreate({
       where: {
         [Op.and]: [
