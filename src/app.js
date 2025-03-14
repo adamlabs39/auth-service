@@ -12,6 +12,7 @@ import { initAdmin, initSueprAdmin } from "./seeders/db-seed.js";
 
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
 const APPLICATION_HOST = process.env.APPLICATION_HOST;
+const BASE_URL = `/${process.env.API_BASE ?? "api"}/${process.env.API_VERSION ?? "v3"}/${process.env.APPLICATION_MODULE ?? "auth"}`;
 
 const app = express();
 app.use(express.json());
@@ -19,8 +20,8 @@ app.use(morgan("dev"));
 app.use(cors({ origin: "*", methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"] }));
 app.use(express.urlencoded({ extended: true }));
 app.use(requestResponseFormatterMidddleware);
-app.use(publicRoutes);
-app.use(privateRoute);
+app.use(BASE_URL, publicRoutes);
+app.use(BASE_URL, privateRoute);
 app.use(errorMiddleware);
 
 redisClient.on("connect", () => console.log("Redis alredy accept request"));
@@ -32,8 +33,8 @@ app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
   // await UserModel.sync({ force: true });
   // await PegawaiModel.sync({ force: true });
   // await PractitionerModel.sync({ force: true });
-  await initSueprAdmin();
-  await initAdmin();
+  // await initSueprAdmin();
+  // await initAdmin();
   console.log(`The server running on http://${APPLICATION_HOST}:${APPLICATION_PORT}`);
 });
 

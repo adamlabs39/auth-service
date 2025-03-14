@@ -9,6 +9,7 @@ import UnauthorizeException from "../errors/unauthorize-exception.js";
 import NotFoundException from "../errors/not-found-exception.js";
 import AuthorizationSdkException from "@adameds/authorization-sdk/sdkException";
 import { HttpException } from "../errors/http-exception.js";
+import {NotAllowedException} from "@adameds/permission-sdk/exceptions";
 
 const errorMiddleware = (error, request, response, nextFunction) => {
   console.log(error);
@@ -25,6 +26,7 @@ const errorMiddleware = (error, request, response, nextFunction) => {
   else if(error instanceof AuthorizationSdkException) response.status(error.code).json(error.message);
   else if(error instanceof QueryError) response.status(400).json({message: error.cause, stack: error.stack})
   else if(error instanceof HttpException) response.status(error.status).json(error.message);
+  else if(error instanceof NotAllowedException) response.status(error.code).json(error.message)
   response.status(500).json({message: error.message, stack: error.stack});
 };
 
