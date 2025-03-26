@@ -1,0 +1,24 @@
+services:
+  web-auth-service:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+      no_cache: true
+    image: adameds/web-auth-service:dev
+    container_name: web-auth-service-dev
+    ports:
+      - 8081:8081
+    networks:
+      - adameds
+    environment:
+      # Application config
+      DOTENV_KEY: ${DOTENV_KEY}
+      API_VERSION: ${API_VERSION}
+    volumes:
+      - type: bind
+        source: /home/gitlab-runner/adameds/.env.vault
+        target: /web-auth/.env.vault
+    restart: always
+networks:
+  adameds:
+    driver: bridge
