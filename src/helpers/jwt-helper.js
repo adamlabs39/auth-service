@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config"
+import { HttpException, HttpStatus } from "../errors/http-exception.js";
+import { generateErrorMessage } from "./generate-message.js";
 
 export class JwtHelper {
 
@@ -16,7 +18,15 @@ export class JwtHelper {
   }
 
   static verifyRefreshToken(token){
-    return jwt.verify(token, process.env.SECRET_KEY, {algorithms: "HS256"});
+    try{
+      return jwt.verify(token, process.env.SECRET_KEY, {algorithms: "HS256"});
+    }catch(error){
+      if(error instanceof jwt.TokenExpiredError){
+       throw new HttpException(generateErrorMessage("Gagal regresh token", "expired", "Refresh token telah kadaluarsa"), HttpStatus.UNAUTHORIZED)
+      }else {
+        throw error;
+      }
+    }
   }
 
 }
