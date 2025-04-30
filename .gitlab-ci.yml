@@ -1,5 +1,5 @@
-# stages:
-#   - build-deploy
+stages:
+  - build-deploy
 
 # build-deploy:
 #   stage: build-deploy
