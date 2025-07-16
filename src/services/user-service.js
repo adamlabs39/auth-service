@@ -1,7 +1,7 @@
 import UserValidation from "../validations/user-validation.js";
 import ZodValidator from "../validations/zod-validator.js";
 import { parseDateString, toEpochDate } from "../helpers/date-helper.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import UserRepository from "../repositories/user-repository.js";
 import BadRequestException from "../errors/bad-request-exception.js";
 import excelJs from "exceljs";

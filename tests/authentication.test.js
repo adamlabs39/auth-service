@@ -1,7 +1,7 @@
 import { expect } from "@jest/globals";
 import supertest from "supertest";
 import app from "../src/app";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { uuidv7 } from "uuidv7";
 describe("API /v1/authentication", () => {
   test("should can login", async () => {

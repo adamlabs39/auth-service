@@ -4,7 +4,8 @@ WORKDIR /web-auth
 ENV APPLICATION_PORT=8081
 ENV APPLICATION_HOST=0.0.0.0
 COPY . .
+RUN npm install -g @infisical/cli
 RUN npm install
 EXPOSE ${APPLICATION_PORT}/tcp
 
-CMD ["npm" , "run", "start"]
+CMD ["sh", "-c", "infisical run --env=development -- npm run start"]

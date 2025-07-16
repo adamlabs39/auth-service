@@ -5,7 +5,7 @@ import UsernameException from "../errors/username-exception.js";
 import AuthenticationRepository from "../repositories/authentication-repository.js";
 import AuthenticationValidation from "../validations/authentication-validation.js";
 import ZodValidator from "../validations/zod-validator.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import FaskesRepository from "../repositories/faskes-repository.js";
 import { genereateAuthToken, JwtHelper } from "../helpers/jwt-helper.js";
 

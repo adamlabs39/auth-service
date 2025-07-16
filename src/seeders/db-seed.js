@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { FaskesModel, PegawaiModel, PractitionerModel, RoleModel, UserModel } from "@adameds/model-sdk/datamaster";
 import sequelizeInstance from "@adameds/model-sdk/instance";
 import { admisiPermission, antrianPermission, dashboardPermission, datamasterPermission, farmasiPermission, fisioTerapiPermission, igdPermission, inventoryPermission, laboraturiumPermission, laporanPermission, pembayaranPermission, rawatInapPermission, rawatJalanPermission, settingPermission, stokPermission, trainingPermission } from "../helpers/permission-list.js";
@@ -57,16 +57,16 @@ export async function initAdmin() {
     const [ faskes, ] = await FaskesModel.findOrCreate({
       where: {
         [Op.and]: [
-          { code: "CLS" },
-          { name: "Cliic Long Sehat" }
+          { code: "AMBA" },
+          { name: "Cliic Ambatukem" }
         ]
       },
       defaults: {
-        code: "CLS",
-        name: "Cliic Long Sehat",
-        organization_ihs_number: "00998274777912",
-        client_id: "203991290803u08ru2304823-29e9ei9191238",
-        client_secret: "00291380e81e981231d791ye7912w391g",
+        code: "AMBA",
+        name: "Cliic Ambatukem",
+        organization_ihs_number: "328017872r91",
+        client_id: "203991290803u08ru2304823-29e9ei9191338",
+        client_secret: "00291380e81e981231d791ye791555391g",
         status: true
       },
       transaction: tr,
